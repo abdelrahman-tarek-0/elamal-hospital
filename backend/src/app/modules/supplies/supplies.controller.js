@@ -5,7 +5,7 @@ const ErrorBuilder = require('../../utils/error.builder')
 const catchAsync = require('../../utils/catch-async')
 
 exports.getAllSupplies = catchAsync(async (_req, res) => {
-   let supplies = await Supply.getAllSupplies()
+   const supplies = await Supply.getAllSupplies()
 
    resBuilder(res, 200, 'تم استدعاء المسلتزمات', supplies)
 })
