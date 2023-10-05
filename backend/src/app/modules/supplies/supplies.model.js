@@ -2,7 +2,7 @@ const { DataTypes, Model } = require('sequelize')
 const connection = require('../../../config/database.config')
 
 class Supply extends Model {
-   static async getAllSupply() {
+   static async getAllSupplies() {
       return await Supply.findAll()
    }
 
