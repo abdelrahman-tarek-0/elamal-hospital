@@ -15,11 +15,12 @@ class Supply extends Model {
    }
 
    static async updateSupply(id, supply) {
-      return await Supply.update(supply, {
+      await Supply.update(supply, {
          where: {
             id,
          },
       })
+      return  await Supply.findByPk(id)
    }
 
    static async deleteSupply(id) {
