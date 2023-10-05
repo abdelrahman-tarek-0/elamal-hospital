@@ -34,7 +34,7 @@ exports.createSupply = [
    strict,
 ]
 
-exports.updateChannel = [
+exports.updateSupply = [
    param('id').isNumeric().withMessage('رقم التعريف غير صحيح'),
 
    body('name')
