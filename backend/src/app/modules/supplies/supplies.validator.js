@@ -22,9 +22,13 @@ exports.createSupply = [
       .isLength({ max: 4095 })
       .withMessage('لا يمكن أن يتجاوز الوصف 4095 حرفًا'),
 
-   body('price')
+   body('buyingPrice')
       .isFloat({ min: 0.0 })
-      .withMessage('يجب ان يكون السعر عدد عشري اكبر من 0'),
+      .withMessage('يجب ان يكون سعر الشراء عدد عشري اكبر من 0'),
+
+   body('sellingPrice')
+      .isFloat({ min: 0.0 })
+      .withMessage('يجب ان يكون سعر البيع عدد عشري اكبر من 0'),
 
    body('stock')
       .isInt({ min: 0 })
@@ -50,10 +54,15 @@ exports.updateSupply = [
       .isLength({ max: 4095 })
       .withMessage('لا يمكن أن يتجاوز الوصف 4095 حرفًا'),
 
-   body('price')
+   body('buyingPrice')
       .optional()
       .isFloat({ min: 0.0 })
-      .withMessage('يجب ان يكون السعر عدد عشري اكبر من 0'),
+      .withMessage('يجب ان يكون سعر الشراء عدد عشري اكبر من 0'),
+
+   body('sellingPrice')
+      .optional()
+      .isFloat({ min: 0.0 })
+      .withMessage('يجب ان يكون سعر البيع عدد عشري اكبر من 0'),
 
    body('stock')
       .optional()

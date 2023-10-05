@@ -53,7 +53,13 @@ Supply.init(
          defaultValue: '',
       },
 
-      price: {
+      buyingPrice: {
+         type: DataTypes.DECIMAL(10, 2),
+         allowNull: false,
+         defaultValue: 0.0,
+      },
+
+      sellingPrice: {
          type: DataTypes.DECIMAL(10, 2),
          allowNull: false,
          defaultValue: 0.0,
