@@ -64,12 +64,6 @@ Supply.init(
          allowNull: false,
          defaultValue: 0,
       },
-
-      image: {
-         type: DataTypes.STRING(255),
-         allowNull: true,
-         defaultValue: '',
-      },
    },
    {
       sequelize: connection,
