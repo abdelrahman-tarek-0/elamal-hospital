@@ -6,12 +6,13 @@ exports.handleValidationErrors = (req, _res, next) => {
    const errors = validationResult(req)
 
    if (!errors.isEmpty()) {
-      const error = new ErrorBuilder(
-         'Validation Failed',
-         422,
-         'VALIDATION_FAILED',
-         errors.array()
-      )
+      const error = new ErrorBuilder({
+         message: 'فشل تحليل المدخلات',
+         statusCode: 422,
+         code: 'VALIDATION_FAILED',
+         data: errors.array(),
+      })
+
       return next(error)
    }
 

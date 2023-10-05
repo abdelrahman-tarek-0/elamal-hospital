@@ -5,48 +5,52 @@ const ErrorBuilder = require('../../utils/error.builder')
 const catchAsync = require('../../utils/catch-async')
 
 exports.getAllSupplies = catchAsync(async (_req, res) => {
-   const supplies = await Supply.getAllSupplies()
-   if (!supplies?.[0]) supplies = []
+   let supplies = await Supply.getAllSupplies()
 
-   res.status(200).json(
-      resBuilder(res, 200, 'Supplies retrieved successfully', supplies)
-   )
+   resBuilder(res, 200, 'تم استدعاء المسلتزمات', supplies)
 })
 
 exports.getSupplyById = catchAsync(async (req, res) => {
-    const supply = await Supply.getSupplyById(req.params.id)
+   const supply = await Supply.getSupplyById(req.params.id)
 
-    if (!supply) throw new ErrorBuilder(404, 'Supply not found')
-    
-    res.status(200).json(
-        resBuilder(res, 200, 'Supply retrieved successfully', supply)
-    )
+   if (!supply)
+      throw new ErrorBuilder({
+         message: `المورد رقم ${req.params.id} غير موجود`,
+         statusCode: 404,
+         code: 'RESOURCES_NOT_FOUND',
+      })
+
+   resBuilder(res, 200, 'تم استدعاء المستلزم', supply)
 })
 
 exports.createSupply = catchAsync(async (req, res) => {
-    const supply = await Supply.createSupply(req.body)
+   const supply = await Supply.createSupply(req.body)
 
-    res.status(201).json(
-        resBuilder(res, 201, 'Supply created successfully', supply)
-    )
+   resBuilder(res, 201, 'تم تخزين المستلزم', supply)
 })
 
 exports.updateSupply = catchAsync(async (req, res) => {
-    const supply = await Supply.updateSupply(req.params.id, req.body)
+   const supply = await Supply.updateSupply(req.params.id, req.body)
 
-    if (!supply) throw new ErrorBuilder(404, 'Supply not found')
+   if (!supply)
+      throw new ErrorBuilder({
+         message: `المورد رقم ${req.params.id} غير موجود`,
+         statusCode: 404,
+         code: 'RESOURCES_NOT_FOUND',
+      })
 
-    res.status(200).json(
-        resBuilder(res, 200, 'Supply updated successfully', supply)
-    )
+   resBuilder(res, 200, 'تم تعديل المستلزم', supply)
 })
 
 exports.deleteSupply = catchAsync(async (req, res) => {
-    const supply = await Supply.deleteSupply(req.params.id)
+   const supply = await Supply.deleteSupply(req.params.id)
 
-    if (!supply) throw new ErrorBuilder(404, 'Supply not found')
+   if (!supply)
+      throw new ErrorBuilder({
+         message: `المورد رقم ${req.params.id} غير موجود`,
+         statusCode: 404,
+         code: 'RESOURCES_NOT_FOUND',
+      })
 
-    res.status(200).json(
-        resBuilder(res, 200, 'Supply deleted successfully', supply)
-    )
+   resBuilder(res, 200, 'تم حذف المستلزم', supply)
 })

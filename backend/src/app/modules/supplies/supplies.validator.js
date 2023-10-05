@@ -12,7 +12,6 @@ exports.getSupply = [
 exports.createSupply = [
    body('name')
       .trim()
-
       .isLength({ min: 1, max: 255 })
       .withMessage('يجب ان يكون اسم المستلزمات بين 1 و 255 حرفًا فقط'),
 
