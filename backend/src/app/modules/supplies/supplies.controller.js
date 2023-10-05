@@ -1,7 +1,7 @@
 const Supply = require('./supplies.model')
 
 const resBuilder = require('../../utils/response.builder')
-const ErrorBuilder = require('../../utils/Error.builder')
+const ErrorBuilder = require('../../utils/error.builder')
 const catchAsync = require('../../utils/catch-async')
 
 exports.getAllSupplies = catchAsync(async (_req, res) => {

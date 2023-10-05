@@ -28,5 +28,5 @@ module.exports = ErrorBuilder
  * RESOURCES_NOT_FOUND (any resource not found)
  * ILLEGAL_OPERATION (any illegal operation)
  * INVALID_CREDENTIALS (invalid credentials)
- * VALIDATION_ERROR (validation error)
+ * VALIDATION_FAILED (validation error)
  */
