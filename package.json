@@ -1,0 +1,24 @@
+{
+  "name": "hospital-resources-tracking-system",
+  "version": "0.0.1",
+  "description": "سيستيم مراقبة الموارد في مستشفي",
+  "main": "backend/src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:back": "cd backend && npm start",
+    "start:front": "cd frontend && npm start",
+    "dev:back": "cd backend && npm run dev",
+    "dev:front": "cd frontend && npm run dev",
+    "build": "cd frontend && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abdelrahman-tarek-0/hospital-resources-tracking-system.git"
+  },
+  "author": "https://github.com/abdelrahman-tarek-0",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/abdelrahman-tarek-0/hospital-resources-tracking-system/issues"
+  },
+  "homepage": "https://github.com/abdelrahman-tarek-0/hospital-resources-tracking-system#readme"
+}
