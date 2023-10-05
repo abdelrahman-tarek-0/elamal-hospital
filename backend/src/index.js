@@ -1,4 +1,5 @@
 const { port } = require('./config/app.config')
+const dbConnection = require('./config/database.config')
 
 process.on('uncaughtException', (err) => {
    console.log('UNCAUGHT EXCEPTION! 💥 Shutting down...')
@@ -8,8 +9,11 @@ process.on('uncaughtException', (err) => {
 
 const app = require('./app/app')
 
-app.listen(port, () => {
-   console.log(`http://127.0.0.1:${port}`)
+dbConnection.sync({ alter: true }).then(() => {
+   console.log('Database connected')
+   app.listen(port, () => {
+      console.log(`http://127.0.0.1:${port}`)
+   })
 })
 
 process.on('unhandledRejection', (err) => {
