@@ -8,7 +8,7 @@ export default function GuestFooter() {
    return (
       <Paper
          sx={{
-   
+            // marginTop: 'calc(10% + 60px)',
             paddingTop: '10px',
             width: '100%',
             position: 'fixed',
@@ -43,9 +43,10 @@ export default function GuestFooter() {
                   }}
                >
                 Copyright ©2023. 
-                  تمت البرمجة من قبل <Typography
+                  <Typography
                     variant='a'
                     component='a'
+                    target='_blank'
                     href='https://www.facebook.com/abdoWebDev'
                     sx={{
                       fontFamily: 'monospace',
@@ -55,7 +56,7 @@ export default function GuestFooter() {
                     }}
                   >
                     عبدالرحمن
-                  </Typography> رقم الهاتف للتواصل 01551887547
+                  </Typography> رقم الهاتف 01551887547
                </Typography>
             </Box>
          </Container>

@@ -11,15 +11,7 @@ function App() {
                paddingBottom: 'calc(10% + 60px)',
             }}
          >
-            <p
-               style={{
-                  width: '100%',
-                  height: '100vh',
-               }}
-            >
-               Edit <code>src/App.js</code> and save to reload.
-            </p>
-          
+            Edit <code>src/App.js</code> and save to reload.
          </main>
 
          <GuestFooter />
