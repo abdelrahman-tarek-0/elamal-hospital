@@ -10,7 +10,7 @@ exports.getAllSupplies = catchAsync(async (_req, res) => {
    resBuilder(res, 200, 'تم استدعاء المسلتزمات', supplies)
 })
 
-exports.getSupplyById = catchAsync(async (req, res) => {
+exports.getSupply = catchAsync(async (req, res) => {
    const supply = await Supply.getSupplyById(req.params.id)
 
    if (!supply)

@@ -1,7 +1,7 @@
 const { Router } = require('express')
 const {
    getAllSupplies,
-   getSupplyById,
+   getSupply,
    createSupply,
    updateSupply,
    deleteSupply,
@@ -17,7 +17,7 @@ const {
 const router = Router()
 
 router.get('/', getAllSuppliesValidator, getAllSupplies)
-router.get('/:id', getSupplyValidator, getSupplyById)
+router.get('/:id', getSupplyValidator, getSupply)
 router.post('/', createSupplyValidator, createSupply)
 router.patch('/:id', updateSupplyValidator, updateSupply)
 router.delete('/:id', deleteSupplyValidator, deleteSupply)

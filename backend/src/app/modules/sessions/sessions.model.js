@@ -2,28 +2,33 @@ const { DataTypes, Model } = require('sequelize')
 const connection = require('../../../config/database.config')
 
 class Session extends Model {
-   static getAllSessions() {
-      return Session.findAll({
+   static async getAllSessions() {
+      return await Session.findAll({
          include: ['Supplies'],
       })
    }
 
-   static getSessionById(id) {
-      return Session.findByPk(id, {
+   static async getSessionById(id) {
+      return await Session.findByPk(id, {
          include: ['Supplies'],
       })
    }
 
-   static createSession(session) {
-      return Session.create(session)
+   static async createSession(session) {
+      return await Session.create(session)
    }
 
-   static updateSession(id, session) {
-      return Session.update(session, { where: { id } })
+   static async updateSession(id, session) {
+      await Session.update(session, {
+         where: {
+            id,
+         },
+      })
+      return await Session.findByPk(id)
    }
 
-   static deleteSession(id) {
-      return Session.destroy({ where: { id } })
+   static async deleteSession(id) {
+      return await Session.destroy({ where: { id } })
    }
 }
 
