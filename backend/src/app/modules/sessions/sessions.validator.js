@@ -73,3 +73,10 @@ exports.deleteSession = [
    handleValidationErrors,
    strict,
 ]
+
+exports.useSession = [
+   param('id').isNumeric().withMessage('رقم التعريف غير صحيح'),
+
+   handleValidationErrors,
+   strict,
+]

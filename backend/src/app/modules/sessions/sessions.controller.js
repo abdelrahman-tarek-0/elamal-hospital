@@ -1,4 +1,5 @@
 const Session = require('./sessions.model')
+const Supply = require('../supplies/supplies.model')
 const { SessionSupply } = require('../common/models.associations')
 
 const resBuilder = require('../../utils/response.builder')
@@ -27,8 +28,8 @@ exports.getSession = catchAsync(async (req, res) => {
 exports.createSession = catchAsync(async (req, res) => {
    let session = await Session.createSession(req.body)
 
-   if (!req?.body?.supplies) return resBuilder(res, 200, 'تم تخزين الجلسة', session)
-   
+   if (!req?.body?.supplies)
+      return resBuilder(res, 200, 'تم تخزين الجلسة', session)
 
    const associate = await SessionSupply.addSuppliesToSession(
       session,
@@ -71,4 +72,85 @@ exports.deleteSession = catchAsync(async (req, res) => {
       })
 
    resBuilder(res, 200, 'تم حذف الجلسة', session)
+})
+
+exports.useSession = catchAsync(async (req, res) => {
+   const session = await Session.getSessionById(req.params.id)
+
+   if (!session)
+      throw new ErrorBuilder({
+         message: `المورد رقم ${req.params.id} غير موجود`,
+         statusCode: 404,
+         code: 'RESOURCES_NOT_FOUND',
+      })
+
+   if (!session?.Supplies) {
+      return resBuilder(
+         res,
+         200,
+         'لم يتم استخدام الجلسة لعدم وجود مستلزمات',
+         session,
+         {
+            meta: [
+               {
+                  message: 'الجلسة جاهزة لاكنها لا تحتوي علي مستلزمات',
+                  level: 'warning',
+               },
+            ],
+         }
+      )
+   }
+
+   const meta = []
+   let isOkayToUpdate = true
+   const updatedSupplies = []
+   let totalSuppliesProfit = 0
+
+   let i = 0
+   for (const supply of session.Supplies) {
+      const sessionSupplyData = supply?.SessionSupply
+
+      if (supply.stock < sessionSupplyData?.quantity) {
+         isOkayToUpdate = false
+         meta.push({
+            message: `المستلزم (${supply.id})'${supply.name}' يحتوي علي ${supply.stock} بينما تحوال استخدام ${sessionSupplyData?.quantity} لا يوجد موارد كافية`,
+            level: 'error',
+         })
+      } else {
+         updatedSupplies.push({
+            id: supply.id,
+            stock: supply.stock - sessionSupplyData?.quantity,
+         })
+
+         const totalBuying = supply.buyingPrice * sessionSupplyData?.quantity
+         const totalSelling = supply.sellingPrice * sessionSupplyData?.quantity
+         const totalProfit = totalSelling - totalBuying
+
+         totalSuppliesProfit += totalProfit
+
+         meta.push({
+            message: `المستلزم (${supply.id})'${supply.name}' سيتم او تم استخدام ${sessionSupplyData?.quantity} بقيمة ${totalProfit} جنيه`,
+            level: 'info',
+         })
+      }
+      i = i + 1
+   }
+   meta.push({
+      message: `اجمالي المستلزمات ${i} بقيمة ${totalSuppliesProfit} جنيه`,
+      level: 'info',
+   })
+
+   if (isOkayToUpdate) {
+      const supplies = await Supply.updateManySupplies(updatedSupplies)
+
+      return resBuilder(res, 200, 'تم استخدام الجلسة', supplies, {
+         meta,
+         isUpdated: isOkayToUpdate,
+      })
+   }
+
+   resBuilder(res, 200, 'لم يتم استخدام الجلسة نظرا لوجود اخطاء', session, {
+      meta,
+      isUpdated: isOkayToUpdate,
+   })
 })

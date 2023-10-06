@@ -18,6 +18,19 @@ class Supply extends Model {
       return await Supply.create(supply)
    }
 
+   static async updateManySupplies(supplies) {
+      return await Promise.all(
+         supplies.map(async (supply) => {
+            await Supply.update(supply, {
+               where: {
+                  id: supply.id,
+               },
+            })
+            return await Supply.findByPk(supply.id)
+         })
+      )
+   }
+
    static async updateSupply(id, supply) {
       await Supply.update(supply, {
          where: {
