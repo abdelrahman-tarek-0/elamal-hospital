@@ -3,11 +3,15 @@ const connection = require('../../../config/database.config')
 
 class Session extends Model {
    static getAllSessions() {
-      return Session.findAll()
+      return Session.findAll({
+         include: ['Supplies'],
+      })
    }
 
    static getSessionById(id) {
-      return Session.findByPk(id)
+      return Session.findByPk(id, {
+         include: ['Supplies'],
+      })
    }
 
    static createSession(session) {
