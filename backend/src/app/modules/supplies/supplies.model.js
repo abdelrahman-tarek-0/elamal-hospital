@@ -3,11 +3,15 @@ const connection = require('../../../config/database.config')
 
 class Supply extends Model {
    static async getAllSupplies() {
-      return await Supply.findAll()
+      return await Supply.findAll({
+         include: ['Sessions'],
+      })
    }
 
    static async getSupplyById(id) {
-      return await Supply.findByPk(id)
+      return await Supply.findByPk(id,{
+         include: ['Sessions'],
+      })
    }
 
    static async createSupply(supply) {
@@ -20,7 +24,7 @@ class Supply extends Model {
             id,
          },
       })
-      return  await Supply.findByPk(id)
+      return await Supply.findByPk(id)
    }
 
    static async deleteSupply(id) {
