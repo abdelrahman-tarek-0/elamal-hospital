@@ -24,7 +24,9 @@ class Session extends Model {
             id,
          },
       })
-      return await Session.findByPk(id)
+      return await Session.findByPk(id,{
+         include: ['Supplies'],
+      })
    }
 
    static async deleteSession(id) {
@@ -48,11 +50,6 @@ Session.init(
          allowNull: false,
       },
 
-      description: {
-         type: DataTypes.STRING(4095),
-         allowNull: true,
-         defaultValue: '',
-      },
    },
    {
       sequelize: connection,

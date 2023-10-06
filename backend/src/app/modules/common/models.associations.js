@@ -4,7 +4,44 @@ const connection = require('../../../config/database.config')
 const Supply = require('../supplies/supplies.model')
 const Session = require('../sessions/sessions.model')
 
-class SessionSupply extends Model {}
+class SessionSupply extends Model {
+   static async addSuppliesToSession(session, supplies) {
+      await SessionSupply.bulkCreate(
+         supplies?.map(supply => ({
+            SessionId: session.id,
+            SupplyId: supply.id,
+            quantity: supply.quantity,
+         })) || []
+      )
+      let newSession = await Session.getSessionById(session.id, {
+         include: [Supply],
+      })
+
+      return newSession
+   }
+
+   static async updateSuppliesOfSession(session, supplies) {
+      await SessionSupply.destroy({
+         where: {
+            SessionId: session.id,
+         },
+      })
+
+      await SessionSupply.bulkCreate(
+         supplies?.map(supply => ({
+            SessionId: session.id,
+            SupplyId: supply.id,
+            quantity: supply.quantity,
+         })) || []
+      )
+
+      let newSession = await Session.getSessionById(session.id, {
+         include: [Supply],
+      })
+
+      return newSession
+   }
+}
 
 SessionSupply.init(
    {
@@ -19,28 +56,6 @@ SessionSupply.init(
       modelName: 'SessionSupply',
    }
 )
-
-// const SessionSupply = connection.define('SessionSupply', {
-//    SupplyId: {
-//       type: DataTypes.INTEGER,
-//       references: {
-//          model: Supply,
-//          key: 'id',
-//       },
-//    },
-//    SessionId: {
-//       type: DataTypes.INTEGER,
-//       references: {
-//          model: Session,
-//          key: 'id',
-//       },
-//    },
-//    quantity: {
-//       type: DataTypes.INTEGER,
-//       allowNull: false,
-//       defaultValue: 0,
-//    },
-// })
 
 const syncAssociations = () => {
    Supply.belongsToMany(Session, { through: SessionSupply })

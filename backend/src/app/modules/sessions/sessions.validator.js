@@ -15,15 +15,25 @@ exports.createSession = [
       .isLength({ min: 1, max: 255 })
       .withMessage('يجب ان يكون اسم الجلسة بين 1 و 255 حرفًا فقط'),
 
-   body('description')
-      .trim()
+   body('supplies')
       .optional()
-      .isLength({ max: 4095 })
-      .withMessage('لا يمكن أن يتجاوز الوصف 4095 حرفًا'),
+      .isArray()
+      .withMessage('يجب ان يكون المستلزمات مصفوفة فقط'),
 
+   body('supplies.*.id')
+      .optional()
+      .isNumeric()
+      .withMessage('رقم التعريف غير صحيح'),
+
+   body('supplies.*.quantity')
+      .optional()
+      .isInt({
+         min: 0,
+      })
+      .withMessage('الكمية يجب ان تكون رقم صحيح اكبر من الصفر'),
 
    handleValidationErrors,
-   //strict,
+   strict,
 ]
 
 exports.updateSession = [
@@ -35,12 +45,22 @@ exports.updateSession = [
       .isLength({ min: 1, max: 255 })
       .withMessage('يجب ان يكون اسم الجلسة بين 1 و 255 حرفًا فقط'),
 
-   body('description')
+   body('supplies')
       .optional()
-      .trim()
+      .isArray()
+      .withMessage('يجب ان يكون المستلزمات مصفوفة فقط'),
+
+   body('supplies.*.id')
       .optional()
-      .isLength({ max: 4095 })
-      .withMessage('لا يمكن أن يتجاوز الوصف 4095 حرفًا'),
+      .isNumeric()
+      .withMessage('رقم التعريف غير صحيح'),
+
+   body('supplies.*.quantity')
+      .optional()
+      .isInt({
+         min: 0,
+      })
+      .withMessage('الكمية يجب ان تكون رقم صحيح اكبر من الصفر'),
 
 
    handleValidationErrors,

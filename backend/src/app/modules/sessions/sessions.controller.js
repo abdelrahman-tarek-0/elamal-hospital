@@ -1,4 +1,5 @@
 const Session = require('./sessions.model')
+const { SessionSupply } = require('../common/models.associations')
 
 const resBuilder = require('../../utils/response.builder')
 const ErrorBuilder = require('../../utils/error.builder')
@@ -24,9 +25,17 @@ exports.getSession = catchAsync(async (req, res) => {
 })
 
 exports.createSession = catchAsync(async (req, res) => {
-   const session = await Session.createSession(req.body)
+   let session = await Session.createSession(req.body)
 
-   resBuilder(res, 201, 'تم تخزين الجلسة', session)
+   if (!req?.body?.supplies) return resBuilder(res, 200, 'تم تخزين الجلسة', session)
+   
+
+   const associate = await SessionSupply.addSuppliesToSession(
+      session,
+      req?.body?.supplies
+   )
+
+   resBuilder(res, 201, 'تم تخزين الجلسة', associate)
 })
 
 exports.updateSession = catchAsync(async (req, res) => {
@@ -39,7 +48,16 @@ exports.updateSession = catchAsync(async (req, res) => {
          code: 'RESOURCES_NOT_FOUND',
       })
 
-   resBuilder(res, 200, 'تم تعديل الجلسة', session)
+   if (!req?.body?.supplies) {
+      return resBuilder(res, 200, 'تم تعديل الجلسة', session)
+   }
+
+   const associate = await SessionSupply.updateSuppliesOfSession(
+      session,
+      req?.body?.supplies
+   )
+
+   resBuilder(res, 200, 'تم تعديل الجلسة', associate)
 })
 
 exports.deleteSession = catchAsync(async (req, res) => {
