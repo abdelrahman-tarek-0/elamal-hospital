@@ -1,5 +1,6 @@
 const { port } = require('./config/app.config')
 const dbConnection = require('./config/database.config')
+const syncAssociations = require('./app/modules/common/models.associations')
 
 process.on('uncaughtException', (err) => {
    console.log('UNCAUGHT EXCEPTION! 💥 Shutting down...')
@@ -9,6 +10,7 @@ process.on('uncaughtException', (err) => {
 
 const app = require('./app/app')
 
+syncAssociations()
 dbConnection.sync().then(() => {
    console.log('Database connected')
    app.listen(port, () => {
