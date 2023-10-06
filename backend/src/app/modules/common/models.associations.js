@@ -1,0 +1,1 @@
+const Supply = require('../supplies/supply.model');
