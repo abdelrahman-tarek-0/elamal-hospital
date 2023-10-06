@@ -1,3 +1,4 @@
+import Container from '@mui/material/Container'
 import GuestFooter from './components/Footer'
 import ResponsiveAppBar from './components/NavBar'
 
@@ -6,14 +7,18 @@ function App() {
       <div className="App">
          <ResponsiveAppBar />
 
-         <main
-            style={{
+         <Container
+            variant="main"
+            component="main"
+            maxWidth="100%"
+            sx={{
+               marginTop: '20px',
                paddingBottom: 'calc(10% + 60px)',
             }}
          >
-            Edit <code>src/App.js</code> and save to reload.
-         </main>
-
+            <p>Content</p>
+         </Container>
+         
          <GuestFooter />
       </div>
    )

@@ -10,7 +10,6 @@ export default function GuestFooter() {
          sx={{
             // marginTop: 'calc(10% + 60px)',
             paddingTop: '10px',
-            width: '100%',
             position: 'fixed',
             bottom: 0,
             width: '100%',
@@ -50,7 +49,6 @@ export default function GuestFooter() {
                     href='https://www.facebook.com/abdoWebDev'
                     sx={{
                       fontFamily: 'monospace',
-                      textDecoration: 'none',
                       textDecoration: 'underline',
                       color: '#fcf6c6',
                     }}
