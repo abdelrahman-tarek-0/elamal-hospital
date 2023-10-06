@@ -8,20 +8,6 @@ class SessionSupply extends Model {}
 
 SessionSupply.init(
    {
-      SupplyId: {
-         type: DataTypes.INTEGER,
-         references: {
-            model: Supply,
-            key: 'id',
-         },
-      },
-      SessionId: {
-         type: DataTypes.INTEGER,
-         references: {
-            model: Session,
-            key: 'id',
-         },
-      },
       quantity: {
          type: DataTypes.INTEGER,
          allowNull: false,

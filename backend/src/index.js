@@ -11,7 +11,9 @@ process.on('uncaughtException', (err) => {
 const app = require('./app/app')
 
 syncAssociations()
-dbConnection.sync().then(() => {
+dbConnection.sync({
+   //force: true,
+}).then(() => {
    console.log('Database connected')
    app.listen(port, () => {
       console.log(`http://127.0.0.1:${port}`)
