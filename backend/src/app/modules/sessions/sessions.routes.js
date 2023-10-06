@@ -6,6 +6,7 @@ const {
    createSession,
    updateSession,
    deleteSession,
+   checkSession,
    useSession,
 } = require('./sessions.controller')
 const {
@@ -14,6 +15,7 @@ const {
    createSession: createSessionValidator,
    updateSession: updateSessionValidator,
    deleteSession: deleteSessionValidator,
+   checkSession: checkSessionValidator,
    useSession: useSessionValidator,
 } = require('./sessions.validator')
 
@@ -22,6 +24,7 @@ const router = Router()
 router.get('/', getAllSessionsValidator, getAllSessions)
 router.get('/:id', getSessionValidator, getSession)
 router.post('/', createSessionValidator, createSession)
+router.post('/:id/check', checkSessionValidator, checkSession)
 router.post('/:id/use', useSessionValidator, useSession)
 router.patch('/:id', updateSessionValidator, updateSession)
 router.delete('/:id', deleteSessionValidator, deleteSession)
