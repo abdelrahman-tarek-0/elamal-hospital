@@ -9,7 +9,7 @@
       "start:front": "cd frontend && npm start",
       "dev:back": "cd backend && npm run dev",
       "dev:front": "cd frontend && npm run start",
-      "build": "rm -rf ./frontend/build ./backend/src/public ./backend/dist ./release &&  cd ./frontend && npm run build && cd ..  && mv ./frontend/build ./backend/src/public && cd ./backend && pkg . --out-path ./dist && cp -r ./database ./dist/database && cd ..  && mv ./backend/dist/ ./release && rm -rf ./release/release.7z && 7z a -t7z ./release/release.7z ./release/*"
+      "build": "rm -rf ./frontend/build ./backend/src/public ./backend/dist ./release &&  cd ./frontend && npm run build && cd ..  && mv ./frontend/build ./backend/src/public && cd ./backend && npm run build && cp -r ./database ./dist/database && cd ..  && mv ./backend/dist/ ./release && 7z a -t7z ./release/release.7z ./release/*"
    },
    "repository": {
       "type": "git",
