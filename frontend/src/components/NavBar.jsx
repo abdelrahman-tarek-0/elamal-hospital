@@ -13,6 +13,7 @@ import MenuItem from '@mui/material/MenuItem'
 import HomeIcon from '@mui/icons-material/Home'
 import AccessibilityIcon from '@mui/icons-material/Accessibility'
 import BadgeIcon from '@mui/icons-material/Badge'
+import { Link } from 'react-router-dom'
 
 const pages = [
    {
@@ -75,8 +76,8 @@ function ResponsiveAppBar() {
                <Typography
                   variant="h6"
                   noWrap
-                  component="a"
-                  href="/"
+                  // component="a"
+                  // href="/"
                   sx={{
                      mr: 2,
                      display: { xs: 'none', md: 'flex' },
@@ -85,9 +86,18 @@ function ResponsiveAppBar() {
                      color: 'inherit',
                      textDecoration: 'none',
                      marginLeft: '100px',
+                     cursor: 'pointer',
                   }}
                >
-                  مستشفي الأمل
+                  <Link
+                     to="/"
+                     style={{
+                        color: 'inherit',
+                        textDecoration: 'none',
+                     }}
+                  >
+                     مستشفي الأمل
+                  </Link>
                </Typography>
 
                <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -159,36 +169,44 @@ function ResponsiveAppBar() {
 
                <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                   {pages.map((page) => (
-                     <Button
-                        key={page.name}
-                        onClick={handleCloseNavMenu}
-                        sx={{
-                           my: 2,
+                     <Link
+                        to={page.path}
+                        style={{
                            color: 'inherit',
-                           display: 'block',
-                           margin: '0 16px',
-                           fontSize: '1.5rem',
-                           ':hover': {
-                              background: '#365c00',
-                           },
+                           textDecoration: 'none',
                         }}
                      >
-                        <page.icon
+                        <Button
+                           key={page.name}
+                           onClick={handleCloseNavMenu}
                            sx={{
-                              fontSize: '1.2rem',
-                              marginLeft: '5px',
-                           }}
-                        />
-
-                        <Typography
-                           variant="span"
-                           sx={{
+                              my: 2,
+                              color: 'inherit',
+                              display: 'block',
+                              margin: '0 16px',
                               fontSize: '1.5rem',
+                              ':hover': {
+                                 background: '#365c00',
+                              },
                            }}
                         >
-                           {page.name}
-                        </Typography>
-                     </Button>
+                           <page.icon
+                              sx={{
+                                 fontSize: '1.2rem',
+                                 marginLeft: '5px',
+                              }}
+                           />
+
+                           <Typography
+                              variant="span"
+                              sx={{
+                                 fontSize: '1.5rem',
+                              }}
+                           >
+                              {page.name}
+                           </Typography>
+                        </Button>
+                     </Link>
                   ))}
                </Box>
 
