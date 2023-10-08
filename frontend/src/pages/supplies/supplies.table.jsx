@@ -13,10 +13,20 @@ import FormControlLabel from '@mui/material/FormControlLabel'
 import Switch from '@mui/material/Switch'
 import { visuallyHidden } from '@mui/utils'
 import useLocalStorage from '../../hooks/useLocalStorage'
-import { Button, Divider, Stack, TextField, Typography, Autocomplete } from '@mui/material'
+import {
+   Button,
+   Divider,
+   Stack,
+   TextField,
+   Typography,
+   Autocomplete,
+} from '@mui/material'
 import Swal from 'sweetalert2'
 
 import { AddCircle, Delete, Edit } from '@mui/icons-material'
+
+import Tooltip, { tooltipClasses } from '@mui/material/Tooltip'
+import { styled } from '@mui/material/styles'
 
 function descendingComparator(a, b, orderBy) {
    if (b[orderBy] < a[orderBy]) {
@@ -50,6 +60,18 @@ function stableSort(array, comparator) {
    return stabilizedThis.map((el) => el[0])
 }
 
+const HtmlTooltip = styled(({ className, ...props }) => (
+   <Tooltip  {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
+   [`& .${tooltipClasses.tooltip}`]: {
+      backgroundColor: '#f5f5f9',
+      color: 'rgba(0, 0, 0, 0.87)',
+      maxWidth: 220,
+      fontSize: theme.typography.pxToRem(12),
+      border: '1px solid #dadde9',
+   },
+}))
+
 function EnhancedTableHead(props) {
    const { order, orderBy, onRequestSort, headCells } = props
    const createSortHandler = (property) => (event) => {
@@ -66,27 +88,37 @@ function EnhancedTableHead(props) {
                   padding={headCell.disablePadding ? 'none' : 'normal'}
                   sortDirection={orderBy === headCell.id ? order : false}
                >
-                  <TableSortLabel
-                     active={orderBy === headCell.id}
-                     direction={orderBy === headCell.id ? order : 'asc'}
-                     onClick={createSortHandler(headCell.id)}
-                     sx={{
-                        ':hover': {
-                           color: '#365c00',
-                        },
-                        fontWeight: 'bold',
-                        fontSize: '1.2rem',
-                     }}
+                  <HtmlTooltip
+                     arrow
+                     placement="top"
+                     title={
+                        <React.Fragment>
+                           {`ترتيب حسب ${headCell.label}`}
+                        </React.Fragment>
+                     }
                   >
-                     {headCell.label}
-                     {orderBy === headCell.id ? (
-                        <Box component="span" sx={visuallyHidden}>
-                           {order === 'desc'
-                              ? 'sorted descending'
-                              : 'sorted ascending'}
-                        </Box>
-                     ) : null}
-                  </TableSortLabel>
+                     <TableSortLabel
+                        active={orderBy === headCell.id}
+                        direction={orderBy === headCell.id ? order : 'asc'}
+                        onClick={createSortHandler(headCell.id)}
+                        sx={{
+                           ':hover': {
+                              color: '#365c00',
+                           },
+                           fontWeight: 'bold',
+                           fontSize: '1.2rem',
+                        }}
+                     >
+                        {headCell.label}
+                        {orderBy === headCell.id ? (
+                           <Box component="span" sx={visuallyHidden}>
+                              {order === 'desc'
+                                 ? 'sorted descending'
+                                 : 'sorted ascending'}
+                           </Box>
+                        ) : null}
+                     </TableSortLabel>
+                  </HtmlTooltip>
                </TableCell>
             ))}
          </TableRow>
@@ -94,7 +126,7 @@ function EnhancedTableHead(props) {
    )
 }
 
-export default function EnhancedTable({ data, headCells }) {
+export default function EnhancedTable({ data, headCells,toggleMaxWidth }) {
    const [order, setOrder] = useLocalStorage('EnhancedTable_order', 'asc')
    const [orderBy, setOrderBy] = useLocalStorage(
       'EnhancedTable_orderBy',
@@ -118,6 +150,8 @@ export default function EnhancedTable({ data, headCells }) {
       if (isFull) {
          setRowsPerPage(data.length)
       }
+
+
    })
 
    const handleRequestSort = (event, property) => {
@@ -142,6 +176,7 @@ export default function EnhancedTable({ data, headCells }) {
    }
 
    const handleChangeDense = (event) => {
+      toggleMaxWidth(event.target.checked)
       setDense(event.target.checked)
    }
 
@@ -187,6 +222,7 @@ export default function EnhancedTable({ data, headCells }) {
                   alignItems: 'center',
                   padding: '0 10px',
                   mb: 2,
+                  flexDirection: 'row-reverse',
                }}
             >
                <Typography
@@ -201,21 +237,18 @@ export default function EnhancedTable({ data, headCells }) {
                   المستلزمات
                </Typography>
                <Stack direction="row" spacing={2}>
-
                   <Autocomplete
                      disablePortal
                      id="combo-box-demo"
                      options={data}
-                     getOptionLabel={(option) => `${option.name} (${option.id})`}
+                     getOptionLabel={(option) =>
+                        `${option.name} (${option.id})`
+                     }
                      sx={{
                         width: '300px',
                      }}
                      renderInput={(params) => (
-                        <TextField
-                           {...params}
-                           label="بحث"
-                           variant="outlined"
-                        />
+                        <TextField {...params} label="بحث" variant="outlined" />
                      )}
                      onChange={(event, value) => {
                         if (value) {
@@ -225,20 +258,38 @@ export default function EnhancedTable({ data, headCells }) {
                         }
                      }}
                   />
-
-                  <Button
-                     variant="contained"
-                     sx={{
-                        backgroundColor: '#365c00',
-                        color: '#fff',
-                        '&:hover': {
-                           backgroundColor: '#365c00',
-                        },
-                     }}
+                  <HtmlTooltip
+                     arrow
+                     title={
+                        <React.Fragment>
+                           <Typography
+                              color="inherit"
+                              sx={{
+                                 fontSize: '1.2rem',
+                                 fontWeight: 'bold',
+                              }}
+                           >
+                              اضافة مستلزم جديد
+                           </Typography>
+                           {'سيتم اضافة مستلزم جديد في المستودع'}
+                        </React.Fragment>
+                     }
                   >
-                     <AddCircle sx={{ mr: 1 }} />
-                     إضافة
-                  </Button>
+                     <Button
+                        variant="contained"
+                        sx={{
+                           backgroundColor: '#365c00',
+                           color: '#fff',
+                           borderRadius: '5px',
+                           '&:hover': {
+                              backgroundColor: '#200100',
+                           },
+                        }}
+                     >
+                        <AddCircle sx={{ mr: 1 }} />
+                        إضافة
+                     </Button>
+                  </HtmlTooltip>
                </Stack>
             </Box>
             <Divider />
@@ -277,7 +328,9 @@ export default function EnhancedTable({ data, headCells }) {
                               </TableCell>
                               <TableCell>{row.description}</TableCell>
                               <TableCell align="right">{row.stock}</TableCell>
-                              <TableCell align="right">{row.price}</TableCell>
+                              {/* <TableCell align="right">$ {row.buyingPrice}</TableCell>
+                              <TableCell align="right">$ {row.sellingPrice}</TableCell> */}
+                              <TableCell align="right">$ {row.sellingPrice - row.buyingPrice}</TableCell>
                               <TableCell>
                                  <Stack
                                     direction="row"
@@ -286,7 +339,7 @@ export default function EnhancedTable({ data, headCells }) {
                                        justifyContent: 'right',
                                     }}
                                  >
-                                    <Edit
+                                    {/* <Edit
                                        color="success"
                                        sx={{
                                           cursor: 'pointer',
@@ -307,7 +360,50 @@ export default function EnhancedTable({ data, headCells }) {
                                        onClick={() =>
                                           handelDelete(row.name, row.id)
                                        }
-                                    />
+                                    /> */}
+                                    <HtmlTooltip
+                                       arrow
+                                       title={
+                                          <React.Fragment>
+                                             {`تعديل بيانات ${row.name} ${row.id}`}
+                                          </React.Fragment>
+                                       }
+                                    >
+                                       <Edit
+                                          color="success"
+                                          sx={{
+                                             cursor: 'pointer',
+                                             fontSize: '1rem',
+                                          }}
+                                          onClick={() =>
+                                             console.log(
+                                                `Edit ${row.name} ${row.id}`
+                                             )
+                                          }
+                                       />
+                                    </HtmlTooltip>
+
+                                    <HtmlTooltip
+                                       arrow
+                                       placement="right"
+                                       title={
+                                          <React.Fragment>
+                                             {`حذف ${row.name} ${row.id}`}
+                                          </React.Fragment>
+                                       }
+                                       
+                                    >
+                                       <Delete
+                                          color="error"
+                                          sx={{
+                                             cursor: 'pointer',
+                                             fontSize: '1rem',
+                                          }}
+                                          onClick={() =>
+                                             handelDelete(row.name, row.id)
+                                          }
+                                       />
+                                    </HtmlTooltip>
                                  </Stack>
                               </TableCell>
                            </TableRow>
