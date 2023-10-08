@@ -1,4 +1,5 @@
 import * as React from 'react'
+import Container from '@mui/material/Container'
 import EnhancedTable from './supplies.table'
 
 function createData(id, name, description, stock, price) {
@@ -12,22 +13,14 @@ function createData(id, name, description, stock, price) {
 }
 
 const rows = [
-   createData(55, 'حقنةشصيشصيشصي 3 سانتي', 'حقنة وشصيشصيريدي 3 سانتي', 110, 4),
-   createData(3, 'حقنشصيشصية 3 سانتي', 'حقنة شصي 3 سانتي', 60, 7),
-   createData(14, 'حقنةشصيشصي 3 سانتي', 'حقنة ششيصشيشي 3 سانتي', 364, 41),
-   createData(30, 'حقنةشصيشصي 3 سانتي', 'حقنة شششش 3 سانتي', 114, 15),
-   createData(35, 'حقنةشصيشصيشصييص 3 سانتي', 'حقنة شصي 3 سانتي', 414, 77),
-   createData(30, 'حقنةشصيشصي 3 سانتي', 'حقنة شششش 3 سانتي', 114, 15),
-   createData(35, 'حقنةشصيشصيشصييص 3 سانتي', 'حقنة شصي 3 سانتي', 414, 77),
-   createData(30, 'حقنةشصيشصي 3 سانتي', 'حقنة شششش 3 سانتي', 114, 15),
-   createData(35, 'حقنةشصيشصيشصييص 3 سانتي', 'حقنة شصي 3 سانتي', 414, 77),
-   createData(90, 'حقنشصيشصيشصية 3 سانتي', 'حقنة شصيشصي 3 سانتي', 14, 1),
-   createData(30, 'حقنةشصيشصي 3 سانتي', 'حقنة شششش 3 سانتي', 114, 15),
-   createData(35, 'حقنةشصيشصيشصييص 3 سانتي', 'حقنة شصي 3 سانتي', 414, 77),
-   createData(90, 'حقنشصيشصيشصية 3 سانتي', 'حقنة شصيشصي 3 سانتي', 14, 1),
+   createData(10, 'هيبرد صوديوم (امبول)', '', 24, 4.0),
+   createData(15, 'كبسولة محلول ملح تركيز %9', '', 37, 4.3),
 
+   createData(22, 'جولكوز %5', 'التركيز 10 مش متوفر', 24, 6.0),
+   createData(30, 'جركس بيكر بوينت', '', 24, 6.0),
+   createData(14,"خيط للغسيل","خيط لغسيل الكلي فقط",24,6.0),
+   createData(50,"ابرة للغسيل","ابرة لغسيل الكلي فقط",24,6.0),
 ]
-
 
 const headCells = [
    {
@@ -60,9 +53,26 @@ const headCells = [
       disablePadding: false,
       label: 'السعر',
    },
+   {
+      id: 'actions',
+      numeric: true,
+      disablePadding: false,
+      label: 'الإجراءات',
+   },
 ]
 
-
 export default function Supplies() {
-  return <EnhancedTable data={rows} headCells={headCells} />
+   return (
+      <Container
+         variant="main"
+         component="main"
+         // maxWidth="100%"
+         sx={{
+            marginTop: '20px',
+            paddingBottom: 'calc(10% + 60px)',
+         }}
+      >
+         <EnhancedTable data={rows} headCells={headCells} />
+      </Container>
+   )
 }

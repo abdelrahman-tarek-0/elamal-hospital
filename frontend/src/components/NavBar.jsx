@@ -111,14 +111,21 @@ function ResponsiveAppBar() {
                      {pages.map((page) => {
                         if (page.icon === null) return null
                         return (
-                           <MenuItem
-                              key={page.name}
-                              onClick={handleCloseNavMenu}
-                           >
-                              <Typography textAlign="center">
-                                 {page.name}
-                              </Typography>
-                           </MenuItem>
+                           <Link 
+                           style={{
+                              color: 'inherit',
+                              textDecoration: 'none',
+                           }}
+                           to={page.path} key={page.name}>
+                              <MenuItem
+                                 key={page.name}
+                                 onClick={handleCloseNavMenu}
+                              >
+                                 <Typography textAlign="center">
+                                    {page.name}
+                                 </Typography>
+                              </MenuItem>
+                           </Link>
                         )
                      })}
                   </Menu>

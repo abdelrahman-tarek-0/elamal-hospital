@@ -13,6 +13,10 @@ import FormControlLabel from '@mui/material/FormControlLabel'
 import Switch from '@mui/material/Switch'
 import { visuallyHidden } from '@mui/utils'
 import useLocalStorage from '../../hooks/useLocalStorage'
+import { Button, Divider, Stack, TextField, Typography, Autocomplete } from '@mui/material'
+import Swal from 'sweetalert2'
+
+import { AddCircle, Delete, Edit } from '@mui/icons-material'
 
 function descendingComparator(a, b, orderBy) {
    if (b[orderBy] < a[orderBy]) {
@@ -108,6 +112,8 @@ export default function EnhancedTable({ data, headCells }) {
       false
    )
 
+   const [searchData, setSearchData] = React.useState([])
+
    React.useEffect(() => {
       if (isFull) {
          setRowsPerPage(data.length)
@@ -139,24 +145,104 @@ export default function EnhancedTable({ data, headCells }) {
       setDense(event.target.checked)
    }
 
+   const handelDelete = (name, id) => {
+      Swal.fire({
+         title: `هل أنت متأكد من حذف '${name}' رقم ${id} ؟`,
+         text: 'لن تتمكن من التراجع عن هذا الإجراء!',
+         icon: 'warning',
+         showCancelButton: true,
+         confirmButtonText: 'نعم، احذفها!',
+         cancelButtonText: 'لا، ألغِ الأمر',
+      }).then((result) => {
+         if (result.isConfirmed) {
+            Swal.fire(
+               'تم الحذف!',
+               `تم حذف '${name}' رقم ${id} بنجاح.`,
+               'success'
+            )
+         }
+      })
+   }
+
    // Avoid a layout jump when reaching the last page with empty rows.
    const emptyRows =
       page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.length) : 0
 
    const visibleRows = React.useMemo(
       () =>
-         stableSort(data, getComparator(order, orderBy)).slice(
-            page * rowsPerPage,
-            page * rowsPerPage + rowsPerPage
-         ),
-      [order, orderBy, page, rowsPerPage,data]
+         stableSort(
+            searchData.length ? searchData : data,
+            getComparator(order, orderBy)
+         ).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
+      [order, orderBy, page, rowsPerPage, data, searchData]
    )
-
-
 
    return (
       <Box sx={{ width: '100%', direction: 'ltr' }}>
-         <Paper sx={{ width: '100%', mb: 2 }} elevation={8}>
+         <Paper sx={{ width: '100%', mb: 2, p: 2 }} elevation={8}>
+            <Box
+               sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  padding: '0 10px',
+                  mb: 2,
+               }}
+            >
+               <Typography
+                  variant="h5"
+                  component="h2"
+                  sx={{
+                     fontWeight: 'bold',
+                     fontSize: '1.5rem',
+                     color: '#365c00',
+                  }}
+               >
+                  المستلزمات
+               </Typography>
+               <Stack direction="row" spacing={2}>
+
+                  <Autocomplete
+                     disablePortal
+                     id="combo-box-demo"
+                     options={data}
+                     getOptionLabel={(option) => `${option.name} (${option.id})`}
+                     sx={{
+                        width: '300px',
+                     }}
+                     renderInput={(params) => (
+                        <TextField
+                           {...params}
+                           label="بحث"
+                           variant="outlined"
+                        />
+                     )}
+                     onChange={(event, value) => {
+                        if (value) {
+                           setSearchData([value])
+                        } else {
+                           setSearchData([])
+                        }
+                     }}
+                  />
+
+                  <Button
+                     variant="contained"
+                     sx={{
+                        backgroundColor: '#365c00',
+                        color: '#fff',
+                        '&:hover': {
+                           backgroundColor: '#365c00',
+                        },
+                     }}
+                  >
+                     <AddCircle sx={{ mr: 1 }} />
+                     إضافة
+                  </Button>
+               </Stack>
+            </Box>
+            <Divider />
+
             <TableContainer>
                <Table
                   sx={{ minWidth: 750 }}
@@ -192,6 +278,38 @@ export default function EnhancedTable({ data, headCells }) {
                               <TableCell>{row.description}</TableCell>
                               <TableCell align="right">{row.stock}</TableCell>
                               <TableCell align="right">{row.price}</TableCell>
+                              <TableCell>
+                                 <Stack
+                                    direction="row"
+                                    spacing={2}
+                                    sx={{
+                                       justifyContent: 'right',
+                                    }}
+                                 >
+                                    <Edit
+                                       color="success"
+                                       sx={{
+                                          cursor: 'pointer',
+                                          fontSize: '1rem',
+                                       }}
+                                       onClick={() =>
+                                          console.log(
+                                             `Edit ${row.name} ${row.id}`
+                                          )
+                                       }
+                                    />
+                                    <Delete
+                                       color="error"
+                                       sx={{
+                                          cursor: 'pointer',
+                                          fontSize: '1rem',
+                                       }}
+                                       onClick={() =>
+                                          handelDelete(row.name, row.id)
+                                       }
+                                    />
+                                 </Stack>
+                              </TableCell>
                            </TableRow>
                         )
                      })}
