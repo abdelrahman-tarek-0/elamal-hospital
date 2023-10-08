@@ -21,9 +21,11 @@ import Switch from '@mui/material/Switch'
 import DeleteIcon from '@mui/icons-material/Delete'
 import FilterListIcon from '@mui/icons-material/FilterList'
 import { visuallyHidden } from '@mui/utils'
+import useLocalStorage from '../../hooks/useLocalStorage'
 
-function createData(name, description, stock, price) {
+function createData(id, name, description, stock, price) {
    return {
+      id,
       name,
       description,
       stock,
@@ -32,54 +34,12 @@ function createData(name, description, stock, price) {
 }
 
 const rows = [
-   createData('حقنة 3 سانتي', 'حقنة وريدي 3 سانتي', 100, 5),
-   createData('حقنة 3شصي سانتي', 'حقنةي', 99, 11),
-   createData('حقنة 3 سانتي', 'حقنة وريدي 3 سانتي', 100, 5),
-   createData('حقنة 3 سانتي', 'حقنة وريدي 3 سانتي', 100, 5),
-   createData('حقنة 3شصي سانتي', 'حقنةي', 99, 11),
-   createData('حقنة 3 سانتي', 'حقنة وريدي 3 سانتي', 100, 5),
-   createData('حقنة 3 سانتي', 'حقنة وريدي 3 سانتي', 100, 5),
-   createData('حقنة 3شصي سانتي', 'حقنةي', 99, 11),
-   createData('حقنة 3 سانتي', 'حقنة وريدي 3 سانتي', 100, 5),
-   createData('حقنة 3 سانتي', 'حقنة وريدي 3 سانتي', 100, 5),
-   createData('حقنة 3شصي سانتي', 'حقنةي', 99, 11),
-   createData('حقنة 3 سانتي', 'حقنة وريدي 3 سانتي', 100, 5),
-   createData('حقنة 3 سانتي', 'حقنة وريدي 3 سانتي', 100, 5),
-   createData('حقنة 3شصي سانتي', 'حقنةي', 99, 11),
-   createData('حقنة 3 سانتي', 'حقنة وريدي 3 سانتي', 100, 5),
-   createData('حقنة 3 سانتي', 'حقنة وريدي 3 سانتي', 100, 5),
-   createData('حقنة 3شصي سانتي', 'حقنةي', 99, 11),
-   createData('حقنة 3 سانتي', 'حقنة وريدي 3 سانتي', 100, 5),
-   createData('حقنة 3 سانتي', 'حقنة وريدي 3 سانتي', 100, 5),
-   createData('حقنة 3شصي سانتي', 'حقنةي', 99, 11),
-   createData('حقنة 3 سانتي', 'حقنة وريدي 3 سانتي', 100, 5),
-   createData('حقنة 3 سانتي', 'حقنة وريدي 3 سانتي', 100, 5),
-   createData('حقنة 3شصي سانتي', 'حقنةي', 99, 11),
-   createData('حقنة 3 سانتي', 'حقنة وريدي 3 سانتي', 100, 5),
-   createData('حقنة 3 سانتي', 'حقنة وريدي 3 سانتي', 100, 5),
-   createData('حقنة 3شصي سانتي', 'حقنةي', 99, 11),
-   createData('حقنة 3 سانتي', 'حقنة وريدي 3 سانتي', 100, 5),
-   createData('حقنة 3 سانتي', 'حقنة وريدي 3 سانتي', 100, 5),
-   createData('حقنة 3شصي سانتي', 'حقنةي', 99, 11),
-   createData('حقنة 3 سانتي', 'حقنة وريدي 3 سانتي', 100, 5),
-   createData('حقنة 3 سانتي', 'حقنة وريدي 3 سانتي', 100, 5),
-   createData('حقنة 3شصي سانتي', 'حقنةي', 99, 11),
-   createData('حقنة 3 سانتي', 'حقنة وريدي 3 سانتي', 100, 5),
-   createData('حقنة 3 سانتي', 'حقنة وريدي 3 سانتي', 100, 5),
-   createData('حقنة 3شصي سانتي', 'حقنةي', 99, 11),
-   createData('حقنة 3 سانتي', 'حقنة وريدي 3 سانتي', 100, 5),
-   createData('حقنة 3 سانتي', 'حقنة وريدي 3 سانتي', 100, 5),
-   createData('حقنة 3شصي سانتي', 'حقنةي', 99, 11),
-   createData('حقنة 3 سانتي', 'حقنة وريدي 3 سانتي', 100, 5),
-   createData('حقنة 3 سانتي', 'حقنة وريدي 3 سانتي', 100, 5),
-   createData('حقنة 3شصي سانتي', 'حقنةي', 99, 11),
-   createData('حقنة 3 سانتي', 'حقنة وريدي 3 سانتي', 100, 5),
-   createData('حقنة 3 سانتي', 'حقنة وريدي 3 سانتي', 100, 5),
-   createData('حقنة 3شصي سانتي', 'حقنةي', 99, 11),
-   createData('حقنة 3 سانتي', 'حقنة وريدي 3 سانتي', 100, 5),
-   createData('حقنة 3 سانتي', 'حقنة وريدي 3 سانتي', 100, 5),
-   createData('حقنة 3شصي سانتي', 'حقنةي', 99, 11),
-   createData('حقنة 3 سانتي', 'حقنة وريدي 3 سانتي', 100, 5),
+   createData(55,'حقنةشصيشصيشصي 3 سانتي', 'حقنة وشصيشصيريدي 3 سانتي', 110, 4),
+   createData(3,'حقنشصيشصية 3 سانتي', 'حقنة شصي 3 سانتي', 60, 7),
+   createData(14,'حقنةشصيشصي 3 سانتي', 'حقنة ششيصشيشي 3 سانتي', 364, 41),
+   createData(30,'حقنةشصيشصي 3 سانتي', 'حقنة شششش 3 سانتي', 114, 15),
+   createData(35,'حقنةشصيشصيشصييص 3 سانتي', 'حقنة شصي 3 سانتي', 414, 77),
+   createData(90,'حقنشصيشصيشصية 3 سانتي', 'حقنة شصيشصي 3 سانتي', 14, 1),
 
 ]
 
@@ -117,9 +77,15 @@ function stableSort(array, comparator) {
 
 const headCells = [
    {
-      id: 'name',
+      id: 'id',
       numeric: false,
       disablePadding: true,
+      label: 'رقم تعريفي',
+   },
+   {
+      id: 'name',
+      numeric: false,
+      disablePadding: false,
       label: 'الأسم',
    },
    {
@@ -187,38 +153,17 @@ function EnhancedTableHead(props) {
 }
 
 export default function EnhancedTable() {
-   const [order, setOrder] = React.useState('asc')
-   const [orderBy, setOrderBy] = React.useState('calories')
-   const [selected, setSelected] = React.useState([])
-   const [page, setPage] = React.useState(0)
-   const [dense, setDense] = React.useState(false)
-   const [rowsPerPage, setRowsPerPage] = React.useState(5)
+   const [order, setOrder] = useLocalStorage('order', 'asc')
+   const [orderBy, setOrderBy] = useLocalStorage('orderBy', 'calories')
+
+   const [page, setPage] = useLocalStorage('page', 0)
+   const [dense, setDense] = useLocalStorage('dense', false)
+   const [rowsPerPage, setRowsPerPage] = useLocalStorage('rowsPerPage', 5)
 
    const handleRequestSort = (event, property) => {
       const isAsc = orderBy === property && order === 'asc'
       setOrder(isAsc ? 'desc' : 'asc')
       setOrderBy(property)
-   }
-
-   const handleClick = (event, name) => {
-      console.log('event', name)
-      const selectedIndex = selected.indexOf(name)
-      let newSelected = []
-
-      if (selectedIndex === -1) {
-         newSelected = newSelected.concat(selected, name)
-      } else if (selectedIndex === 0) {
-         newSelected = newSelected.concat(selected.slice(1))
-      } else if (selectedIndex === selected.length - 1) {
-         newSelected = newSelected.concat(selected.slice(0, -1))
-      } else if (selectedIndex > 0) {
-         newSelected = newSelected.concat(
-            selected.slice(0, selectedIndex),
-            selected.slice(selectedIndex + 1)
-         )
-      }
-
-      setSelected(newSelected)
    }
 
    const handleChangePage = (event, newPage) => {
@@ -233,8 +178,6 @@ export default function EnhancedTable() {
    const handleChangeDense = (event) => {
       setDense(event.target.checked)
    }
-
-   const isSelected = (name) => selected.indexOf(name) !== -1
 
    // Avoid a layout jump when reaching the last page with empty rows.
    const emptyRows =
@@ -265,25 +208,25 @@ export default function EnhancedTable() {
                   />
                   <TableBody>
                      {visibleRows.map((row, index) => {
-                        const isItemSelected = isSelected(row.name)
                         const labelId = `enhanced-table-checkbox-${index}`
 
                         return (
                            <TableRow
                               hover
-                              onClick={(event) => handleClick(event, row.name)}
-                              role="checkbox"
-                              aria-checked={isItemSelected}
+                              // onClick={(event) => handleClick(event, row.name)}
+                              // role="checkbox"
                               tabIndex={-1}
                               key={`${row.name}-${index}`}
-                              selected={isItemSelected}
-                              sx={{ cursor: 'pointer' }}
+                              // sx={{ cursor: 'pointer' }}
                            >
+                              <TableCell>
+                                 {row.id}
+                              </TableCell>
                               <TableCell
-                                 component="th"
-                                 id={labelId}
-                                 scope="row"
-                                 padding="none"
+                              //  component="th"
+                              //  id={labelId}
+                              //  scope="row"
+                              //  padding="none"
                               >
                                  {row.name}
                               </TableCell>
@@ -306,18 +249,22 @@ export default function EnhancedTable() {
                </Table>
             </TableContainer>
             <TablePagination
-               rowsPerPageOptions={[5, 10, 25,rows.length]}
+               rowsPerPageOptions={[5, 10, 25, {
+                label: 'الكل',
+                value: rows.length,
+               }]}
                component="div"
                count={rows.length}
                rowsPerPage={rowsPerPage}
                page={page}
                onPageChange={handleChangePage}
                onRowsPerPageChange={handleChangeRowsPerPage}
+               labelRowsPerPage="الصفوف لكل صفحة"
             />
          </Paper>
          <FormControlLabel
             control={<Switch checked={dense} onChange={handleChangeDense} />}
-            label="Dense padding"
+            label="تصغير الحجم"
          />
       </Box>
    )
