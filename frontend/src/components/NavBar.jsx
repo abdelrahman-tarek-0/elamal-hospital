@@ -9,29 +9,8 @@ import MenuIcon from '@mui/icons-material/Menu'
 import Container from '@mui/material/Container'
 import Button from '@mui/material/Button'
 import MenuItem from '@mui/material/MenuItem'
-
-import HomeIcon from '@mui/icons-material/Home'
-import AccessibilityIcon from '@mui/icons-material/Accessibility'
-import BadgeIcon from '@mui/icons-material/Badge'
 import { Link } from 'react-router-dom'
-
-const pages = [
-   {
-      name: 'الرئيسية',
-      path: '/',
-      icon: HomeIcon,
-   },
-   {
-      name: 'المرضى',
-      path: '/patients',
-      icon: AccessibilityIcon,
-   },
-   {
-      name: 'الموظفين',
-      path: '/employees',
-      icon: BadgeIcon,
-   },
-]
+import pages from '../pages/index.pages'
 
 function ResponsiveAppBar() {
    const [anchorElNav, setAnchorElNav] = React.useState(null)
@@ -129,13 +108,19 @@ function ResponsiveAppBar() {
                         display: { xs: 'block', md: 'none' },
                      }}
                   >
-                     {pages.map((page) => (
-                        <MenuItem key={page.name} onClick={handleCloseNavMenu}>
-                           <Typography textAlign="center">
-                              {page.name}
-                           </Typography>
-                        </MenuItem>
-                     ))}
+                     {pages.map((page) => {
+                        if (page.icon === null) return
+                        return (
+                           <MenuItem
+                              key={page.name}
+                              onClick={handleCloseNavMenu}
+                           >
+                              <Typography textAlign="center">
+                                 {page.name}
+                              </Typography>
+                           </MenuItem>
+                        )
+                     })}
                   </Menu>
                </Box>
 
@@ -168,46 +153,49 @@ function ResponsiveAppBar() {
                </Typography>
 
                <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                  {pages.map((page) => (
-                     <Link
-                        to={page.path}
-                        style={{
-                           color: 'inherit',
-                           textDecoration: 'none',
-                        }}
-                     >
-                        <Button
-                           key={page.name}
-                           onClick={handleCloseNavMenu}
-                           sx={{
-                              my: 2,
+                  {pages.map((page) => {
+                     if (page.icon === null) return
+                     return (
+                        <Link
+                           to={page.path}
+                           style={{
                               color: 'inherit',
-                              display: 'block',
-                              margin: '0 16px',
-                              fontSize: '1.5rem',
-                              ':hover': {
-                                 background: '#365c00',
-                              },
+                              textDecoration: 'none',
                            }}
+                           key={page.name}
                         >
-                           <page.icon
+                           <Button
+                              onClick={handleCloseNavMenu}
                               sx={{
-                                 fontSize: '1.2rem',
-                                 marginLeft: '5px',
-                              }}
-                           />
-
-                           <Typography
-                              variant="span"
-                              sx={{
+                                 my: 2,
+                                 color: 'inherit',
+                                 display: 'block',
+                                 margin: '0 16px',
                                  fontSize: '1.5rem',
+                                 ':hover': {
+                                    background: '#365c00',
+                                 },
                               }}
                            >
-                              {page.name}
-                           </Typography>
-                        </Button>
-                     </Link>
-                  ))}
+                              <page.icon
+                                 sx={{
+                                    fontSize: '1.2rem',
+                                    marginLeft: '5px',
+                                 }}
+                              />
+
+                              <Typography
+                                 variant="span"
+                                 sx={{
+                                    fontSize: '1.5rem',
+                                 }}
+                              >
+                                 {page.name}
+                              </Typography>
+                           </Button>
+                        </Link>
+                     )
+                  })}
                </Box>
 
                <Box sx={{ flexGrow: 0 }}></Box>
