@@ -109,7 +109,7 @@ function ResponsiveAppBar() {
                      }}
                   >
                      {pages.map((page) => {
-                        if (page.icon === null) return
+                        if (page.icon === null) return null
                         return (
                            <MenuItem
                               key={page.name}
@@ -154,7 +154,7 @@ function ResponsiveAppBar() {
 
                <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                   {pages.map((page) => {
-                     if (page.icon === null) return
+                     if (page.icon === null) return null
                      return (
                         <Link
                            to={page.path}

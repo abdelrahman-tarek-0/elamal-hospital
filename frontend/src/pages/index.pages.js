@@ -18,7 +18,7 @@ function NotFound() {
    )
 }
 
-export default [
+const pages  = [
    {
       name: 'الرئيسية',
       path: '/',
@@ -38,3 +38,6 @@ export default [
       component: NotFound,
    },
 ]
+
+
+export default pages;
