@@ -50,7 +50,7 @@ function ResponsiveAppBar() {
                      display: { xs: 'none', md: 'flex' },
                   }}
                   alt="Your logo."
-                  src="http://localhost:3000/logo.jpg"
+                  src="/logo.jpg"
                />
                <Typography
                   variant="h6"
@@ -138,7 +138,7 @@ function ResponsiveAppBar() {
                      display: { xs: 'flex', md: 'none' },
                   }}
                   alt="Your logo."
-                  src="http://localhost:3000/logo.jpg"
+                  src="/logo.jpg"
                />
 
                <Typography
