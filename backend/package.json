@@ -16,5 +16,15 @@
     "express-validator": "^7.0.1",
     "sequelize": "^6.33.0",
     "sqlite3": "^5.1.6"
+  },
+  "bin": "src/index.js",
+  "pkg":{
+    "targets":[
+      "win"
+    ],
+    "assets":[
+      "/node_modules/sqlite3/lib/binding/**/*",
+      "/src/public/**/*"
+    ]
   }
 }
