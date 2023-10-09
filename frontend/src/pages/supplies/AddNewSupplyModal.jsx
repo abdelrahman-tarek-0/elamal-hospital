@@ -22,17 +22,30 @@ const style = {
    hight: '100%',
 }
 
-export default function AddNewSupplyModal({ open, handleClose,handelAddSupply }) {
+export default function AddNewSupplyModal({
+   open,
+   handleClose,
+   handelAddSupply,
+}) {
    const onCloseClick = (event, reason) => {
       if (reason === 'backdropClick') return
       handleClose()
    }
 
-   const [name, setName] = useLocalStorage('AddNewSupply_Field_Name','')
-   const [description, setDescription] = useLocalStorage('AddNewSupply_Field_Description','')
-   const [buyingPrice, setBuyingPrice] = useLocalStorage('AddNewSupply_Field_BuyingPrice',0)
-   const [sellingPrice, setSellingPrice] = useLocalStorage('AddNewSupply_Field_SellingPrice',0)
-   const [stock, setStock] = useLocalStorage('AddNewSupply_Field_Stock',0)
+   const [name, setName] = useLocalStorage('AddNewSupply_Field_Name', '')
+   const [description, setDescription] = useLocalStorage(
+      'AddNewSupply_Field_Description',
+      ''
+   )
+   const [buyingPrice, setBuyingPrice] = useLocalStorage(
+      'AddNewSupply_Field_BuyingPrice',
+      0
+   )
+   const [sellingPrice, setSellingPrice] = useLocalStorage(
+      'AddNewSupply_Field_SellingPrice',
+      0
+   )
+   const [stock, setStock] = useLocalStorage('AddNewSupply_Field_Stock', 0)
 
    const handleSubmit = (e) => {
       e.preventDefault()
@@ -45,7 +58,8 @@ export default function AddNewSupplyModal({ open, handleClose,handelAddSupply })
       if (sellingPrice <= 0) errors.push('سعر البيع يجب ان يكون اكبر من 0')
       if (stock <= 0) errors.push('الكمية يجب ان تكون اكبر من 0')
 
-      if(buyingPrice >= sellingPrice) errors.push('سعر البيع يجب ان يكون اكبر من سعر الشراء')
+      if (buyingPrice >= sellingPrice)
+         errors.push('سعر البيع يجب ان يكون اكبر من سعر الشراء')
 
       // if (errors.length > 0) {
       //    return Swal.fire({
@@ -58,7 +72,7 @@ export default function AddNewSupplyModal({ open, handleClose,handelAddSupply })
       //       `
       //    })
       // }
-         
+
       console.log('submit')
       console.log({
          name,
@@ -67,7 +81,7 @@ export default function AddNewSupplyModal({ open, handleClose,handelAddSupply })
          sellingPrice,
          stock,
       })
-      
+
       handelAddSupply({
          name,
          description,
@@ -75,10 +89,7 @@ export default function AddNewSupplyModal({ open, handleClose,handelAddSupply })
          sellingPrice,
          stock,
       })
-
-   
    }
-
 
    return (
       <Modal
@@ -93,10 +104,7 @@ export default function AddNewSupplyModal({ open, handleClose,handelAddSupply })
          <Fade in={open}>
             <Box sx={style}>
                <React.Fragment>
-                  <form
-                     autoComplete="off"
-                     onSubmit={handleSubmit}
-                  >
+                  <form autoComplete="off" onSubmit={handleSubmit}>
                      <h2>اضافة مستلزم</h2>
                      <TextField
                         label="الأسم"
@@ -131,7 +139,7 @@ export default function AddNewSupplyModal({ open, handleClose,handelAddSupply })
                            endAdornment: (
                               <InputAdornment position="end">$</InputAdornment>
                            ),
-                           inputProps: { min: 0,step: 0.1 },
+                           inputProps: { min: 0, step: 0.1 },
                            step: 0.01,
                         }}
                         type="number"
@@ -147,14 +155,15 @@ export default function AddNewSupplyModal({ open, handleClose,handelAddSupply })
                      />
                      <TextField
                         label="سعر البيع"
-                        onChange={(e) => setSellingPrice(Number(e.target.value))}
+                        onChange={(e) =>
+                           setSellingPrice(Number(e.target.value))
+                        }
                         defaultValue={sellingPrice}
                         InputProps={{
                            endAdornment: (
                               <InputAdornment position="end">$</InputAdornment>
                            ),
-                           inputProps: { min: 0,    step: 0.1, },
-                       
+                           inputProps: { min: 0, step: 0.1 },
                         }}
                         type="number"
                         variant="outlined"
@@ -170,7 +179,7 @@ export default function AddNewSupplyModal({ open, handleClose,handelAddSupply })
                      <TextField
                         label="الكمية"
                         onChange={(e) => setStock(Number(e.target.value))}
-                        defaultValue={stock} 
+                        defaultValue={stock}
                         InputProps={{
                            inputProps: { min: 0 },
                         }}
