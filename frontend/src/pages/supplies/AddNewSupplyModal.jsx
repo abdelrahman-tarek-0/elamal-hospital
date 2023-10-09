@@ -131,7 +131,8 @@ export default function AddNewSupplyModal({ open, handleClose,handelAddSupply })
                            endAdornment: (
                               <InputAdornment position="end">$</InputAdornment>
                            ),
-                           inputProps: { min: 0 },
+                           inputProps: { min: 0,step: 0.1 },
+                           step: 0.01,
                         }}
                         type="number"
                         variant="outlined"
@@ -152,7 +153,8 @@ export default function AddNewSupplyModal({ open, handleClose,handelAddSupply })
                            endAdornment: (
                               <InputAdornment position="end">$</InputAdornment>
                            ),
-                           inputProps: { min: 0 },
+                           inputProps: { min: 0,    step: 0.1, },
+                       
                         }}
                         type="number"
                         variant="outlined"

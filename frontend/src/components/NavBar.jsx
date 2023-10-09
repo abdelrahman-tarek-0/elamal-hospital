@@ -28,7 +28,7 @@ function ResponsiveAppBar() {
          position="static"
          sx={{
             backgroundColor: '#200100',
-            color: '#98f701',
+            color: '#B7F94D',
          }}
       >
          <Container
@@ -180,7 +180,7 @@ function ResponsiveAppBar() {
                                  margin: '0 16px',
                                  fontSize: '1.5rem',
                                  ':hover': {
-                                    background: '#365c00',
+                                    background: '#361A1A',
                                  },
                               }}
                            >

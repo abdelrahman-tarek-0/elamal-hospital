@@ -14,7 +14,7 @@ export default function GuestFooter() {
             bottom: 0,
             width: '100%',
             backgroundColor: '#200100',
-            color: '#98f701',
+            color: '#B7F94D',
          }}
          component="footer"
          square

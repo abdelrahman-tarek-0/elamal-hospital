@@ -34,7 +34,7 @@ const headCells = [
       label: 'الكمية',
    },
    {
-      id: 'selling-price',
+      id: 'sellingPrice',
       numeric: true,
       disablePadding: false,
       label: 'السعر',
