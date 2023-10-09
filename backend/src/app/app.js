@@ -4,6 +4,7 @@ const express = require('express')
 const cors = require('cors')
 
 const api = require('./routes/index.routes')
+const errorHandler = require('./middlewares/errorHandler.middleware')
 
 const app = express()
 
@@ -31,12 +32,15 @@ app.get('*', (_req, res, next) => {
 })
 
 app.use((err, _req, res, _next) => {
-   res.status(err.statusCode || 500).json({
-      status: 'error',
-      message: err.message,
-      stack: err.stack.split('\n').map((line) => line.trim()),
-      errObj: err,
-   })
+   // res.status(err.statusCode || 500).json({
+   //    status: err.status || 'error',
+   //    message: err.message,
+   //    stack: err.stack.split('\n').map((line) => line.trim()),
+   //    errObj: err,
+   //    data: err.data || null,
+   // })
+
+   errorHandler(err, _req, res, _next)
 })
 app.use((req, res) => {
    res.status(404).json({

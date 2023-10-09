@@ -4,17 +4,9 @@ import Container from '@mui/material/Container'
 import EnhancedTable from './supplies.table'
 import useLocalStorage from '../../hooks/useLocalStorage'
 import Swal from 'sweetalert2'
-import { getAllSupplies } from '../../utils/apiSupplies'
+import { getAllSupplies,addSupply,deleteSupply } from '../../utils/apiSupplies'
 import handelApiData from '../../utils/handelApiRes'
 
-// const rows = [
-//    createData(10, 'هيبرد صوديوم (امبول)', '', 24, 4.0),
-//    createData(15, 'كبسولة محلول ملح تركيز %9', '', 37, 4.3),
-//    createData(22, 'جولكوز %5', 'التركيز 10 مش متوفر', 24, 6.0),
-//    createData(30, 'جركس بيكر بوينت', '', 24, 6.0),
-//    createData(14, 'خيط للغسيل', 'خيط لغسيل الكلي فقط', 24, 6.0),
-//    createData(50, 'ابرة للغسيل', 'ابرة لغسيل الكلي فقط', 24, 6.0),
-// ]
 
 const headCells = [
    {
@@ -41,23 +33,11 @@ const headCells = [
       disablePadding: false,
       label: 'الكمية',
    },
-   // {
-   //    id: 'buying-price',
-   //    numeric: true,
-   //    disablePadding: false,
-   //    label: 'سعر الشراء',
-   // },
-   // {
-   //    id: 'selling-price',
-   //    numeric: true,
-   //    disablePadding: false,
-   //    label: 'سعر البيع',
-   // },
    {
-      id: 'profit',
+      id: 'selling-price',
       numeric: true,
       disablePadding: false,
-      label: 'الربح',
+      label: 'السعر',
    },
    {
       id: 'actions',
@@ -72,7 +52,74 @@ export default function Supplies() {
       'EnhancedTable_maxWidth',
       undefined
    )
-   const [data, setData] = React.useState([])
+   const [data, setData] = useLocalStorage('supplies',[])
+   const [open, setOpen] = useLocalStorage('AddSupplyForm_open', false)
+
+   const handelAddSupply = (newSupply) => {
+      addSupply(newSupply)
+         .then((resData) => {
+            setData((prevData) => [...prevData, resData.data])
+            setOpen(false)
+
+            Swal.fire({
+               icon: 'success',
+               title: 'تمت الإضافة بنجاح',
+               showConfirmButton: false,
+               timer: 1500,
+            })
+         })
+         .catch((err) => {
+            if (err.name === 'AxiosError') {
+               if (!err?.response?.data) {
+                  return Swal.fire({
+                     icon: 'error',
+                     title: 'خطأ',
+                     text: `${err.message}`,
+                  })
+               }
+               
+               return handelApiData(err.response.data)
+            }
+
+            Swal.fire({
+               icon: 'error',
+               title: 'خطأ',
+               text: `${err.message}`,
+            })
+         })
+   }
+
+   const handelDeleteSupply = (id) => {
+      deleteSupply(id)
+         .then((resData) => {
+            setData((prevData) => prevData.filter((supply) => supply.id !== id))
+
+            Swal.fire({
+               icon: 'success',
+               title: 'تمت الحذف بنجاح',
+               showConfirmButton: false,
+               timer: 1500,
+            })
+         })
+         .catch((err) => {
+            if (err.name === 'AxiosError') {
+               if (!err?.response?.data) {
+                  return Swal.fire({
+                     icon: 'error',
+                     title: 'خطأ',
+                     text: `${err.message}`,
+                  })
+               }
+               return handelApiData(err.response.data)
+            }
+
+            Swal.fire({
+               icon: 'error',
+               title: 'خطأ',
+               text: `${err.message}`,
+            })
+         })
+   }
 
    React.useEffect(() => {
       getAllSupplies()
@@ -81,7 +128,13 @@ export default function Supplies() {
          })
          .catch((err) => {
             if (err.name === 'AxiosError') {
-               console.log(err.response.data)
+               if (!err?.response?.data) {
+                  return Swal.fire({
+                     icon: 'error',
+                     title: 'خطأ',
+                     text: `${err.message}`,
+                  })
+               }
                return handelApiData(err.response.data)
             }
 
@@ -114,6 +167,10 @@ export default function Supplies() {
             data={data}
             headCells={headCells}
             toggleMaxWidth={toggleMaxWidth}
+            handelAddSupply={handelAddSupply}
+            handelDeleteSupply={handelDeleteSupply}
+            open={open}
+            setOpen={setOpen}
          />
       </Container>
    )

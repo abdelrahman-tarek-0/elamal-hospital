@@ -9,8 +9,6 @@ import TablePagination from '@mui/material/TablePagination'
 import TableRow from '@mui/material/TableRow'
 import TableSortLabel from '@mui/material/TableSortLabel'
 import Paper from '@mui/material/Paper'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import Switch from '@mui/material/Switch'
 import { visuallyHidden } from '@mui/utils'
 import useLocalStorage from '../../hooks/useLocalStorage'
 import {
@@ -27,6 +25,7 @@ import { AddCircle, Delete, Edit } from '@mui/icons-material'
 
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip'
 import { styled } from '@mui/material/styles'
+import AddNewSupplyModal from './AddNewSupplyModal'
 
 function descendingComparator(a, b, orderBy) {
    if (b[orderBy] < a[orderBy]) {
@@ -61,7 +60,7 @@ function stableSort(array, comparator) {
 }
 
 const HtmlTooltip = styled(({ className, ...props }) => (
-   <Tooltip  {...props} classes={{ popper: className }} />
+   <Tooltip {...props} classes={{ popper: className }} />
 ))(({ theme }) => ({
    [`& .${tooltipClasses.tooltip}`]: {
       backgroundColor: '#f5f5f9',
@@ -126,7 +125,14 @@ function EnhancedTableHead(props) {
    )
 }
 
-export default function EnhancedTable({ data, headCells,toggleMaxWidth }) {
+export default function EnhancedTable({
+   data,
+   headCells,
+   toggleMaxWidth,
+   handelAddSupply,
+   handelDeleteSupply,
+   open, setOpen,
+}) {
    const [order, setOrder] = useLocalStorage('EnhancedTable_order', 'asc')
    const [orderBy, setOrderBy] = useLocalStorage(
       'EnhancedTable_orderBy',
@@ -144,14 +150,16 @@ export default function EnhancedTable({ data, headCells,toggleMaxWidth }) {
       false
    )
 
+
+   const handleOpen = () => setOpen(true)
+   const handleClose = () => setOpen(false)
+
    const [searchData, setSearchData] = React.useState([])
 
    React.useEffect(() => {
       if (isFull) {
          setRowsPerPage(data.length)
       }
-
-
    })
 
    const handleRequestSort = (event, property) => {
@@ -189,15 +197,15 @@ export default function EnhancedTable({ data, headCells,toggleMaxWidth }) {
          confirmButtonText: 'نعم، احذفها!',
          cancelButtonText: 'لا، ألغِ الأمر',
       }).then((result) => {
-         if (result.isConfirmed) {
-            Swal.fire(
-               'تم الحذف!',
-               `تم حذف '${name}' رقم ${id} بنجاح.`,
-               'success'
-            )
-         }
+         if (!result?.isConfirmed) return
+
+         if (searchData.find((supply) => supply.id === id) !== undefined)
+            setSearchData([])
+
+         handelDeleteSupply(id)
       })
    }
+
 
    // Avoid a layout jump when reaching the last page with empty rows.
    const emptyRows =
@@ -214,6 +222,12 @@ export default function EnhancedTable({ data, headCells,toggleMaxWidth }) {
 
    return (
       <Box sx={{ width: '100%', direction: 'ltr' }}>
+         <AddNewSupplyModal
+            open={open}
+            handleClose={handleClose}
+            handelAddSupply={handelAddSupply}
+         />
+
          <Paper sx={{ width: '100%', mb: 2, p: 2 }} elevation={8}>
             <Box
                sx={{
@@ -285,6 +299,7 @@ export default function EnhancedTable({ data, headCells,toggleMaxWidth }) {
                               backgroundColor: '#200100',
                            },
                         }}
+                        onClick={handleOpen}
                      >
                         <AddCircle sx={{ mr: 1 }} />
                         إضافة
@@ -317,20 +332,32 @@ export default function EnhancedTable({ data, headCells,toggleMaxWidth }) {
                               key={`${row.name}-${index}`}
                               // sx={{ cursor: 'pointer' }}
                            >
-                              <TableCell>{row.id}</TableCell>
+                              <TableCell sx={{ fontSize: '1.5em' }}>
+                                 {row.id}
+                              </TableCell>
                               <TableCell
-                              //  component="th"
-                              //  id={labelId}
-                              //  scope="row"
-                              //  padding="none"
+                                 //  component="th"
+                                 //  id={labelId}
+                                 //  scope="row"
+                                 //  padding="none"
+                                 sx={{ fontSize: '1.5em' }}
                               >
                                  {row.name}
                               </TableCell>
-                              <TableCell>{row.description}</TableCell>
-                              <TableCell align="right">{row.stock}</TableCell>
-                              {/* <TableCell align="right">$ {row.buyingPrice}</TableCell>
-                              <TableCell align="right">$ {row.sellingPrice}</TableCell> */}
-                              <TableCell align="right">$ {row.sellingPrice - row.buyingPrice}</TableCell>
+                              <TableCell sx={{ fontSize: '1em' }}>
+                                 {row.description}
+                              </TableCell>
+                              <TableCell align="right" sx={{ fontSize: '1em' }}>
+                                 {row.stock}
+                              </TableCell>
+                              {/*  <TableCell align="right">$ {row.buyingPrice}</TableCell> */}
+                              <TableCell
+                                 align="right"
+                                 sx={{ fontSize: '1.5em' }}
+                              >
+                                 $ {row.sellingPrice}
+                              </TableCell>
+                              {/* <TableCell align="right">$ {row.sellingPrice - row.buyingPrice}</TableCell> */}
                               <TableCell>
                                  <Stack
                                     direction="row"
@@ -391,7 +418,6 @@ export default function EnhancedTable({ data, headCells,toggleMaxWidth }) {
                                              {`حذف ${row.name} ${row.id}`}
                                           </React.Fragment>
                                        }
-                                       
                                     >
                                        <Delete
                                           color="error"
@@ -440,10 +466,10 @@ export default function EnhancedTable({ data, headCells,toggleMaxWidth }) {
                labelRowsPerPage="الصفوف لكل صفحة"
             />
          </Paper>
-         <FormControlLabel
+         {/* <FormControlLabel
             control={<Switch checked={dense} onChange={handleChangeDense} />}
             label="تصغير الحجم"
-         />
+         /> */}
       </Box>
    )
 }

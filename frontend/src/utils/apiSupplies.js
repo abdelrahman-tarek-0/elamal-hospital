@@ -18,3 +18,17 @@ export const getAllSupplies = async () => {
 
    return res
 }
+
+export const addSupply = async (data) => {
+    const response = await apiSupplies.post('/', data)
+    const res = response?.data
+    
+    return res
+}
+
+export const deleteSupply = async (id) => {
+    const response = await apiSupplies.delete(`/${id}`)
+    const res = response?.data
+
+    return res
+}

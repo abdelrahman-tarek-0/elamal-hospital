@@ -2,46 +2,58 @@ import Swal from 'sweetalert2'
 
 const handelApiData = (resData) => {
    if (resData?.status === 'fail') {
+      let errors = resData?.data
+         ?.map(
+            (err) =>
+               `<span style='color:red'>${err?.msg} <br/></span>`
+         )
+         .join('\n') || ''
+
       Swal.fire({
          icon: 'warning',
          title: 'تحذير',
-         text: `${resData?.message}`,
+         html: `
+            <h3 style="margin-bottom:20px">${resData?.message}</h3>
+            ${errors}
+         `,
       })
       return null
    }
 
    if (resData?.status === 'error') {
+      let errors = resData?.data
+      ?.map(
+         (err) =>
+            `<span style='color:red'>${err?.msg} <br/></span>`
+      )
+      .join('\n') || ''
+
       Swal.fire({
          icon: 'error',
          title: 'خطأ',
-         text: `${resData?.message}`,
+         html: `
+            <h3 style="margin-bottom:20px">${resData?.message}</h3>
+            ${errors}
+         `,
       })
       return null
    }
 
    if (resData?.status !== 'success') {
+      let errors = resData?.data
+      ?.map(
+         (err) =>
+            `<span style='color:red'>${err?.msg} <br/></span>`
+      )
+      .join('\n') || ''
+
       Swal.fire({
          icon: 'error',
          title: 'خطأ',
-         text: `${resData?.message}`,
-      })
-      return null
-   }
-
-   if (resData.statusCode >= 400 && resData.statusCode < 500) {
-      Swal.fire({
-         icon: 'warning',
-         title: 'تحذير',
-         text: `${resData?.message}`,
-      })
-      return null
-   }
-
-   if (resData.statusCode >= 500) {
-      Swal.fire({
-         icon: 'error',
-         title: 'خطأ',
-         text: `${resData?.message}`,
+         html: `
+            <h3 style="margin-bottom:20px">${resData?.message}</h3>
+            ${errors}
+         `,
       })
       return null
    }
