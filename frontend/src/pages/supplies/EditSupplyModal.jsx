@@ -3,18 +3,28 @@ import * as React from 'react'
 import Box from '@mui/material/Box'
 import { Button } from '@mui/material'
 import { Typography, Divider, TextField } from '@mui/material'
-import { FormControl, FormLabel, InputAdornment, Chip } from '@mui/material'
+import {
+   FormControl,
+   FormLabel,
+   InputAdornment,
+   Chip,
+   IconButton,
+   Collapse,
+} from '@mui/material'
 import Paper from '@mui/material/Paper'
 import Fade from '@mui/material/Fade'
 import useLocalStorage from '../../hooks/useLocalStorage'
 import Swal from 'sweetalert2'
+
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 
 const style = {
    position: 'absolute',
    top: '50%',
    left: '50%',
    transform: 'translate(-50%, -50%)',
-   minWidth: '400px',
+   minWidth: '600px',
    bgcolor: 'background.paper',
    // border: '2px solid #000',
    boxShadow: 24,
@@ -43,6 +53,8 @@ export default function EditSupplyModal({
    const [description, setDescription] = React.useState('')
    const [buyingPrice, setBuyingPrice] = React.useState(0)
    const [sellingPrice, setSellingPrice] = React.useState(0)
+
+   const [openCollapse, setOpenCollapse] = useLocalStorage('EditSupplyModal_collapse_edit',false)
 
    React.useEffect(() => {
       setName(supply.name)
@@ -248,118 +260,137 @@ export default function EditSupplyModal({
                   variant="middle"
                >
                   <Chip
-                     label={`تعديل البيانات`}
+                     label={
+                        <IconButton
+                           aria-label="expand row"
+                           size="small"
+                           onClick={() => setOpenCollapse(!openCollapse)}
+                        >
+                           {openCollapse ? (
+                              <>
+                              <KeyboardArrowUpIcon /> تعديل البينات
+                              </>
+                           ) : (
+                              <KeyboardArrowDownIcon /> 
+                           )}
+                        </IconButton>
+                     }
                      sx={{
                         fontSize: '1.2rem',
                      }}
-                  />
+                  ></Chip>
                </Divider>
 
-               <Paper
-                  elevation={4}
-                  sx={{
-                     p: '20px',
-                     mb: '20px',
-                  }}
-               >
-                  <Box
+               <Collapse in={openCollapse} timeout="auto" >
+                  <Paper
+                     elevation={4}
                      sx={{
-                        mb: '10px',
+                        p: '20px',
+                        mb: '20px',
                      }}
                   >
-                     <form autoComplete="off" onSubmit={handelEditSupplySubmit}>
-                        <TextField
-                           label="الأسم"
-                           defaultValue={supply.name}
-                           onChange={(e) => setName(e.target.value)}
-                           variant="outlined"
-                           color="secondary"
-                           type="text"
-                           sx={{ mb: 3, mt: 3 }}
-                           fullWidth
-                           required
-                           //value={email}
-                           //error={emailError}
-                        />
-                        <TextField
-                           label="الوصف"
-                           defaultValue={supply.description}
-                           onChange={(e) => setDescription(e.target.value)}
-                           variant="outlined"
-                           color="secondary"
-                           type="text"
-                           sx={{ mb: 3 }}
-                           fullWidth
-                           
-                           //value={email}
-                           //error={emailError}
-                        />
-                        <TextField
-                           label="سعر الشراء"
-                           defaultValue={supply.buyingPrice}
-                           onChange={(e) =>
-                              setBuyingPrice(Number(e.target.value))
-                           }
-                           InputProps={{
-                              endAdornment: (
-                                 <InputAdornment position="end">
-                                    $
-                                 </InputAdornment>
-                              ),
-                              inputProps: { min: 0, step: 0.1 },
-                              step: 0.01,
-                           }}
-                           type="number"
-                           variant="outlined"
-                           color="secondary"
-                           sx={{
-                              mb: 3,
-                              width: '49%',
-                              ml: '2%',
-                              direction: 'ltr !important',
-                           }}
-                           required
-                        />
-                        <TextField
-                           label="سعر البيع"
-                           defaultValue={supply.sellingPrice}
-                           onChange={(e) =>
-                              setSellingPrice(Number(e.target.value))
-                           }
-                           InputProps={{
-                              endAdornment: (
-                                 <InputAdornment position="end">
-                                    $
-                                 </InputAdornment>
-                              ),
-                              inputProps: { min: 0, step: 0.1 },
-                           }}
-                           type="number"
-                           variant="outlined"
-                           color="secondary"
-                           sx={{
-                              mb: 3,
-                              width: '49%',
-                              // ml: '5%',
-                              direction: 'ltr !important',
-                           }}
-                           required
-                        />
-
-                        <Button
-                           variant="outlined"
-                           color="secondary"
-                           type="submit"
-                           sx={{
-                              width: '100%',
-                              //   ml: '2%',
-                           }}
+                     <Box
+                        sx={{
+                           mb: '10px',
+                        }}
+                     >
+                        <form
+                           autoComplete="off"
+                           onSubmit={handelEditSupplySubmit}
                         >
-                           حفظ
-                        </Button>
-                     </form>
-                  </Box>
-               </Paper>
+                           <TextField
+                              label="الأسم"
+                              defaultValue={supply.name}
+                              onChange={(e) => setName(e.target.value)}
+                              variant="outlined"
+                              color="secondary"
+                              type="text"
+                              sx={{ mb: 3, mt: 3 }}
+                              fullWidth
+                              required
+                              //value={email}
+                              //error={emailError}
+                           />
+                           <TextField
+                              label="الوصف"
+                              defaultValue={supply.description}
+                              onChange={(e) => setDescription(e.target.value)}
+                              variant="outlined"
+                              color="secondary"
+                              type="text"
+                              sx={{ mb: 3 }}
+                              fullWidth
+
+                              //value={email}
+                              //error={emailError}
+                           />
+                           <TextField
+                              label="سعر الشراء"
+                              defaultValue={supply.buyingPrice}
+                              onChange={(e) =>
+                                 setBuyingPrice(Number(e.target.value))
+                              }
+                              InputProps={{
+                                 endAdornment: (
+                                    <InputAdornment position="end">
+                                       $
+                                    </InputAdornment>
+                                 ),
+                                 inputProps: { min: 0, step: 0.1 },
+                                 step: 0.01,
+                              }}
+                              type="number"
+                              variant="outlined"
+                              color="secondary"
+                              sx={{
+                                 mb: 3,
+                                 width: '49%',
+                                 ml: '2%',
+                                 direction: 'ltr !important',
+                              }}
+                              required
+                           />
+                           <TextField
+                              label="سعر البيع"
+                              defaultValue={supply.sellingPrice}
+                              onChange={(e) =>
+                                 setSellingPrice(Number(e.target.value))
+                              }
+                              InputProps={{
+                                 endAdornment: (
+                                    <InputAdornment position="end">
+                                       $
+                                    </InputAdornment>
+                                 ),
+                                 inputProps: { min: 0, step: 0.1 },
+                              }}
+                              type="number"
+                              variant="outlined"
+                              color="secondary"
+                              sx={{
+                                 mb: 3,
+                                 width: '49%',
+                                 // ml: '5%',
+                                 direction: 'ltr !important',
+                              }}
+                              required
+                           />
+
+                           <Button
+                              variant="outlined"
+                              color="secondary"
+                              type="submit"
+                              sx={{
+                                 width: '100%',
+                                 //   ml: '2%',
+                              }}
+                           >
+                              حفظ
+                           </Button>
+                        </form>
+                     </Box>
+                  </Paper>
+               </Collapse>
 
                <Button
                   variant="contained"

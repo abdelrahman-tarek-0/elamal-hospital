@@ -10,7 +10,7 @@ import {
    deleteSupply,
    updateSupply,
    changeSupplyStock,
-} from '../../utils/apiSupplies'
+} from './apiSupplies'
 import handelApiData from '../../utils/handelApiRes'
 
 const headCells = [

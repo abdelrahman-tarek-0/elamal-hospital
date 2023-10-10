@@ -71,7 +71,7 @@ exports.changeSupplyStock = catchAsync(async (req, res) => {
    const isIncrease = change > 0
 
    if (isIncrease) supply.stock += change
-   else if (supply.stock <= Math.abs(change))
+   else if (supply.stock < Math.abs(change))
       throw new ErrorBuilder({
          message: `المخزون لا يكفي للتعديل`,
          statusCode: 400,
