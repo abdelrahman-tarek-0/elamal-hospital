@@ -26,6 +26,7 @@ import { AddCircle, Delete, Edit } from '@mui/icons-material'
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip'
 import { styled } from '@mui/material/styles'
 import AddNewSupplyModal from './AddNewSupplyModal'
+import EditSupplyModal from './EditSupplyModal'
 
 function descendingComparator(a, b, orderBy) {
    if (b[orderBy] < a[orderBy]) {
@@ -51,7 +52,7 @@ function stableSort(array, comparator) {
    const stabilizedThis = array.map((el, index) => [el, index])
 
    console.log(stabilizedThis)
-   
+
    stabilizedThis.sort((a, b) => {
       const order = comparator(a[0], b[0])
       if (order !== 0) {
@@ -59,7 +60,7 @@ function stableSort(array, comparator) {
       }
       return a[1] - b[1]
    })
- 
+
    return stabilizedThis.map((el) => el[0])
 }
 
@@ -135,7 +136,11 @@ export default function EnhancedTable({
    toggleMaxWidth,
    handelAddSupply,
    handelDeleteSupply,
-   open, setOpen,
+   handelChangeSupplyStock,
+   openAdd,
+   setOpenAdd,
+   openEdit,
+   setOpenEdit,
 }) {
    const [order, setOrder] = useLocalStorage('EnhancedTable_order', 'asc')
    const [orderBy, setOrderBy] = useLocalStorage(
@@ -154,9 +159,13 @@ export default function EnhancedTable({
       false
    )
 
+   const [editRow, setEditRow] = useLocalStorage('EditSupplyForm_supply', {})
 
-   const handleOpen = () => setOpen(true)
-   const handleClose = () => setOpen(false)
+   const handleOpenAdd = () => setOpenAdd(true)
+   const handleCloseAdd = () => setOpenAdd(false)
+
+   const handleOpenEdit = () => setOpenEdit(true)
+   const handleCloseEdit = () => setOpenEdit(false)
 
    const [searchData, setSearchData] = React.useState([])
 
@@ -210,7 +219,6 @@ export default function EnhancedTable({
       })
    }
 
-
    // Avoid a layout jump when reaching the last page with empty rows.
    const emptyRows =
       page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.length) : 0
@@ -227,9 +235,15 @@ export default function EnhancedTable({
    return (
       <Box sx={{ width: '100%', direction: 'ltr' }}>
          <AddNewSupplyModal
-            open={open}
-            handleClose={handleClose}
+            open={openAdd}
+            handleClose={handleCloseAdd}
             handelAddSupply={handelAddSupply}
+         />
+         <EditSupplyModal
+            open={openEdit}
+            handleClose={handleCloseEdit}
+            handelChangeSupplyStock={handelChangeSupplyStock}
+            supply={editRow}
          />
 
          <Paper sx={{ width: '100%', mb: 2, p: 2 }} elevation={8}>
@@ -302,10 +316,9 @@ export default function EnhancedTable({
                            '&:hover': {
                               // backgroundColor: '#200100',
                               backgroundColor: '#3D6300',
-
                            },
                         }}
-                        onClick={handleOpen}
+                        onClick={handleOpenAdd}
                      >
                         <AddCircle sx={{ mr: 1 }} />
                         إضافة
@@ -356,14 +369,14 @@ export default function EnhancedTable({
                               <TableCell align="right" sx={{ fontSize: '1em' }}>
                                  {row.stock}
                               </TableCell>
-                              {/*  <TableCell align="right">$ {row.buyingPrice}</TableCell> */}
+
                               <TableCell
                                  align="right"
                                  sx={{ fontSize: '1.5em' }}
                               >
                                  $ {row.sellingPrice}
                               </TableCell>
-                              {/* <TableCell align="right">$ {row.sellingPrice - row.buyingPrice}</TableCell> */}
+
                               <TableCell>
                                  <Stack
                                     direction="row"
@@ -372,28 +385,6 @@ export default function EnhancedTable({
                                        justifyContent: 'right',
                                     }}
                                  >
-                                    {/* <Edit
-                                       color="success"
-                                       sx={{
-                                          cursor: 'pointer',
-                                          fontSize: '1rem',
-                                       }}
-                                       onClick={() =>
-                                          console.log(
-                                             `Edit ${row.name} ${row.id}`
-                                          )
-                                       }
-                                    />
-                                    <Delete
-                                       color="error"
-                                       sx={{
-                                          cursor: 'pointer',
-                                          fontSize: '1rem',
-                                       }}
-                                       onClick={() =>
-                                          handelDelete(row.name, row.id)
-                                       }
-                                    /> */}
                                     <HtmlTooltip
                                        arrow
                                        title={
@@ -408,11 +399,10 @@ export default function EnhancedTable({
                                              cursor: 'pointer',
                                              fontSize: '1rem',
                                           }}
-                                          onClick={() =>
-                                             console.log(
-                                                `Edit ${row.name} ${row.id}`
-                                             )
-                                          }
+                                          onClick={() => {
+                                             setEditRow(row)
+                                             handleOpenEdit()
+                                          }}
                                        />
                                     </HtmlTooltip>
 

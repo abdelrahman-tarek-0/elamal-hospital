@@ -32,3 +32,10 @@ export const deleteSupply = async (id) => {
 
     return res
 }
+
+export const changeSupplyStock = async (id, change) => {
+    const response = await apiSupplies.patch(`/${id}/stock`, { change })
+    const res = response?.data
+
+    return res
+} 

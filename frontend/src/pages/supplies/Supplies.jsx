@@ -4,7 +4,7 @@ import Container from '@mui/material/Container'
 import EnhancedTable from './supplies.table'
 import useLocalStorage from '../../hooks/useLocalStorage'
 import Swal from 'sweetalert2'
-import { getAllSupplies,addSupply,deleteSupply } from '../../utils/apiSupplies'
+import { getAllSupplies,addSupply,deleteSupply,changeSupplyStock } from '../../utils/apiSupplies'
 import handelApiData from '../../utils/handelApiRes'
 
 
@@ -53,13 +53,15 @@ export default function Supplies() {
       undefined
    )
    const [data, setData] = useLocalStorage('supplies',[])
-   const [open, setOpen] = useLocalStorage('AddSupplyForm_open', false)
+   const [openAdd, setOpenAdd] = useLocalStorage('AddSupplyForm_open', false)
+   const [openEdit, setOpenEdit] = useLocalStorage('EditSupplyForm_open', false)
+
 
    const handelAddSupply = (newSupply) => {
       addSupply(newSupply)
          .then((resData) => {
             setData((prevData) => [...prevData, resData.data])
-            setOpen(false)
+            setOpenAdd(false)
 
             Swal.fire({
                icon: 'success',
@@ -99,6 +101,49 @@ export default function Supplies() {
                title: 'تمت الحذف بنجاح',
                showConfirmButton: false,
                timer: 1500,
+            })
+         })
+         .catch((err) => {
+            if (err.name === 'AxiosError') {
+               if (!err?.response?.data) {
+                  return Swal.fire({
+                     icon: 'error',
+                     title: 'خطأ',
+                     text: `${err.message}`,
+                  })
+               }
+               return handelApiData(err.response.data)
+            }
+
+            Swal.fire({
+               icon: 'error',
+               title: 'خطأ',
+               text: `${err.message}`,
+            })
+         })
+   }
+
+   const handelChangeSupplyStock = (id, change) => {
+      changeSupplyStock(id, change)
+         .then((resData) => {
+            setData((prevData) =>
+               prevData.map((supply) => {
+                  if (supply.id === resData?.data?.id) {
+                     return {
+                        ...supply,
+                        stock: resData?.data?.stock,
+                     }
+                  }
+                  return supply
+               })
+            )
+            setOpenEdit(false)
+
+            Swal.fire({
+               icon: 'success',
+               title: resData?.message,
+               showConfirmButton: true,
+               
             })
          })
          .catch((err) => {
@@ -169,8 +214,12 @@ export default function Supplies() {
             toggleMaxWidth={toggleMaxWidth}
             handelAddSupply={handelAddSupply}
             handelDeleteSupply={handelDeleteSupply}
-            open={open}
-            setOpen={setOpen}
+            handelChangeSupplyStock={handelChangeSupplyStock}
+            openAdd={openAdd}
+            setOpenAdd={setOpenAdd}
+            openEdit={openEdit}
+            setOpenEdit={setOpenEdit}
+
          />
       </Container>
    )
