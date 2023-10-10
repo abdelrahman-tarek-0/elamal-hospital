@@ -56,22 +56,27 @@ export default function AddNewSupplyModal({
       if (description === '') errors.push('الوصف يجب ان يكون موجود')
       if (buyingPrice <= 0) errors.push('سعر الشراء يجب ان يكون اكبر من 0')
       if (sellingPrice <= 0) errors.push('سعر البيع يجب ان يكون اكبر من 0')
-      if (stock <= 0) errors.push('الكمية يجب ان تكون اكبر من 0')
+      // if (stock <= 0) errors.push('الكمية يجب ان تكون اكبر من 0')
 
       if (buyingPrice >= sellingPrice)
          errors.push('سعر البيع يجب ان يكون اكبر من سعر الشراء')
 
-      // if (errors.length > 0) {
-      //    return Swal.fire({
-      //       icon: 'error',
-      //       title: 'خطأ',
-      //       html:`
-      //          <ul style="text-align: right; direction: rtl;">
-      //             ${errors.map((err) => `<li style="border-bottom: 2px solid red; margin:2px; padding:5px">${err}</li>`).join('')}
-      //          </ul>
-      //       `
-      //    })
-      // }
+      if (errors.length > 0) {
+         return Swal.fire({
+            icon: 'error',
+            title: 'خطأ',
+            html: `
+               <ul style="text-align: right; direction: rtl;">
+                  ${errors
+                     .map(
+                        (err) =>
+                           `<li style="border-bottom: 2px solid red; margin:2px; padding:5px; color:red;">${err}</li>`
+                     )
+                     .join('')}
+               </ul>
+            `,
+         })
+      }
 
       console.log('submit')
       console.log({
@@ -147,8 +152,8 @@ export default function AddNewSupplyModal({
                         color="secondary"
                         sx={{
                            mb: 3,
-                           width: '30%',
-                           ml: '5%',
+                           width: '49%',
+                           ml: '2%',
                            direction: 'ltr !important',
                         }}
                         required
@@ -170,13 +175,13 @@ export default function AddNewSupplyModal({
                         color="secondary"
                         sx={{
                            mb: 3,
-                           width: '30%',
-                           ml: '5%',
+                           width: '49%',
+                           // ml: '5%',
                            direction: 'ltr !important',
                         }}
                         required
                      />
-                     <TextField
+                     {/* <TextField
                         label="الكمية"
                         onChange={(e) => setStock(Number(e.target.value))}
                         defaultValue={stock}
@@ -192,7 +197,7 @@ export default function AddNewSupplyModal({
                            direction: 'ltr !important',
                         }}
                         required
-                     />
+                     /> */}
 
                      <div
                         style={{

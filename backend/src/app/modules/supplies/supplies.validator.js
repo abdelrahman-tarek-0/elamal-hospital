@@ -29,9 +29,9 @@ exports.createSupply = [
       .isFloat({ min: 0.0 })
       .withMessage('يجب ان يكون سعر البيع عدد عشري اكبر من 0'),
 
-   body('stock')
-      .isInt({ min: 0 })
-      .withMessage('يجب ان تكون الكمية عدد صحيح اكبر من 0'),
+   // body('stock')
+   //    .isInt({ min: 0 })
+   //    .withMessage('يجب ان تكون الكمية عدد صحيح اكبر من 0'),
 
    handleValidationErrors,
    strict,
@@ -63,10 +63,10 @@ exports.updateSupply = [
       .isFloat({ min: 0.0 })
       .withMessage('يجب ان يكون سعر البيع عدد عشري اكبر من 0'),
 
-   body('stock')
-      .optional()
-      .isInt({ min: 0 })
-      .withMessage('يجب ان تكون الكمية عدد صحيح اكبر من 0'),
+   // body('stock')
+   //    .optional()
+   //    .isInt({ min: 0 })
+   //    .withMessage('يجب ان تكون الكمية عدد صحيح اكبر من 0'),
 
    handleValidationErrors,
    strict,
