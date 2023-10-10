@@ -277,6 +277,7 @@ export default function EditSupplyModal({
                            type="text"
                            sx={{ mb: 3, mt: 3 }}
                            fullWidth
+                           required
                            //value={email}
                            //error={emailError}
                         />
@@ -289,6 +290,7 @@ export default function EditSupplyModal({
                            type="text"
                            sx={{ mb: 3 }}
                            fullWidth
+                           
                            //value={email}
                            //error={emailError}
                         />
@@ -316,6 +318,7 @@ export default function EditSupplyModal({
                               ml: '2%',
                               direction: 'ltr !important',
                            }}
+                           required
                         />
                         <TextField
                            label="سعر البيع"
@@ -340,6 +343,7 @@ export default function EditSupplyModal({
                               // ml: '5%',
                               direction: 'ltr !important',
                            }}
+                           required
                         />
 
                         <Button
