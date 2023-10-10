@@ -3,6 +3,7 @@ node_modules
 release
 
 backend/database/database.db
+database.db
 
 # dependencies
 /node_modules
