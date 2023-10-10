@@ -5,6 +5,7 @@ const {
    createSupply,
    updateSupply,
    deleteSupply,
+   changeStock,
 } = require('./supplies.controller')
 const {
    getAllSupplies: getAllSuppliesValidator,
@@ -20,6 +21,7 @@ router.get('/', getAllSuppliesValidator, getAllSupplies)
 router.get('/:id', getSupplyValidator, getSupply)
 router.post('/', createSupplyValidator, createSupply)
 router.patch('/:id', updateSupplyValidator, updateSupply)
+router.patch('/:id/stock', changeStock)
 router.delete('/:id', deleteSupplyValidator, deleteSupply)
 
 module.exports = router

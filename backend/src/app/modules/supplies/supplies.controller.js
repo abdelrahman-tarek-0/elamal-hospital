@@ -54,3 +54,55 @@ exports.deleteSupply = catchAsync(async (req, res) => {
 
    resBuilder(res, 200, 'تم حذف المستلزم', supply)
 })
+
+exports.changeStock = catchAsync(async (req, res) => {
+   const supply = await Supply.getSupplyById(req.params.id)
+   const change = req?.body?.change || 0
+
+   if (!supply)
+      throw new ErrorBuilder({
+         message: `المورد رقم ${req.params.id} غير موجود`,
+         statusCode: 404,
+         code: 'RESOURCES_NOT_FOUND',
+      })
+
+   if (change === 0) return resBuilder(res, 200, 'تم تعديل المستلزم', supply)
+
+   const isIncrease = change > 0
+
+   if (isIncrease) supply.stock += change
+   else if (supply.stock <= Math.abs(change))
+      throw new ErrorBuilder({
+         message: `المخزون لا يكفي للتعديل`,
+         statusCode: 400,
+         code: 'BAD_REQUEST',
+      })
+   else supply.stock -= Math.abs(change)
+
+   await supply.save()
+
+   const price = isIncrease
+      ? supply.buyingPrice * Math.abs(change)
+      : supply.sellingPrice * Math.abs(change)
+
+   const name = supply.name || supply.id
+
+   // تم اضافة  5 من المستلزم اسم بتكلفة شراء سعر جنيها
+   // تم استخدام من المستلزم اسم بريح بيع سعر جينها
+
+   const arWordChange = isIncrease ? 'اضافة' : 'استخدام'
+   const arWordPriceChange = isIncrease ? 'تكلفة شراء' : 'سعر بيع'
+   const extra = isIncrease
+      ? ''
+      : `بربح ${
+           (supply.sellingPrice - supply.buyingPrice) * Math.abs(change)
+        } جنيها`
+
+   const message = `تم ${arWordChange} ${Math.abs(
+      change
+   )} من المستلزم ${name} ب${arWordPriceChange} ${price} جنيها ,${extra}`
+
+   console.log(message)
+
+   resBuilder(res, 200, message, supply)
+})

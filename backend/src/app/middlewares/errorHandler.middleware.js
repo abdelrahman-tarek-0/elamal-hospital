@@ -21,6 +21,7 @@ const errorHandler = (err, req, res, next) => {
 
         return resBuilder(res, error.statusCode, error.message, null, {
             errOpj: error,
+            originalError: err,
         });
     }
 
