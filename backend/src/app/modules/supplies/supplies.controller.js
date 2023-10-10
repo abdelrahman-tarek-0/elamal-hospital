@@ -55,7 +55,7 @@ exports.deleteSupply = catchAsync(async (req, res) => {
    resBuilder(res, 200, 'تم حذف المستلزم', supply)
 })
 
-exports.changeStock = catchAsync(async (req, res) => {
+exports.changeSupplyStock = catchAsync(async (req, res) => {
    const supply = await Supply.getSupplyById(req.params.id)
    const change = req?.body?.change || 0
 

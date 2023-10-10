@@ -78,3 +78,12 @@ exports.deleteSupply = [
    handleValidationErrors,
    strict,
 ]
+
+exports.changeSupplyStock = [
+   param('id').isNumeric().withMessage('رقم التعريف غير صحيح'),
+
+   body('change').isInt().withMessage('يجب ان يكون التعديل عدد صحيح'),
+
+   handleValidationErrors,
+   strict,
+]
