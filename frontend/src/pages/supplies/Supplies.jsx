@@ -4,9 +4,14 @@ import Container from '@mui/material/Container'
 import EnhancedTable from './supplies.table'
 import useLocalStorage from '../../hooks/useLocalStorage'
 import Swal from 'sweetalert2'
-import { getAllSupplies,addSupply,deleteSupply,changeSupplyStock } from '../../utils/apiSupplies'
+import {
+   getAllSupplies,
+   addSupply,
+   deleteSupply,
+   updateSupply,
+   changeSupplyStock,
+} from '../../utils/apiSupplies'
 import handelApiData from '../../utils/handelApiRes'
-
 
 const headCells = [
    {
@@ -52,10 +57,9 @@ export default function Supplies() {
       'EnhancedTable_maxWidth',
       undefined
    )
-   const [data, setData] = useLocalStorage('supplies',[])
+   const [data, setData] = useLocalStorage('supplies', [])
    const [openAdd, setOpenAdd] = useLocalStorage('AddSupplyForm_open', false)
    const [openEdit, setOpenEdit] = useLocalStorage('EditSupplyForm_open', false)
-
 
    const handelAddSupply = (newSupply) => {
       addSupply(newSupply)
@@ -79,7 +83,7 @@ export default function Supplies() {
                      text: `${err.message}`,
                   })
                }
-               
+
                return handelApiData(err.response.data)
             }
 
@@ -143,7 +147,52 @@ export default function Supplies() {
                icon: 'success',
                title: resData?.message,
                showConfirmButton: true,
-               
+            })
+         })
+         .catch((err) => {
+            if (err.name === 'AxiosError') {
+               if (!err?.response?.data) {
+                  return Swal.fire({
+                     icon: 'error',
+                     title: 'خطأ',
+                     text: `${err.message}`,
+                  })
+               }
+               return handelApiData(err.response.data)
+            }
+
+            Swal.fire({
+               icon: 'error',
+               title: 'خطأ',
+               text: `${err.message}`,
+            })
+         })
+   }
+
+   const handelEditSupply = (id, newData) => {
+      updateSupply(id, newData)
+         .then((resData) => {
+            setData((prevData) =>
+               prevData.map((supply) => {
+                  if (supply.id === resData?.data?.id) {
+                     return {
+                        ...supply,
+                        name: resData?.data?.name,
+                        description: resData?.data?.description,
+                        buyingPrice: resData?.data?.buyingPrice,
+                        sellingPrice: resData?.data?.sellingPrice,
+                     }
+                  }
+                  return supply
+               })
+            )
+            setOpenEdit(false)
+
+            Swal.fire({
+               icon: 'success',
+               title: 'تمت التعديل بنجاح',
+               showConfirmButton: false,
+               timer: 1500,
             })
          })
          .catch((err) => {
@@ -219,7 +268,7 @@ export default function Supplies() {
             setOpenAdd={setOpenAdd}
             openEdit={openEdit}
             setOpenEdit={setOpenEdit}
-
+            handelEditSupply={handelEditSupply}
          />
       </Container>
    )

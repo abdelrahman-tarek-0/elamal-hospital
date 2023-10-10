@@ -28,9 +28,9 @@ export default function EditSupplyModal({
    handleClose,
    supply,
    handelChangeSupplyStock,
+   handelEditSupply,
 }) {
    const onCloseClick = (event, reason) => {
-      if (reason === 'backdropClick') return
       handleClose()
    }
 
@@ -38,6 +38,18 @@ export default function EditSupplyModal({
       'EditSupplyModal_change_field',
       0
    )
+
+   const [name, setName] = React.useState('')
+   const [description, setDescription] = React.useState('')
+   const [buyingPrice, setBuyingPrice] = React.useState(0)
+   const [sellingPrice, setSellingPrice] = React.useState(0)
+
+   React.useEffect(() => {
+      setName(supply.name)
+      setDescription(supply.description)
+      setBuyingPrice(supply.buyingPrice)
+      setSellingPrice(supply.sellingPrice)
+   }, [supply])
 
    const handelChangeStockAdd = async () => {
       const price = supply.buyingPrice * change
@@ -77,6 +89,49 @@ export default function EditSupplyModal({
       })
    }
 
+   const handelEditSupplySubmit = (e) => {
+      e.preventDefault()
+
+      console.log({
+         name,
+         description,
+         buyingPrice,
+         sellingPrice,
+      })
+      const errors = []
+
+      if (name === '') errors.push('الأسم يجب ان يكون موجود')
+      // if (description === '') errors.push('الوصف يجب ان يكون موجود')
+      if (buyingPrice <= 0) errors.push('سعر الشراء يجب ان يكون اكبر من 0')
+      if (sellingPrice <= 0) errors.push('سعر البيع يجب ان يكون اكبر من 0')
+      if (buyingPrice >= sellingPrice)
+         errors.push('سعر البيع يجب ان يكون اكبر من سعر الشراء')
+
+      if (errors.length > 0) {
+         return Swal.fire({
+            icon: 'error',
+            title: 'خطأ',
+            html: `
+                   <ul style="text-align: right; direction: rtl;">
+                      ${errors
+                         .map(
+                            (err) =>
+                               `<li style="border-bottom: 2px solid red; margin:2px; padding:5px; color:red;">${err}</li>`
+                         )
+                         .join('')}
+                   </ul>
+                `,
+         })
+      }
+
+      handelEditSupply(supply?.id, {
+         name,
+         description,
+         buyingPrice,
+         sellingPrice,
+      })
+   }
+
    return (
       <Modal
          open={open}
@@ -89,14 +144,6 @@ export default function EditSupplyModal({
       >
          <Fade in={open}>
             <Box sx={style}>
-               {/* <Typography
-                  variant="h6"
-                  component="h2"
-                  align="center"
-                  gutterBottom
-               >
-                 
-               </Typography> */}
                <Divider
                   sx={{
                      mb: '10px',
@@ -110,8 +157,6 @@ export default function EditSupplyModal({
                      }}
                   />
                </Divider>
-
-               {/* 2 buttom 1 for add stock and one for use stock */}
 
                <Box>
                   <Typography
@@ -198,7 +243,7 @@ export default function EditSupplyModal({
                <Divider
                   sx={{
                      mt: '20px',
-                     mb: '10px',
+                     //  mb: '10px',
                   }}
                   variant="middle"
                >
@@ -219,13 +264,14 @@ export default function EditSupplyModal({
                >
                   <Box
                      sx={{
-                        mb: '20px',
+                        mb: '10px',
                      }}
                   >
-                     <form autoComplete="off">
+                     <form autoComplete="off" onSubmit={handelEditSupplySubmit}>
                         <TextField
                            label="الأسم"
                            defaultValue={supply.name}
+                           onChange={(e) => setName(e.target.value)}
                            variant="outlined"
                            color="secondary"
                            type="text"
@@ -237,6 +283,7 @@ export default function EditSupplyModal({
                         <TextField
                            label="الوصف"
                            defaultValue={supply.description}
+                           onChange={(e) => setDescription(e.target.value)}
                            variant="outlined"
                            color="secondary"
                            type="text"
@@ -248,6 +295,9 @@ export default function EditSupplyModal({
                         <TextField
                            label="سعر الشراء"
                            defaultValue={supply.buyingPrice}
+                           onChange={(e) =>
+                              setBuyingPrice(Number(e.target.value))
+                           }
                            InputProps={{
                               endAdornment: (
                                  <InputAdornment position="end">
@@ -270,6 +320,9 @@ export default function EditSupplyModal({
                         <TextField
                            label="سعر البيع"
                            defaultValue={supply.sellingPrice}
+                           onChange={(e) =>
+                              setSellingPrice(Number(e.target.value))
+                           }
                            InputProps={{
                               endAdornment: (
                                  <InputAdornment position="end">
@@ -288,24 +341,18 @@ export default function EditSupplyModal({
                               direction: 'ltr !important',
                            }}
                         />
-                        <div
-                           style={{
-                              direction: 'ltr !important',
+
+                        <Button
+                           variant="outlined"
+                           color="secondary"
+                           type="submit"
+                           sx={{
                               width: '100%',
+                              //   ml: '2%',
                            }}
                         >
-                           <Button
-                              variant="outlined"
-                              color="secondary"
-                              type="submit"
-                              sx={{
-                                 width: '100%',
-                                 //   ml: '2%',
-                              }}
-                           >
-                              حفظ
-                           </Button>
-                        </div>
+                           حفظ
+                        </Button>
                      </form>
                   </Box>
                </Paper>

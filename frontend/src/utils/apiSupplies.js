@@ -20,22 +20,29 @@ export const getAllSupplies = async () => {
 }
 
 export const addSupply = async (data) => {
-    const response = await apiSupplies.post('/', data)
-    const res = response?.data
-    
-    return res
+   const response = await apiSupplies.post('/', data)
+   const res = response?.data
+
+   return res
 }
 
 export const deleteSupply = async (id) => {
-    const response = await apiSupplies.delete(`/${id}`)
-    const res = response?.data
+   const response = await apiSupplies.delete(`/${id}`)
+   const res = response?.data
 
-    return res
+   return res
+}
+
+export const updateSupply = async (id, data) => {
+   const response = await apiSupplies.put(`/${id}`, data)
+   const res = response?.data
+
+   return res
 }
 
 export const changeSupplyStock = async (id, change) => {
-    const response = await apiSupplies.patch(`/${id}/stock`, { change })
-    const res = response?.data
+   const response = await apiSupplies.patch(`/${id}/stock`, { change })
+   const res = response?.data
 
-    return res
-} 
+   return res
+}

@@ -21,7 +21,7 @@ const router = Router()
 router.get('/', getAllSuppliesValidator, getAllSupplies)
 router.get('/:id', getSupplyValidator, getSupply)
 router.post('/', createSupplyValidator, createSupply)
-router.patch('/:id', updateSupplyValidator, updateSupply)
+router.put('/:id', updateSupplyValidator, updateSupply)
 router.patch('/:id/stock', changeSupplyStockValidator, changeSupplyStock)
 router.delete('/:id', deleteSupplyValidator, deleteSupply)
 

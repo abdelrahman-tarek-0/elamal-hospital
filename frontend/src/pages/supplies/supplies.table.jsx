@@ -141,6 +141,7 @@ export default function EnhancedTable({
    setOpenAdd,
    openEdit,
    setOpenEdit,
+   handelEditSupply
 }) {
    const [order, setOrder] = useLocalStorage('EnhancedTable_order', 'asc')
    const [orderBy, setOrderBy] = useLocalStorage(
@@ -244,6 +245,7 @@ export default function EnhancedTable({
             handleClose={handleCloseEdit}
             handelChangeSupplyStock={handelChangeSupplyStock}
             supply={editRow}
+            handelEditSupply={handelEditSupply}
          />
 
          <Paper sx={{ width: '100%', mb: 2, p: 2 }} elevation={8}>

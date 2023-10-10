@@ -28,7 +28,6 @@ export default function AddNewSupplyModal({
    handelAddSupply,
 }) {
    const onCloseClick = (event, reason) => {
-      if (reason === 'backdropClick') return
       handleClose()
    }
 
@@ -53,7 +52,7 @@ export default function AddNewSupplyModal({
       const errors = []
 
       if (name === '') errors.push('الأسم يجب ان يكون موجود')
-      if (description === '') errors.push('الوصف يجب ان يكون موجود')
+      // if (description === '') errors.push('الوصف يجب ان يكون موجود')
       if (buyingPrice <= 0) errors.push('سعر الشراء يجب ان يكون اكبر من 0')
       if (sellingPrice <= 0) errors.push('سعر البيع يجب ان يكون اكبر من 0')
       // if (stock <= 0) errors.push('الكمية يجب ان تكون اكبر من 0')
@@ -77,15 +76,6 @@ export default function AddNewSupplyModal({
             `,
          })
       }
-
-      console.log('submit')
-      console.log({
-         name,
-         description,
-         buyingPrice,
-         sellingPrice,
-         stock,
-      })
 
       handelAddSupply({
          name,
