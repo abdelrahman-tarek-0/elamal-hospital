@@ -4,7 +4,7 @@ const { handleValidationErrors, strict } = require('../common/base.validators')
 exports.getAllSupplies = [strict]
 
 exports.getSupply = [
-   param('id').isNumeric().withMessage('رقم التعريف غير صحيح'),
+   param('id').isNumeric().withMessage('رقم التعريف غير صحيح').toInt(),
    handleValidationErrors,
    strict,
 ]
@@ -23,11 +23,13 @@ exports.createSupply = [
 
    body('buyingPrice')
       .isFloat({ min: 0.0 })
-      .withMessage('يجب ان يكون سعر الشراء عدد عشري اكبر من 0'),
+      .withMessage('يجب ان يكون سعر الشراء عدد عشري اكبر من 0')
+      .toFloat(),
 
    body('sellingPrice')
       .isFloat({ min: 0.0 })
-      .withMessage('يجب ان يكون سعر البيع عدد عشري اكبر من 0'),
+      .withMessage('يجب ان يكون سعر البيع عدد عشري اكبر من 0')
+      .toFloat(),
 
    // body('stock')
    //    .isInt({ min: 0 })
@@ -38,7 +40,7 @@ exports.createSupply = [
 ]
 
 exports.updateSupply = [
-   param('id').isNumeric().withMessage('رقم التعريف غير صحيح'),
+   param('id').isNumeric().withMessage('رقم التعريف غير صحيح').toInt(),
 
    body('name')
       .optional()
@@ -56,12 +58,14 @@ exports.updateSupply = [
    body('buyingPrice')
       .optional()
       .isFloat({ min: 0.0 })
-      .withMessage('يجب ان يكون سعر الشراء عدد عشري اكبر من 0'),
+      .withMessage('يجب ان يكون سعر الشراء عدد عشري اكبر من 0')
+      .toFloat(),
 
    body('sellingPrice')
       .optional()
       .isFloat({ min: 0.0 })
-      .withMessage('يجب ان يكون سعر البيع عدد عشري اكبر من 0'),
+      .withMessage('يجب ان يكون سعر البيع عدد عشري اكبر من 0')
+      .toFloat(),
 
    // body('stock')
    //    .optional()
@@ -73,16 +77,16 @@ exports.updateSupply = [
 ]
 
 exports.deleteSupply = [
-   param('id').isNumeric().withMessage('رقم التعريف غير صحيح'),
+   param('id').isNumeric().withMessage('رقم التعريف غير صحيح').toInt(),
 
    handleValidationErrors,
    strict,
 ]
 
 exports.changeSupplyStock = [
-   param('id').isNumeric().withMessage('رقم التعريف غير صحيح'),
+   param('id').isNumeric().withMessage('رقم التعريف غير صحيح').toInt(),
 
-   body('change').isInt().withMessage('يجب ان يكون التعديل عدد صحيح'),
+   body('change').isInt().withMessage('يجب ان يكون التعديل عدد صحيح').toInt(),
 
    handleValidationErrors,
    strict,
