@@ -3,7 +3,7 @@ import * as React from 'react'
 import Container from '@mui/material/Container'
 
 import { Box, Typography, Button } from '@mui/material'
-import { AddCircle } from '@mui/icons-material'
+import { AddCircle, Edit } from '@mui/icons-material'
 
 import Swal from 'sweetalert2'
 
@@ -16,14 +16,26 @@ import {
    updateSession,
 } from './apiSessions'
 import HtmlTooltip from '../../components/HtmlToolTip'
+
 import CreateSessionModal from './CreateSessionModal'
+
 import handelApiData from '../../utils/handelApiRes'
+import EditSessionModal from './EditSessionModal'
+
 
 export default function Sessions() {
    const [sessions, setSessions] = useLocalStorage('sessions', [])
    const [openAdd, setOpenAdd] = useLocalStorage(
       'CreateSession_Form_open',
       false
+   )
+   const [openEdit, setOpenEdit] = useLocalStorage(
+      'EditSession_Form_open',
+      false
+   )
+   const [EditingSession, setEditingSession] = useLocalStorage(
+      'EditingSession',
+      {}
    )
 
    React.useEffect(() => {
@@ -100,6 +112,11 @@ export default function Sessions() {
          })
    }
 
+   const toggleEdit = (session) => {
+      setEditingSession(session)
+      setOpenEdit(true)
+   }
+
    const handelEditSessionName = (id, name) => {
       updateSession(id, { name })
          .then((resData) => {
@@ -112,12 +129,15 @@ export default function Sessions() {
                })
             )
 
+            setOpenEdit(false)
+
             Swal.fire({
                icon: 'success',
                title: resData?.message,
                showConfirmButton: false,
                timer: 1500,
             })
+
          })
          .catch((err) => {
             if (err.name === 'AxiosError') {
@@ -148,6 +168,13 @@ export default function Sessions() {
             paddingBottom: 'calc(10% + 60px)',
          }}
       >
+         <EditSessionModal
+            open={openEdit}
+            handleClose={() => setOpenEdit(false)}
+            session={EditingSession}
+            handelEditSessionName={handelEditSessionName}
+         />
+
          <CreateSessionModal
             open={openAdd}
             handleClose={() => setOpenAdd(false)}
@@ -196,6 +223,7 @@ export default function Sessions() {
                session={session}
                handelDeleteSession={handelDeleteSession}
                handelEditSessionName={handelEditSessionName}
+               toggleEdit={toggleEdit}
             />
          ))}
       </Container>
