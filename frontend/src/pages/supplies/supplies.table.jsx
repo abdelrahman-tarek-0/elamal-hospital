@@ -178,13 +178,13 @@ export default function EnhancedTable({
    }
 
    const handleChangeRowsPerPage = (event) => {
-      if (event.target.value === data.length) {
+      if (event.target.value === (data?.length || 0)) {
          setIsFull(true)
       } else {
          setIsFull(false)
       }
 
-      setRowsPerPage(parseInt(event.target.value, 10))
+      setRowsPerPage(parseInt(event?.target?.value || '0' ,10))
       setPage(0)
    }
 
@@ -443,11 +443,11 @@ export default function EnhancedTable({
                   25,
                   {
                      label: 'الكل',
-                     value: data.length,
+                     value: (data?.length || 0),
                   },
                ]}
                component="div"
-               count={data.length}
+               count={(data?.length || 0)}
                rowsPerPage={rowsPerPage}
                page={page}
                onPageChange={handleChangePage}

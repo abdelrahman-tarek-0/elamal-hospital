@@ -5,7 +5,7 @@ import CardContent from '@mui/material/CardContent'
 
 import Typography from '@mui/material/Typography'
 import { Box, CardActions, Divider, Chip } from '@mui/material'
-
+import { Delete, Edit } from '@mui/icons-material'
 import HtmlTooltip from '../../components/HtmlToolTip'
 
 export default function SessionSupplyCard({ supply }) {
@@ -38,7 +38,7 @@ export default function SessionSupplyCard({ supply }) {
                }}
             >
                <Typography
-                  variant="body2"
+                   component={'span'} variant={'body2'}
                   sx={{
                      marginLeft: '10px',
                      fontWeight: 'bold',
@@ -47,7 +47,7 @@ export default function SessionSupplyCard({ supply }) {
                   كمية الأستخدام : {supply?.SessionSupply?.quantity || ''}
                </Typography>
                <Typography
-                  variant="body2"
+                   component={'span'} variant={'body2'}
                   sx={{
                      marginLeft: '10px',
                   }}
@@ -55,19 +55,19 @@ export default function SessionSupplyCard({ supply }) {
                   سعر الشراء : ${supply?.buyingPrice || ''}
                </Typography>
                <Typography
-                  variant="body2"
+                   component={'span'} variant={'body2'}
                   sx={{
                      marginLeft: '10px',
                   }}
                >
                   سعر البيع : $20
                </Typography>
-               <Typography variant="body2">
+               <Typography  component={'span'} variant={'body2'}>
                   الكمية في المخزن : {supply.stock}
                </Typography>
             </Box>
 
-            <Typography variant="body2">
+            <Typography  component={'span'} variant={'body2'}>
                {supply?.description ? (
                   <Divider
                      sx={{
