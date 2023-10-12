@@ -45,8 +45,7 @@ export default function CreateSessionModal({
             title: 'خطأ',
             html: `
                <ul style="text-align: right; direction: rtl;">
-                  ${errors
-                     .map(
+                  ${errors?.map(
                         (err) =>
                            `<li style="border-bottom: 2px solid red; margin:2px; padding:5px; color:red;">${err}</li>`
                      )
@@ -56,7 +55,7 @@ export default function CreateSessionModal({
          })
       }
 
-      handelAddSupply(name)
+      handelCreateSession(name)
    }
 
    return (

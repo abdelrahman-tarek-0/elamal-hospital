@@ -2,16 +2,23 @@ import * as React from 'react'
 
 import Container from '@mui/material/Container'
 
-import { Box,Typography,Button } from '@mui/material'
+import { Box, Typography, Button } from '@mui/material'
 import { AddCircle } from '@mui/icons-material'
 
 import SessionAccordionSuppliesList from './SessionAccordionSuppliesList'
 import useLocalStorage from '../../hooks/useLocalStorage'
-import { getAllSessions,createSession } from './apiSessions'
+import { getAllSessions, createSession } from './apiSessions'
 import HtmlTooltip from '../../components/HtmlToolTip'
+import CreateSessionModal from './CreateSessionModal'
+import handelApiData from '../../utils/handelApiRes'
+import Swal from 'sweetalert2'
 
 export default function Sessions() {
    const [sessions, setSessions] = useLocalStorage('sessions', [])
+   const [openAdd, setOpenAdd] = useLocalStorage(
+      'CreateSession_Form_open',
+      false
+   )
 
    React.useEffect(() => {
       getAllSessions().then((res) => {
@@ -20,9 +27,37 @@ export default function Sessions() {
    }, [])
 
    const handelAddSession = (name) => {
-      createSession({ name }).then((res) => {
-         setSessions([...sessions, res?.data])
-      })
+      createSession(name)
+         .then((resData) => {
+            setSessions((prevData) => [...prevData, resData.data])
+            setOpenAdd(false)
+
+            Swal.fire({
+               icon: 'success',
+               title: 'تمت الإضافة بنجاح',
+               showConfirmButton: false,
+               timer: 1500,
+            })
+         })
+         .catch((err) => {
+            if (err.name === 'AxiosError') {
+               if (!err?.response?.data) {
+                  return Swal.fire({
+                     icon: 'error',
+                     title: 'خطأ',
+                     text: `${err.message}`,
+                  })
+               }
+
+               return handelApiData(err?.response?.data)
+            }
+
+            Swal.fire({
+               icon: 'error',
+               title: 'خطأ',
+               text: `${err?.message}`,
+            })
+         })
    }
 
    return (
@@ -34,6 +69,12 @@ export default function Sessions() {
             paddingBottom: 'calc(10% + 60px)',
          }}
       >
+         <CreateSessionModal
+            open={openAdd}
+            handleClose={() => setOpenAdd(false)}
+            handelCreateSession={handelAddSession}
+         />
+
          <HtmlTooltip
             arrow
             title={
@@ -64,16 +105,15 @@ export default function Sessions() {
                   marginBottom: '20px',
                   direction: 'ltr',
                }}
-               // onClick={handleOpenAdd}
+               onClick={() => setOpenAdd(true)}
             >
                <AddCircle sx={{ mr: 1 }} />
                إضافة
             </Button>
          </HtmlTooltip>
-         {sessions.map((session, index) => (
+         {sessions?.map((session, index) => (
             <SessionAccordionSuppliesList key={index} session={session} />
          ))}
       </Container>
    )
 }
-

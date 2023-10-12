@@ -35,7 +35,7 @@ export default function SessionAccordionSuppliesList({ session }) {
                   alignItems: 'center',
                }}
             >
-               {session.Supplies.map((supply) => (
+               {session?.Supplies?.map((supply) => (
                   <ListItem key={supply.id} >
                      <SessionSupplyCard supply={supply} />
                   </ListItem>
