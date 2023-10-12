@@ -96,7 +96,7 @@ export default function SessionSupplyCard({ supply, handelRemoveSupply }) {
                      marginLeft: '10px',
                   }}
                >
-                  سعر البيع : $20
+                  سعر الشراء : ${supply?.sellingPrice ?? ''}
                </Typography>
                <Typography component={'span'} variant={'body2'}>
                   الكمية في المخزن : {supply.stock}
