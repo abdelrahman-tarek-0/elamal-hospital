@@ -27,7 +27,7 @@ import AddSupplySessionModal from './AddSupplySessionModal'
 
 export default function Sessions() {
    const [sessions, setSessions] = useLocalStorage('sessions', [])
-   
+
    const [openAdd, setOpenAdd] = useLocalStorage(
       'CreateSession_Form_open',
       false
@@ -205,17 +205,7 @@ export default function Sessions() {
             })
          })
    }
-
-   const toggleEdit = (session) => {
-      setEditingSession(session)
-      setOpenEdit(true)
-   }
-
-   const toggleAddSupply = (session) => {
-      setEditingSession(session)
-      setOpenAddSupply(true)
-   }
-
+ 
    const handelEditSessionName = (id, name) => {
       updateSession(id, { name })
          .then((resData) => {
@@ -256,6 +246,17 @@ export default function Sessions() {
             })
          })
    }
+
+   const toggleEdit = (session) => {
+      setEditingSession(session)
+      setOpenEdit(true)
+   }
+
+   const toggleAddSupply = (session) => {
+      setEditingSession(session)
+      setOpenAddSupply(true)
+   }
+
 
    return (
       <Container
