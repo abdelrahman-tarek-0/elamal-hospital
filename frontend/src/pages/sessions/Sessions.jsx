@@ -17,11 +17,11 @@ import {
 } from './apiSessions'
 import HtmlTooltip from '../../components/HtmlToolTip'
 
-import CreateSessionModal from './CreateSessionModal'
-
 import handelApiData from '../../utils/handelApiRes'
-import EditSessionModal from './EditSessionModal'
 
+import CreateSessionModal from './CreateSessionModal'
+import EditSessionModal from './EditSessionModal'
+import AddSupplySessionModal from './AddSupplySessionModal'
 
 export default function Sessions() {
    const [sessions, setSessions] = useLocalStorage('sessions', [])
@@ -33,6 +33,12 @@ export default function Sessions() {
       'EditSession_Form_open',
       false
    )
+
+   const [openAddSupply, setOpenAddSupply] = useLocalStorage(
+      'AddSupplySession_Form_open',
+      false
+   )
+
    const [EditingSession, setEditingSession] = useLocalStorage(
       'EditingSession',
       {}
@@ -112,9 +118,57 @@ export default function Sessions() {
          })
    }
 
+   const handelAddSupply = (sessionId, supplyId, quantity) => {
+      console.log(sessions)
+      updateSession(sessionId, {
+         supplies: [
+            { id: supplyId, quantity },
+            ...(sessions?.find((session) => session.id === sessionId)
+               ?.Supplies || []),
+         ],
+      })
+         .then((resData) => {
+            getAllSessions().then((res) => {
+               setSessions(res?.data || [])
+            })
+
+            setOpenAddSupply(false)
+
+            Swal.fire({
+               icon: 'success',
+               title: resData?.message,
+               showConfirmButton: false,
+               timer: 1500,
+            })
+         })
+         .catch((err) => {
+            if (err.name === 'AxiosError') {
+               if (!err?.response?.data) {
+                  return Swal.fire({
+                     icon: 'error',
+                     title: 'خطأ',
+                     text: `${err.message}`,
+                  })
+               }
+               return handelApiData(err.response.data)
+            }
+
+            Swal.fire({
+               icon: 'error',
+               title: 'خطأ',
+               text: `${err.message}`,
+            })
+         })
+   }
+
    const toggleEdit = (session) => {
       setEditingSession(session)
       setOpenEdit(true)
+   }
+
+   const toggleAddSupply = (session) => {
+      setEditingSession(session)
+      setOpenAddSupply(true)
    }
 
    const handelEditSessionName = (id, name) => {
@@ -137,7 +191,6 @@ export default function Sessions() {
                showConfirmButton: false,
                timer: 1500,
             })
-
          })
          .catch((err) => {
             if (err.name === 'AxiosError') {
@@ -168,6 +221,12 @@ export default function Sessions() {
             paddingBottom: 'calc(10% + 60px)',
          }}
       >
+         <CreateSessionModal
+            open={openAdd}
+            handleClose={() => setOpenAdd(false)}
+            handelCreateSession={handelAddSession}
+         />
+
          <EditSessionModal
             open={openEdit}
             handleClose={() => setOpenEdit(false)}
@@ -175,10 +234,11 @@ export default function Sessions() {
             handelEditSessionName={handelEditSessionName}
          />
 
-         <CreateSessionModal
-            open={openAdd}
-            handleClose={() => setOpenAdd(false)}
-            handelCreateSession={handelAddSession}
+         <AddSupplySessionModal
+            open={openAddSupply}
+            handleClose={() => setOpenAddSupply(false)}
+            session={EditingSession}
+            handelAddSupply={handelAddSupply}
          />
 
          <HtmlTooltip
@@ -224,6 +284,7 @@ export default function Sessions() {
                handelDeleteSession={handelDeleteSession}
                handelEditSessionName={handelEditSessionName}
                toggleEdit={toggleEdit}
+               toggleAddSupply={toggleAddSupply}
             />
          ))}
       </Container>

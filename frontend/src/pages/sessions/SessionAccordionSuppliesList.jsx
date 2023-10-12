@@ -18,13 +18,13 @@ import SessionSupplyCard from './SessionSupplyCard'
 import { Delete, Edit } from '@mui/icons-material'
 
 import Swal from 'sweetalert2'
-import EditSessionModal from './EditSessionModal'
-import useLocalStorage from '../../hooks/useLocalStorage'
+
 
 export default function SessionAccordionSuppliesList({
    session,
    handelDeleteSession,
-   toggleEdit
+   toggleEdit,
+   toggleAddSupply,
 }) {
 
 
@@ -90,6 +90,9 @@ export default function SessionAccordionSuppliesList({
                            cursor: 'pointer',
                            fontSize: '3rem',
                            marginLeft: '10px',
+                        }}
+                        onClick={() => {
+                           toggleAddSupply(session)
                         }}
                      />
                   </HtmlTooltip>
