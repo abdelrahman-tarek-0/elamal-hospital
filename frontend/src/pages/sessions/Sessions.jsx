@@ -2,19 +2,21 @@ import * as React from 'react'
 
 import Container from '@mui/material/Container'
 
-import { Box, Typography, Button } from '@mui/material'
-import { AddCircle, Edit } from '@mui/icons-material'
+import { Typography, Button } from '@mui/material'
+import { AddCircle } from '@mui/icons-material'
 
 import Swal from 'sweetalert2'
 
 import SessionAccordionSuppliesList from './SessionAccordionSuppliesList'
 import useLocalStorage from '../../hooks/useLocalStorage'
+
 import {
    getAllSessions,
    createSession,
    deleteSession,
    updateSession,
 } from './apiSessions'
+
 import HtmlTooltip from '../../components/HtmlToolTip'
 
 import handelApiData from '../../utils/handelApiRes'
@@ -25,10 +27,12 @@ import AddSupplySessionModal from './AddSupplySessionModal'
 
 export default function Sessions() {
    const [sessions, setSessions] = useLocalStorage('sessions', [])
+   
    const [openAdd, setOpenAdd] = useLocalStorage(
       'CreateSession_Form_open',
       false
    )
+
    const [openEdit, setOpenEdit] = useLocalStorage(
       'EditSession_Form_open',
       false
@@ -318,6 +322,7 @@ export default function Sessions() {
                إضافة
             </Button>
          </HtmlTooltip>
+
          {sessions?.map((session, index) => (
             <SessionAccordionSuppliesList
                key={index}

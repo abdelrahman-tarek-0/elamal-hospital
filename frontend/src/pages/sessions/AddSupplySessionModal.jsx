@@ -5,10 +5,10 @@ import { Button, TextField } from '@mui/material'
 
 import Fade from '@mui/material/Fade'
 import Swal from 'sweetalert2'
-import Select from '@mui/material/Select';
+import Select from '@mui/material/Select'
 
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
+import InputLabel from '@mui/material/InputLabel'
+import MenuItem from '@mui/material/MenuItem'
 
 import useLocalStorage from '../../hooks/useLocalStorage'
 
@@ -37,6 +37,7 @@ export default function AddSupplySessionModal({
    }
 
    const [supplies, setSupplies] = React.useState([])
+   const [supplyId, setSupplyId] = React.useState(null)
 
    React.useEffect(() => {
       const sup = JSON.parse(localStorage.getItem('supplies'))
@@ -48,9 +49,10 @@ export default function AddSupplySessionModal({
       })
 
       setSupplies(filteredSupplies)
+      setSupplyId(null)
    }, [session])
 
-   const [supplyId, setSupplyId] = React.useState('')
+
    const [quantity, setQuantity] = useLocalStorage(
       'AddSupplySession_Field_Quantity',
       ''
@@ -58,11 +60,11 @@ export default function AddSupplySessionModal({
 
    const handleSubmit = (e) => {
       e.preventDefault()
-      console.log('handleSubmit')
+      console.log('suup',supplyId)
 
       const errors = []
 
-      if (supplyId === '') errors.push('يجب اختيار المستلزم')
+      if (supplyId === '' || !supplyId) errors.push('يجب اختيار المستلزم')
       if (Number(quantity) <= 0) errors.push('الكمية يجب ان تكون اكبر من 0')
 
       if (errors.length > 0) {
@@ -101,36 +103,41 @@ export default function AddSupplySessionModal({
                   <form autoComplete="off" onSubmit={handleSubmit}>
                      <h2>اضافة مستلزم للجلسة</h2>
 
-                        <InputLabel id="demo-simple-select-label">المستلزم</InputLabel>
-                        <Select
-                           labelId="demo-simple-select-label"
-                           id="demo-simple-select"
-                           value={supplyId}
-                           label="المستلزم"
-                           onChange={(e) => setSupplyId(e.target.value)}
-                           sx={{
-                              width: '100%',
-                              marginBottom: '20px',
-                           }}
-                        >
-                            {supplies?.map((s,i) => (
-                                <MenuItem value={s.id} key={i}>{s.name}</MenuItem>
-                            ))}
-                        </Select>
+                     <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={supplyId}
+                        label="المستلزم"
+                        onChange={(e) => setSupplyId(e.target.value)}
+                        sx={{
+                           width: '100%',
+                           marginBottom: '20px',
+                           marginTop: '20px',
+                        }}
+                     >
+                        {supplies?.map((s, i) => (
+                           <MenuItem value={s.id} key={i}>
+                              {s.name}
+                           </MenuItem>
+                        ))}
+                     </Select>
 
-
-                        <TextField
-                            id="outlined-basic"
-                            label="الكمية"
-                            variant="outlined"
-                            value={quantity}
-                            onChange={(e) => setQuantity(e.target.value)}
-                            sx={{
-                                width: '100%',
-                                marginBottom: '20px',
-                            }}
-                        />
-                     
+                     <TextField
+                        label="الكمية"
+                        onChange={(e) => setQuantity(Number(e.target.value))}
+                        defaultValue={quantity}
+                        InputProps={{
+                           inputProps: { min: 0 },
+                        }}
+                        type="number"
+                        variant="outlined"
+                        color="secondary"
+                        sx={{
+                           width: '100%',
+                           marginBottom: '20px',
+                        }}
+                        required
+                     />
 
                      <div
                         style={{
