@@ -1,14 +1,7 @@
-import HomeIcon from '@mui/icons-material/Home'
-import BadgeIcon from '@mui/icons-material/Badge'
+import MedicalServicesIcon from '@mui/icons-material/MedicalServices'
+import AssignmentIcon from '@mui/icons-material/Assignment'
 import Supplies from './supplies/Supplies'
-
-function Home() {
-   return (
-      <div>
-         <h1>اهلا وسهلا</h1>
-      </div>
-   )
-}
+import Sessions from './sessions/Sessions'
 
 function NotFound() {
    return (
@@ -18,18 +11,18 @@ function NotFound() {
    )
 }
 
-const pages  = [
-   {
-      name: 'الرئيسية',
-      path: '/',
-      icon: HomeIcon,
-      component: Home,
-   },
+const pages = [
    {
       name: 'مستلزمات',
-      path: '/supplies',
-      icon: BadgeIcon,
+      path: '/',
+      icon: MedicalServicesIcon,
       component: Supplies,
+   },
+   {
+      name: 'جلسات',
+      path: '/sessions',
+      icon: AssignmentIcon,
+      component: Sessions,
    },
    {
       name: 'لا يوجد',
@@ -39,5 +32,4 @@ const pages  = [
    },
 ]
 
-
-export default pages;
+export default pages

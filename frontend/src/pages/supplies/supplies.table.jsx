@@ -23,10 +23,11 @@ import Swal from 'sweetalert2'
 
 import { AddCircle, Delete, Edit } from '@mui/icons-material'
 
-import Tooltip, { tooltipClasses } from '@mui/material/Tooltip'
-import { styled } from '@mui/material/styles'
+import HtmlTooltip from '../../components/HtmlToolTip'
+
 import AddNewSupplyModal from './AddNewSupplyModal'
 import EditSupplyModal from './EditSupplyModal'
+
 
 function descendingComparator(a, b, orderBy) {
    if (b[orderBy] < a[orderBy]) {
@@ -64,17 +65,7 @@ function stableSort(array, comparator) {
    return stabilizedThis.map((el) => el[0])
 }
 
-const HtmlTooltip = styled(({ className, ...props }) => (
-   <Tooltip {...props} classes={{ popper: className }} />
-))(({ theme }) => ({
-   [`& .${tooltipClasses.tooltip}`]: {
-      backgroundColor: '#f5f5f9',
-      color: 'rgba(0, 0, 0, 0.87)',
-      maxWidth: 220,
-      fontSize: theme.typography.pxToRem(12),
-      border: '1px solid #dadde9',
-   },
-}))
+
 
 function EnhancedTableHead(props) {
    const { order, orderBy, onRequestSort, headCells } = props
