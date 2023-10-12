@@ -75,7 +75,7 @@ export default function SessionSupplyCard({ supply }) {
                      fontWeight: 'bold',
                   }}
                >
-                  كمية الأستخدام : {supply?.SessionSupply?.quantity || ''}
+                  كمية الأستخدام : {supply?.SessionSupply?.quantity ?? ''}
                </Typography>
                <Typography
                   component={'span'}
@@ -84,7 +84,7 @@ export default function SessionSupplyCard({ supply }) {
                      marginLeft: '10px',
                   }}
                >
-                  سعر الشراء : ${supply?.buyingPrice || ''}
+                  سعر الشراء : ${supply?.buyingPrice ?? ''}
                </Typography>
                <Typography
                   component={'span'}
@@ -118,7 +118,7 @@ export default function SessionSupplyCard({ supply }) {
                ) : (
                   ''
                )}
-               {supply?.description || ''}
+               {supply?.description ?? ''}
             </Typography>
          </CardContent>
       </Card>
