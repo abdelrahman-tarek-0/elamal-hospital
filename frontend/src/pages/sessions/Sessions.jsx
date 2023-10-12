@@ -7,7 +7,7 @@ import { AddCircle } from '@mui/icons-material'
 
 import SessionAccordionSuppliesList from './SessionAccordionSuppliesList'
 import useLocalStorage from '../../hooks/useLocalStorage'
-import { getAllSessions } from './apiSessions'
+import { getAllSessions,createSession } from './apiSessions'
 import HtmlTooltip from '../../components/HtmlToolTip'
 
 export default function Sessions() {
@@ -18,6 +18,12 @@ export default function Sessions() {
          setSessions(res?.data || [])
       })
    }, [])
+
+   const handelAddSession = (name) => {
+      createSession({ name }).then((res) => {
+         setSessions([...sessions, res?.data])
+      })
+   }
 
    return (
       <Container

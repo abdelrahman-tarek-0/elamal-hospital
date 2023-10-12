@@ -10,3 +10,10 @@ export const getAllSessions = async () => {
 
     return res
 }
+
+export const createSession = async (data) => {
+    const response = await apiSessions.post('/', data)
+    const res = response?.data
+
+    return res
+}
