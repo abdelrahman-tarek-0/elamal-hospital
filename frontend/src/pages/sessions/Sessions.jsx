@@ -35,7 +35,7 @@ export default function Sessions() {
 
             Swal.fire({
                icon: 'success',
-               title: 'تمت الإضافة بنجاح',
+               title: resData?.message,
                showConfirmButton: false,
                timer: 1500,
             })
@@ -68,7 +68,7 @@ export default function Sessions() {
 
             Swal.fire({
                icon: 'success',
-               title: 'تمت الحذف بنجاح',
+               title: resData?.message,
                showConfirmButton: false,
                timer: 1500,
             })

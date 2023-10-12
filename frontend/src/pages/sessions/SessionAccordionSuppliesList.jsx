@@ -95,21 +95,33 @@ export default function SessionAccordionSuppliesList({
                   alignItems: 'flex-start',
                }}
             >
-               <Edit
-                  color="success"
-                  sx={{
-                     cursor: 'pointer',
-                     marginLeft: '10px',
-                  }}
-               />
-               <Delete
-                  color="error"
-                  sx={{
-                     cursor: 'pointer',
-                     marginLeft: '10px',
-                  }}
-                  onClick={() => handelDelete(session?.name, session?.id)}
-               />
+               <HtmlTooltip
+                  arrow
+                  // placement="right"
+                  title={<React.Fragment>{`تعديل اسم الجلسة`}</React.Fragment>}
+               >
+                  <Edit
+                     color="success"
+                     sx={{
+                        cursor: 'pointer',
+                        marginLeft: '10px',
+                     }}
+                  />
+               </HtmlTooltip>
+               <HtmlTooltip
+                  arrow
+                  // placement="right"
+                  title={<React.Fragment>{`حذف الجلسة`}</React.Fragment>}
+               >
+                  <Delete
+                     color="error"
+                     sx={{
+                        cursor: 'pointer',
+                        marginLeft: '10px',
+                     }}
+                     onClick={() => handelDelete(session?.name, session?.id)}
+                  />
+               </HtmlTooltip>
             </Box>
          </AccordionDetails>
       </Accordion>
