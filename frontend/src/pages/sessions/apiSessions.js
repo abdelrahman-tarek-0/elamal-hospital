@@ -17,3 +17,10 @@ export const createSession = async (name) => {
 
     return res
 }
+
+export const deleteSession = async (id) => {
+    const response = await apiSessions.delete(`/${id}`)
+    const res = response?.data
+
+    return res
+}

@@ -16,19 +16,49 @@ export default function SessionSupplyCard({ supply }) {
                textAlign: 'right',
             }}
          >
-            <Typography
-               variant="h5"
-               component="div"
+            <Box
                sx={{
                   marginTop: '10px',
                   marginBottom: '10px',
-                  // light border bottom under the text only not the hole card
-                  // borderBottom: '1px solid #ccc',
-                  // width: 'fit-content',
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
                }}
             >
-               {supply?.name || ''}
-            </Typography>
+               <Typography variant="h5" component="div">
+                  {supply?.name || ''}
+               </Typography>
+               <CardActions>
+                  <HtmlTooltip
+                     arrow
+                     // placement="right"
+                     title={<React.Fragment>{`تعديل بيانات`}</React.Fragment>}
+                  >
+                     <Edit
+                        color="success"
+                        sx={{
+                           cursor: 'pointer',
+                           fontSize: '1rem',
+                           marginLeft: '10px',
+                        }}
+                     />
+                  </HtmlTooltip>
+
+                  <HtmlTooltip
+                     arrow
+                     // placement="left"
+                     title={<React.Fragment>{`حذف`}</React.Fragment>}
+                  >
+                     <Delete
+                        color="error"
+                        sx={{
+                           cursor: 'pointer',
+                           fontSize: '1rem',
+                        }}
+                     />
+                  </HtmlTooltip>
+               </CardActions>
+            </Box>
 
             <Box
                sx={{
@@ -38,7 +68,8 @@ export default function SessionSupplyCard({ supply }) {
                }}
             >
                <Typography
-                   component={'span'} variant={'body2'}
+                  component={'span'}
+                  variant={'body2'}
                   sx={{
                      marginLeft: '10px',
                      fontWeight: 'bold',
@@ -47,7 +78,8 @@ export default function SessionSupplyCard({ supply }) {
                   كمية الأستخدام : {supply?.SessionSupply?.quantity || ''}
                </Typography>
                <Typography
-                   component={'span'} variant={'body2'}
+                  component={'span'}
+                  variant={'body2'}
                   sx={{
                      marginLeft: '10px',
                   }}
@@ -55,19 +87,20 @@ export default function SessionSupplyCard({ supply }) {
                   سعر الشراء : ${supply?.buyingPrice || ''}
                </Typography>
                <Typography
-                   component={'span'} variant={'body2'}
+                  component={'span'}
+                  variant={'body2'}
                   sx={{
                      marginLeft: '10px',
                   }}
                >
                   سعر البيع : $20
                </Typography>
-               <Typography  component={'span'} variant={'body2'}>
+               <Typography component={'span'} variant={'body2'}>
                   الكمية في المخزن : {supply.stock}
                </Typography>
             </Box>
 
-            <Typography  component={'span'} variant={'body2'}>
+            <Typography component={'span'} variant={'body2'}>
                {supply?.description ? (
                   <Divider
                      sx={{
@@ -88,36 +121,6 @@ export default function SessionSupplyCard({ supply }) {
                {supply?.description || ''}
             </Typography>
          </CardContent>
-         <CardActions>
-            <HtmlTooltip
-               arrow
-               // placement="right"
-               title={<React.Fragment>{`تعديل بيانات`}</React.Fragment>}
-            >
-               <Edit
-                  color="success"
-                  sx={{
-                     cursor: 'pointer',
-                     fontSize: '1rem',
-                     marginLeft: '10px',
-                  }}
-               />
-            </HtmlTooltip>
-
-            <HtmlTooltip
-               arrow
-               // placement="left"
-               title={<React.Fragment>{`حذف`}</React.Fragment>}
-            >
-               <Delete
-                  color="error"
-                  sx={{
-                     cursor: 'pointer',
-                     fontSize: '1rem',
-                  }}
-               />
-            </HtmlTooltip>
-         </CardActions>
       </Card>
    )
 }

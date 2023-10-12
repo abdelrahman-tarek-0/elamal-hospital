@@ -17,13 +17,36 @@ import { AddCircle } from '@mui/icons-material'
 import SessionSupplyCard from './SessionSupplyCard'
 import { Delete, Edit } from '@mui/icons-material'
 
-export default function SessionAccordionSuppliesList({ session }) {
+import Swal from 'sweetalert2'
+
+export default function SessionAccordionSuppliesList({
+   session,
+   handelDeleteSession,
+}) {
+   const handelDelete = (name, id) => {
+      Swal.fire({
+         title: `هل أنت متأكد من حذف '${name}' ؟`,
+         text: 'لن تتمكن من التراجع عن هذا الإجراء!',
+         icon: 'warning',
+         showCancelButton: true,
+         confirmButtonText: 'نعم، احذفها!',
+         cancelButtonText: 'لا، ألغِ الأمر',
+      }).then((result) => {
+         if (!result?.isConfirmed) return
+
+         handelDeleteSession(id)
+      })
+   }
+
    return (
-      <Accordion elevation={5} sx={{
-         color: '#365c00',
-      }}>
+      <Accordion
+         elevation={5}
+         sx={{
+            color: '#365c00',
+         }}
+      >
          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography component="h4" variant="h4" >
+            <Typography component="h4" variant="h4">
                {session?.name || ''}
             </Typography>
          </AccordionSummary>
@@ -36,7 +59,7 @@ export default function SessionAccordionSuppliesList({ session }) {
                }}
             >
                {session?.Supplies?.map((supply) => (
-                  <ListItem key={supply.id} >
+                  <ListItem key={supply.id}>
                      <SessionSupplyCard supply={supply} />
                   </ListItem>
                ))}
@@ -73,7 +96,7 @@ export default function SessionAccordionSuppliesList({ session }) {
                }}
             >
                <Edit
-                   color="success"
+                  color="success"
                   sx={{
                      cursor: 'pointer',
                      marginLeft: '10px',
@@ -85,6 +108,7 @@ export default function SessionAccordionSuppliesList({ session }) {
                      cursor: 'pointer',
                      marginLeft: '10px',
                   }}
+                  onClick={() => handelDelete(session?.name, session?.id)}
                />
             </Box>
          </AccordionDetails>
