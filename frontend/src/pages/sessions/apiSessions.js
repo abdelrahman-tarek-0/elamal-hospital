@@ -24,3 +24,10 @@ export const deleteSession = async (id) => {
 
     return res
 }
+
+export const updateSession = async (id, newData) => {
+    const response = await apiSessions.patch(`/${id}`, newData)
+    const res = response?.data
+
+    return res
+}

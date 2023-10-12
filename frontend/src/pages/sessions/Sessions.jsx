@@ -9,7 +9,12 @@ import Swal from 'sweetalert2'
 
 import SessionAccordionSuppliesList from './SessionAccordionSuppliesList'
 import useLocalStorage from '../../hooks/useLocalStorage'
-import { getAllSessions, createSession, deleteSession } from './apiSessions'
+import {
+   getAllSessions,
+   createSession,
+   deleteSession,
+   updateSession,
+} from './apiSessions'
 import HtmlTooltip from '../../components/HtmlToolTip'
 import CreateSessionModal from './CreateSessionModal'
 import handelApiData from '../../utils/handelApiRes'
@@ -64,7 +69,9 @@ export default function Sessions() {
    const handelDeleteSession = (id) => {
       deleteSession(id)
          .then((resData) => {
-            setSessions((prevData) => prevData.filter((session) => session.id !== id))
+            setSessions((prevData) =>
+               prevData.filter((session) => session.id !== id)
+            )
 
             Swal.fire({
                icon: 'success',
@@ -93,6 +100,44 @@ export default function Sessions() {
          })
    }
 
+   const handelEditSessionName = (id, name) => {
+      updateSession(id, { name })
+         .then((resData) => {
+            setSessions((prevData) =>
+               prevData.map((session) => {
+                  if (session.id === id) {
+                     session.name = name
+                  }
+                  return session
+               })
+            )
+
+            Swal.fire({
+               icon: 'success',
+               title: resData?.message,
+               showConfirmButton: false,
+               timer: 1500,
+            })
+         })
+         .catch((err) => {
+            if (err.name === 'AxiosError') {
+               if (!err?.response?.data) {
+                  return Swal.fire({
+                     icon: 'error',
+                     title: 'خطأ',
+                     text: `${err.message}`,
+                  })
+               }
+               return handelApiData(err.response.data)
+            }
+
+            Swal.fire({
+               icon: 'error',
+               title: 'خطأ',
+               text: `${err.message}`,
+            })
+         })
+   }
 
    return (
       <Container
@@ -146,7 +191,12 @@ export default function Sessions() {
             </Button>
          </HtmlTooltip>
          {sessions?.map((session, index) => (
-            <SessionAccordionSuppliesList key={index} session={session} handelDeleteSession={handelDeleteSession} />
+            <SessionAccordionSuppliesList
+               key={index}
+               session={session}
+               handelDeleteSession={handelDeleteSession}
+               handelEditSessionName={handelEditSessionName}
+            />
          ))}
       </Container>
    )
