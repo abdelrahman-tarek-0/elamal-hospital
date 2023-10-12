@@ -8,7 +8,7 @@ import { Box, CardActions, Divider, Chip } from '@mui/material'
 import { Delete, Edit } from '@mui/icons-material'
 import HtmlTooltip from '../../components/HtmlToolTip'
 
-export default function SessionSupplyCard({ supply }) {
+export default function SessionSupplyCard({ supply, handelRemoveSupply }) {
    return (
       <Card sx={{ width: '100%' }} elevation={3}>
          <CardContent
@@ -54,6 +54,9 @@ export default function SessionSupplyCard({ supply }) {
                         sx={{
                            cursor: 'pointer',
                            fontSize: '1rem',
+                        }}
+                        onClick={() => {
+                           handelRemoveSupply(supply)
                         }}
                      />
                   </HtmlTooltip>

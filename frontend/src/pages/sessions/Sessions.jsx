@@ -161,6 +161,47 @@ export default function Sessions() {
          })
    }
 
+   const handelRemoveSupply = (sessionId, supplyId) => {
+      updateSession(sessionId, {
+         supplies: [
+            ...(sessions?.find((session) => session.id === sessionId)
+               ?.Supplies || []).filter((s) => s.id !== supplyId),
+         ],
+      })
+         .then((resData) => {
+            getAllSessions().then((res) => {
+               setSessions(res?.data || [])
+            })
+
+            setOpenAddSupply(false)
+
+            Swal.fire({
+               icon: 'success',
+               title: resData?.message,
+               showConfirmButton: false,
+               timer: 1500,
+            })
+         })
+         .catch((err) => {
+            if (err.name === 'AxiosError') {
+               if (!err?.response?.data) {
+                  return Swal.fire({
+                     icon: 'error',
+                     title: 'خطأ',
+                     text: `${err.message}`,
+                  })
+               }
+               return handelApiData(err.response.data)
+            }
+
+            Swal.fire({
+               icon: 'error',
+               title: 'خطأ',
+               text: `${err.message}`,
+            })
+         })
+   }
+
    const toggleEdit = (session) => {
       setEditingSession(session)
       setOpenEdit(true)
@@ -282,7 +323,7 @@ export default function Sessions() {
                key={index}
                session={session}
                handelDeleteSession={handelDeleteSession}
-               handelEditSessionName={handelEditSessionName}
+               handelRemoveSupply={handelRemoveSupply}
                toggleEdit={toggleEdit}
                toggleAddSupply={toggleAddSupply}
             />

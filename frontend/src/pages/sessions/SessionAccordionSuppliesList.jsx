@@ -19,15 +19,13 @@ import { Delete, Edit } from '@mui/icons-material'
 
 import Swal from 'sweetalert2'
 
-
 export default function SessionAccordionSuppliesList({
    session,
    handelDeleteSession,
+   handelRemoveSupply,
    toggleEdit,
    toggleAddSupply,
 }) {
-
-
    const handelDelete = (name, id) => {
       Swal.fire({
          title: `هل أنت متأكد من حذف '${name}' ؟`,
@@ -66,7 +64,13 @@ export default function SessionAccordionSuppliesList({
                >
                   {session?.Supplies?.map((supply) => (
                      <ListItem key={supply.id}>
-                        <SessionSupplyCard supply={supply} />
+                        <SessionSupplyCard
+                           supply={supply}
+                           handelRemoveSupply={(supply)=>{
+                              handelRemoveSupply(session?.id, supply?.id)
+                           }}
+                           sessionId={session?.id}
+                        />
                      </ListItem>
                   ))}
                </List>
