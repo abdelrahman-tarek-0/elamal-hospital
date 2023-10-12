@@ -15,12 +15,15 @@ import HtmlTooltip from '../../components/HtmlToolTip'
 import { AddCircle } from '@mui/icons-material'
 
 import SessionSupplyCard from './SessionSupplyCard'
+import { Delete, Edit } from '@mui/icons-material'
 
 export default function SessionAccordionSuppliesList({ session }) {
    return (
-      <Accordion elevation={5}>
+      <Accordion elevation={5} sx={{
+         color: '#365c00',
+      }}>
          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography component="h4" variant="h4">
+            <Typography component="h4" variant="h4" >
                {session?.name || ''}
             </Typography>
          </AccordionSummary>
@@ -33,7 +36,7 @@ export default function SessionAccordionSuppliesList({ session }) {
                }}
             >
                {session.Supplies.map((supply) => (
-                  <ListItem key={supply.id}>
+                  <ListItem key={supply.id} >
                      <SessionSupplyCard supply={supply} />
                   </ListItem>
                ))}
@@ -61,6 +64,28 @@ export default function SessionAccordionSuppliesList({ session }) {
                      }}
                   />
                </HtmlTooltip>
+            </Box>
+            <Box
+               sx={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'flex-start',
+               }}
+            >
+               <Edit
+                   color="success"
+                  sx={{
+                     cursor: 'pointer',
+                     marginLeft: '10px',
+                  }}
+               />
+               <Delete
+                  color="error"
+                  sx={{
+                     cursor: 'pointer',
+                     marginLeft: '10px',
+                  }}
+               />
             </Box>
          </AccordionDetails>
       </Accordion>
