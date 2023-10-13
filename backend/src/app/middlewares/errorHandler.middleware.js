@@ -4,6 +4,8 @@ const resBuilder = require('../utils/response.builder.js');
 
 const arMapper = {
     'name':'الأسم',
+    'SupplyId':"المستلزم",
+    'SessionId':"المستلزم",
 };
 
 const errorHandler = (err, req, res, next) => {
