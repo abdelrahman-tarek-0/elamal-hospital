@@ -123,19 +123,16 @@ export default function Sessions() {
    }
 
    const handelAddSupply = (sessionId, supplyId, quantity) => {
-      const targetedSession = sessions?.find((session) => session.id === sessionId) || {}
+      const targetedSession =
+         sessions?.find((session) => session.id === sessionId) || {}
 
-      const prevSupplies = targetedSession?.Supplies?.map((s)=>{
-         return {id: s?.id, quantity: s?.SessionSupply?.quantity}
-      }) || []
-   
-
+      const prevSupplies =
+         targetedSession?.Supplies?.map((s) => {
+            return { id: s?.id, quantity: s?.SessionSupply?.quantity }
+         }) || []
 
       updateSession(sessionId, {
-         supplies: [
-            { id: supplyId, quantity },
-            ...(prevSupplies),
-         ],
+         supplies: [{ id: supplyId, quantity }, ...prevSupplies],
       })
          .then((resData) => {
             getAllSessions().then((res) => {
@@ -172,13 +169,14 @@ export default function Sessions() {
    }
 
    const handelRemoveSupply = (sessionId, supplyId) => {
-      const targetedSession = sessions?.find((session) => session.id === sessionId) || {}
+      const targetedSession =
+         sessions?.find((session) => session.id === sessionId) || {}
 
-      let filteredSupplies = targetedSession?.Supplies?.filter((s) => s.id !== supplyId) || []
+      let filteredSupplies =
+         targetedSession?.Supplies?.filter((s) => s.id !== supplyId) || []
       filteredSupplies = filteredSupplies.map((s) => {
          return { id: s?.id, quantity: s?.SessionSupply?.quantity }
       })
-
 
       updateSession(sessionId, {
          supplies: [...filteredSupplies],
@@ -216,7 +214,7 @@ export default function Sessions() {
             })
          })
    }
- 
+
    const handelEditSessionName = (id, name) => {
       updateSession(id, { name })
          .then((resData) => {
@@ -267,7 +265,6 @@ export default function Sessions() {
       setEditingSession(session)
       setOpenAddSupply(true)
    }
-
 
    return (
       <Container
