@@ -2,7 +2,7 @@ import * as React from 'react'
 
 import Container from '@mui/material/Container'
 
-import { Typography, Button } from '@mui/material'
+import { Typography, Button, Box } from '@mui/material'
 import { AddCircle } from '@mui/icons-material'
 
 import Swal from 'sweetalert2'
@@ -184,7 +184,7 @@ export default function Sessions() {
 
       let filteredSupplies =
          targetedSession?.Supplies?.filter((s) => s.id !== supplyId) || []
-      filteredSupplies = filteredSupplies.map((s) => {
+      filteredSupplies = filteredSupplies?.map((s) => {
          return { id: s?.id, quantity: s?.SessionSupply?.quantity }
       })
 
@@ -271,7 +271,7 @@ export default function Sessions() {
          sessions?.find((session) => session.id === sessionId) || {}
       const fixedSupplies =
          targetedSession?.Supplies?.map((s) => {
-            if (s.id === supplyId) {
+            if (s?.id === supplyId) {
                s.SessionSupply.quantity = quantity
             }
             return { id: s?.id, quantity: s?.SessionSupply?.quantity }
@@ -311,7 +311,7 @@ export default function Sessions() {
                title: 'خطأ',
                text: `${err.message}`,
             })
-      })
+         })
    }
 
    const toggleEdit = (session) => {
@@ -359,7 +359,7 @@ export default function Sessions() {
             session={EditingSession}
             handelAddSupply={handelAddSupply}
          />
-         
+
          <EditSupplySessionModal
             open={openSupplyEdit}
             handleClose={() => setOpenSupplyEdit(false)}

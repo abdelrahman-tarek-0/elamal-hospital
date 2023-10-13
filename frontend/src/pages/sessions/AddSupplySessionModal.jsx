@@ -43,10 +43,10 @@ export default function AddSupplySessionModal({
       const sup = JSON.parse(localStorage.getItem('supplies'))
       const sessionSupplies = session?.Supplies
 
-      const filteredSupplies = sup.filter((s) => {
+      const filteredSupplies = sup?.filter((s) => {
          const isExist = sessionSupplies?.find((ss) => ss.id === s.id)
          return !isExist
-      })
+      }) || []
 
       setSupplies(filteredSupplies)
       setSupplyId('')
