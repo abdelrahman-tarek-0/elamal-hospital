@@ -37,7 +37,7 @@ export default function AddSupplySessionModal({
    }
 
    const [supplies, setSupplies] = React.useState([])
-   const [supplyId, setSupplyId] = React.useState(null)
+   const [supplyId, setSupplyId] = React.useState('')
 
    React.useEffect(() => {
       const sup = JSON.parse(localStorage.getItem('supplies'))
@@ -49,7 +49,7 @@ export default function AddSupplySessionModal({
       })
 
       setSupplies(filteredSupplies)
-      setSupplyId(null)
+      setSupplyId('')
    }, [session])
 
 

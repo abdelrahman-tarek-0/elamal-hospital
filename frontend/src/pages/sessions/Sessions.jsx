@@ -123,12 +123,18 @@ export default function Sessions() {
    }
 
    const handelAddSupply = (sessionId, supplyId, quantity) => {
-      console.log(sessions)
+      const targetedSession = sessions?.find((session) => session.id === sessionId) || {}
+
+      const prevSupplies = targetedSession?.Supplies?.map((s)=>{
+         return {id: s?.id, quantity: s?.SessionSupply?.quantity}
+      }) || []
+   
+
+
       updateSession(sessionId, {
          supplies: [
             { id: supplyId, quantity },
-            ...(sessions?.find((session) => session.id === sessionId)
-               ?.Supplies || []),
+            ...(prevSupplies),
          ],
       })
          .then((resData) => {
@@ -166,11 +172,16 @@ export default function Sessions() {
    }
 
    const handelRemoveSupply = (sessionId, supplyId) => {
+      const targetedSession = sessions?.find((session) => session.id === sessionId) || {}
+
+      let filteredSupplies = targetedSession?.Supplies?.filter((s) => s.id !== supplyId) || []
+      filteredSupplies = filteredSupplies.map((s) => {
+         return { id: s?.id, quantity: s?.SessionSupply?.quantity }
+      })
+
+
       updateSession(sessionId, {
-         supplies: [
-            ...(sessions?.find((session) => session.id === sessionId)
-               ?.Supplies || []).filter((s) => s.id !== supplyId),
-         ],
+         supplies: [...filteredSupplies],
       })
          .then((resData) => {
             getAllSessions().then((res) => {
