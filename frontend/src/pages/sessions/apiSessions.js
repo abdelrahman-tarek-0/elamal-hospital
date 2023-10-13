@@ -31,3 +31,10 @@ export const updateSession = async (id, newData) => {
 
     return res
 }
+
+export const checkSession = async (id) => {
+    const response = await apiSessions.get(`/${id}/check`)
+    const res = response?.data
+
+    return res
+}

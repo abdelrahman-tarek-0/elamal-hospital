@@ -83,7 +83,7 @@ exports.checkSession = catchAsync(async (req, res) => {
          code: 'RESOURCES_NOT_FOUND',
       })
 
-   if (!session?.Supplies) {
+   if (!session?.Supplies?.length > 0) {
       return resBuilder(
          res,
          200,
@@ -114,7 +114,7 @@ exports.checkSession = catchAsync(async (req, res) => {
       if (supply.stock < sessionSupplyData?.quantity) {
          isOkayToUpdate = false
          meta.push({
-            message: `المستلزم (${supply.id})'${supply.name}' يحتوي علي ${supply.stock} بينما تحوال استخدام ${sessionSupplyData?.quantity} لا يوجد موارد كافية`,
+            message: `المستلزم '${supply.name}' يحتوي علي ${supply.stock} بينما تحوال استخدام ${sessionSupplyData?.quantity} لا يوجد موارد كافية`,
             level: 'error',
          })
       } else {
@@ -133,7 +133,7 @@ exports.checkSession = catchAsync(async (req, res) => {
          totalQuantitySupplies += sessionSupplyData?.quantity
 
          meta.push({
-            message: `المستلزم (${supply.id})'${supply.name}' سيتم استخدام ${sessionSupplyData?.quantity} بقيمة ${totalProfit} جنيه`,
+            message: `المستلزم '${supply.name}' سيتم استخدام ${sessionSupplyData?.quantity} صافي ربح ${totalProfit} جنيه`,
             level: 'info',
          })
       }
@@ -141,8 +141,8 @@ exports.checkSession = catchAsync(async (req, res) => {
    }
 
    meta.push({
-      message: `سيتم استخدام عدد ${totalSupplies} من المستلزمات بكمية ${totalQuantitySupplies} بقيمة ${totalSuppliesProfit} جنيه`,
-      level: 'info',
+      message: `سيتم استخدام عدد ${totalSupplies} من المستلزمات بكمية ${totalQuantitySupplies} بصافي ربح ${totalSuppliesProfit} جنيه`,
+      level: 'summary',
    })
 
    if (isOkayToUpdate) {
@@ -168,7 +168,7 @@ exports.useSession = catchAsync(async (req, res) => {
          code: 'RESOURCES_NOT_FOUND',
       })
 
-   if (!session?.Supplies) {
+   if (!session?.Supplies?.length > 0) {
       return resBuilder(
          res,
          200,
@@ -199,7 +199,7 @@ exports.useSession = catchAsync(async (req, res) => {
       if (supply.stock < sessionSupplyData?.quantity) {
          isOkayToUpdate = false
          meta.push({
-            message: `المستلزم (${supply.id})'${supply.name}' يحتوي علي ${supply.stock} بينما تحوال استخدام ${sessionSupplyData?.quantity} لا يوجد موارد كافية`,
+            message: `المستلزم '${supply.name}' يحتوي علي ${supply.stock} بينما تحوال استخدام ${sessionSupplyData?.quantity} لا يوجد موارد كافية`,
             level: 'error',
          })
       } else {
@@ -215,15 +215,15 @@ exports.useSession = catchAsync(async (req, res) => {
          totalSuppliesProfit += totalProfit
 
          meta.push({
-            message: `المستلزم (${supply.id})'${supply.name}' سيتم او تم استخدام ${sessionSupplyData?.quantity} بقيمة ${totalProfit} جنيه`,
+            message: `المستلزم '${supply.name}' سيتم او تم استخدام ${sessionSupplyData?.quantity} بصافي ربح ${totalProfit} جنيه`,
             level: 'info',
          })
       }
       i = i + 1
    }
    meta.push({
-      message: `اجمالي المستلزمات ${i} بقيمة ${totalSuppliesProfit} جنيه`,
-      level: 'info',
+      message: `اجمالي المستلزمات ${i} بصافي ربح ${totalSuppliesProfit} جنيه`,
+      level: 'summary',
    })
 
    if (isOkayToUpdate) {

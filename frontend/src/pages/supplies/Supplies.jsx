@@ -12,7 +12,7 @@ import {
    updateSupply,
    changeSupplyStock,
 } from './apiSupplies'
-import { getAllSessions } from '../sessions/apiSessions'
+import { getAllSessions, checkSession } from '../sessions/apiSessions'
 
 import handelApiData from '../../utils/handelApiRes'
 import HtmlTooltip from '../../components/HtmlToolTip'
@@ -58,6 +58,47 @@ const headCells = [
       label: 'العمليات',
    },
 ]
+const colorLevelMap = {
+   error: '#F44336',
+   success: '#4CAF50',
+   warning: '#FFC107',
+   info: '#2196F3',
+   default: '#607D8B',
+}
+const alertBeforeUseSession = (checker) => {
+   const msg = checker?.message || 'هناك خطأ ما'
+
+   const msgs = checker?.meta?.map((m,i) => {
+      const message = m?.message || 'هناك خطأ ما'
+      const level = m?.level || null
+
+      const isSummary = level === 'summary'
+      return `
+            <li style="color: ${isSummary? '#B1B3B9' : (
+               level? colorLevelMap[level] : colorLevelMap['default']
+            )}; margin:10px; padding:10px; border:${
+               isSummary? '1px solid #CACACA' : 'none'
+            }; background:${
+               isSummary? '#EEEEEE' : 'none'
+            }">${message}</li> 
+      `
+   })
+
+   Swal.fire({
+      icon: checker?.isOkayToUpdate ? 'info' : 'error',
+      title: msg,
+      html: `
+            <ul>
+               ${msgs.join('')}
+            </ul>
+      `,
+      showConfirmButton: checker?.isOkayToUpdate? true : false,
+      confirmButtonText: 'موافق',
+      cancelButtonText: 'إلغاء',
+
+      showCancelButton: true,
+   })
+}
 
 export default function Supplies() {
    // const [maxWidth, setMaxWidth] = useLocalStorage(
@@ -86,6 +127,32 @@ export default function Supplies() {
                showConfirmButton: false,
                timer: 1500,
             })
+         })
+         .catch((err) => {
+            if (err.name === 'AxiosError') {
+               if (!err?.response?.data) {
+                  return Swal.fire({
+                     icon: 'error',
+                     title: 'خطأ',
+                     text: `${err.message}`,
+                  })
+               }
+
+               return handelApiData(err.response.data)
+            }
+
+            Swal.fire({
+               icon: 'error',
+               title: 'خطأ',
+               text: `${err.message}`,
+            })
+         })
+   }
+
+   const handelCheckSession = (id) => {
+      checkSession(id)
+         .then((resData) => {
+            alertBeforeUseSession(resData)
          })
          .catch((err) => {
             if (err.name === 'AxiosError') {
@@ -322,7 +389,11 @@ export default function Supplies() {
             </Typography>
 
             {sessions?.map((session) => (
-               <SessionButton key={session?.id} session={session} />
+               <SessionButton
+                  key={session?.id}
+                  session={session}
+                  handelCheckSession={() => handelCheckSession(session?.id)}
+               />
             ))}
 
             <HtmlTooltip
@@ -357,7 +428,8 @@ export default function Supplies() {
                      direction: 'ltr',
                      width: '100%',
                   }}
-                  onClick={() => setOpenAdd(true)}
+                  //onClick={() => setOpenAdd(true)}
+                  // onClick={testSweatDisableConfirm}
                >
                   <AddCircle sx={{ mr: 1 }} />
                   انشاء فاتورة سريعة

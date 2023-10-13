@@ -42,7 +42,7 @@ function ItemPaper({ supply }) {
    )
 }
 
-export default function SessionButton({ session }) {
+export default function SessionButton({ session,handelCheckSession }) {
    return (
       <HtmlTooltip
          arrow
@@ -84,11 +84,18 @@ export default function SessionButton({ session }) {
                marginBottom: '20px',
                direction: 'ltr',
                width: '100%',
+
+               display: 'flex',
+               justifyContent: 'space-between',
+
             }}
             // onClick={() => setOpenAdd(true)}
+            onClick={() => handelCheckSession()}
          >
             <AdsClickIcon sx={{ mr: 1 }} />
-            {session?.name || ''}
+            <Typography color="inherit" sx={{ fontSize: '1rem' }}> 
+               {session?.name || ''}
+            </Typography>
          </Button>
       </HtmlTooltip>
    )
