@@ -60,6 +60,7 @@ export default function Supplies() {
    const [data, setData] = useLocalStorage('supplies', [])
    const [openAdd, setOpenAdd] = useLocalStorage('AddSupplyForm_open', false)
    const [openEdit, setOpenEdit] = useLocalStorage('EditSupplyForm_open', false)
+   const [openCollapseEdit, setOpenCollapseEdit] = useLocalStorage('EditSupplyModal_collapse_edit',false)
 
    const handelAddSupply = (newSupply) => {
       addSupply(newSupply)
@@ -187,6 +188,7 @@ export default function Supplies() {
                })
             )
             setOpenEdit(false)
+            setOpenCollapseEdit(false)
 
             Swal.fire({
                icon: 'success',
@@ -269,6 +271,8 @@ export default function Supplies() {
             openEdit={openEdit}
             setOpenEdit={setOpenEdit}
             handelEditSupply={handelEditSupply}
+            openCollapseEdit={openCollapseEdit}
+            setOpenCollapseEdit={setOpenCollapseEdit}
          />
       </Container>
    )

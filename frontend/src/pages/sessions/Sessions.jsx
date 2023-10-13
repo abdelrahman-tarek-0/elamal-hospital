@@ -24,6 +24,7 @@ import handelApiData from '../../utils/handelApiRes'
 import CreateSessionModal from './CreateSessionModal'
 import EditSessionModal from './EditSessionModal'
 import AddSupplySessionModal from './AddSupplySessionModal'
+import EditSupplySessionModal from './EditSupplySessionModal'
 
 export default function Sessions() {
    const [sessions, setSessions] = useLocalStorage('sessions', [])
@@ -46,6 +47,15 @@ export default function Sessions() {
    const [EditingSession, setEditingSession] = useLocalStorage(
       'EditingSession',
       {}
+   )
+   const [EditingSupplySession, setEditingSupplySession] = useLocalStorage(
+      'EditingSupplySession',
+      {}
+   )
+
+   const [openSupplyEdit, setOpenSupplyEdit] = useLocalStorage(
+      'EditSupplySession_Form_open',
+      false
    )
 
    React.useEffect(() => {
@@ -256,9 +266,64 @@ export default function Sessions() {
          })
    }
 
+   const handelEditSupplyQuantity = (sessionId, supplyId, quantity) => {
+      const targetedSession =
+         sessions?.find((session) => session.id === sessionId) || {}
+      const fixedSupplies =
+         targetedSession?.Supplies?.map((s) => {
+            if (s.id === supplyId) {
+               s.SessionSupply.quantity = quantity
+            }
+            return { id: s?.id, quantity: s?.SessionSupply?.quantity }
+         }) || []
+
+      updateSession(sessionId, {
+         supplies: [...fixedSupplies],
+      })
+         .then((resData) => {
+            getAllSessions().then((res) => {
+               setSessions(res?.data || [])
+            })
+
+            setOpenSupplyEdit(false)
+
+            Swal.fire({
+               icon: 'success',
+               title: resData?.message,
+               showConfirmButton: false,
+               timer: 1500,
+            })
+         })
+         .catch((err) => {
+            if (err.name === 'AxiosError') {
+               if (!err?.response?.data) {
+                  return Swal.fire({
+                     icon: 'error',
+                     title: 'خطأ',
+                     text: `${err.message}`,
+                  })
+               }
+               return handelApiData(err.response.data)
+            }
+
+            Swal.fire({
+               icon: 'error',
+               title: 'خطأ',
+               text: `${err.message}`,
+            })
+      })
+   }
+
    const toggleEdit = (session) => {
       setEditingSession(session)
       setOpenEdit(true)
+   }
+
+   const toggleEditSupply = (session, supply) => {
+      setEditingSession(session)
+      setEditingSupplySession(supply)
+
+      setOpenSupplyEdit(true)
    }
 
    const toggleAddSupply = (session) => {
@@ -293,6 +358,14 @@ export default function Sessions() {
             handleClose={() => setOpenAddSupply(false)}
             session={EditingSession}
             handelAddSupply={handelAddSupply}
+         />
+         
+         <EditSupplySessionModal
+            open={openSupplyEdit}
+            handleClose={() => setOpenSupplyEdit(false)}
+            session={EditingSession}
+            supply={EditingSupplySession}
+            handelEditSupplyQuantity={handelEditSupplyQuantity}
          />
 
          <HtmlTooltip
@@ -340,6 +413,7 @@ export default function Sessions() {
                handelRemoveSupply={handelRemoveSupply}
                toggleEdit={toggleEdit}
                toggleAddSupply={toggleAddSupply}
+               toggleEditSupply={toggleEditSupply}
             />
          ))}
       </Container>

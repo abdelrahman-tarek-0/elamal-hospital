@@ -39,6 +39,8 @@ export default function EditSupplyModal({
    supply,
    handelChangeSupplyStock,
    handelEditSupply,
+   openCollapse,
+   setOpenCollapse
 }) {
    const onCloseClick = (event, reason) => {
       handleClose()
@@ -54,7 +56,6 @@ export default function EditSupplyModal({
    const [buyingPrice, setBuyingPrice] = React.useState(0)
    const [sellingPrice, setSellingPrice] = React.useState(0)
 
-   const [openCollapse, setOpenCollapse] = useLocalStorage('EditSupplyModal_collapse_edit',false)
 
    React.useEffect(() => {
       setName(supply.name)

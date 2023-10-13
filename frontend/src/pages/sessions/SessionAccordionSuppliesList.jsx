@@ -25,6 +25,7 @@ export default function SessionAccordionSuppliesList({
    handelRemoveSupply,
    toggleEdit,
    toggleAddSupply,
+   toggleEditSupply
 }) {
    const handelDelete = (name, id) => {
       Swal.fire({
@@ -69,7 +70,7 @@ export default function SessionAccordionSuppliesList({
                            handelRemoveSupply={(supply)=>{
                               handelRemoveSupply(session?.id, supply?.id)
                            }}
-                           sessionId={session?.id}
+                           toggleEditSupply={(supply)=>toggleEditSupply(session,supply)}
                         />
                      </ListItem>
                   ))}

@@ -132,7 +132,9 @@ export default function EnhancedTable({
    setOpenAdd,
    openEdit,
    setOpenEdit,
-   handelEditSupply
+   handelEditSupply,
+   openCollapseEdit,
+   setOpenCollapseEdit
 }) {
    const [order, setOrder] = useLocalStorage('EnhancedTable_order', 'asc')
    const [orderBy, setOrderBy] = useLocalStorage(
@@ -237,6 +239,8 @@ export default function EnhancedTable({
             handelChangeSupplyStock={handelChangeSupplyStock}
             supply={editRow}
             handelEditSupply={handelEditSupply}
+            openCollapse={openCollapseEdit}
+            setOpenCollapse={setOpenCollapseEdit}
          />
 
          <Paper sx={{ width: '100%', mb: 2, p: 2 }} elevation={8}>
@@ -352,12 +356,12 @@ export default function EnhancedTable({
                                  //  id={labelId}
                                  //  scope="row"
                                  //  padding="none"
-                                 sx={{ fontSize: '1.5em' }}
+                                 sx={{ fontSize: '1.5em' , direction:'rtl'}}
                               >
                                  {row.name}
                               </TableCell>
-                              <TableCell sx={{ fontSize: '1em' }}>
-                                 {row.description}
+                              <TableCell sx={{ fontSize: '1em', direction:'rtl' }}>
+                                 {row.description }
                               </TableCell>
                               <TableCell align="right" sx={{ fontSize: '1em' }}>
                                  {row.stock}

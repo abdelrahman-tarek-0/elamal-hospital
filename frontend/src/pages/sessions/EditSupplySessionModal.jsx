@@ -20,7 +20,7 @@ const style = {
    hight: '100%',
 }
 
-export default function EditSessionModal({
+export default function EditSupplySessionModal({
    open,
    handleClose,
    supply,
@@ -32,8 +32,10 @@ export default function EditSessionModal({
    }
 
    const [quantity, setQuantity] = React.useState(
-      supply?.SupplySession?.quantity
+      supply?.SessionSupply?.quantity
    )
+
+
 
    const handleSubmit = (e) => {
       e.preventDefault()
@@ -81,7 +83,7 @@ export default function EditSessionModal({
                      <TextField
                         label="الكمية"
                         onChange={(e) => setQuantity(Number(e.target.value))}
-                        defaultValue={supply?.SupplySession?.quantity}
+                        defaultValue={supply?.SessionSupply?.quantity}
                         InputProps={{
                            inputProps: { min: 0 },
                         }}
@@ -91,6 +93,7 @@ export default function EditSessionModal({
                         sx={{
                            width: '100%',
                            marginBottom: '20px',
+                           marginTop: '20px',
                         }}
                         required
                      />
