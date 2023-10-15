@@ -48,7 +48,7 @@ Bill.init(
    },
    {
       sequelize: connection,
-      modelName: 'Session',
+      modelName: 'Bill',
    }
 )
 
@@ -74,7 +74,7 @@ BillDetail.init(
    },
    {
       sequelize: connection,
-      modelName: 'SessionSupply',
+      modelName: 'BillDetail',
    }
 )
 
