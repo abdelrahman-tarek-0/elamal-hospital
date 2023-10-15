@@ -1,6 +1,7 @@
 const Session = require('./sessions.model')
 const Supply = require('../supplies/supplies.model')
 const { SessionSupply } = require('../_common/models.associations')
+const Bill = require('../bills/bills.model')
 
 const resBuilder = require('../../utils/response.builder')
 const ErrorBuilder = require('../../utils/error.builder')
@@ -137,7 +138,6 @@ exports.checkSession = catchAsync(async (req, res) => {
             level: 'info',
          })
       }
-      
    }
 
    meta.push({
@@ -182,7 +182,6 @@ exports.useSession = catchAsync(async (req, res) => {
                },
             ],
             isUpdated: false,
-
          }
       )
    }
@@ -226,12 +225,25 @@ exports.useSession = catchAsync(async (req, res) => {
       level: 'summary',
    })
 
+   
    if (isOkayToUpdate) {
       const supplies = await Supply.updateManySupplies(updatedSupplies)
+
+      const bill = await Bill.createBill(
+         'bill',
+         supplies.map((supply) => ({
+            supplyId: supply?.id ?? -1,
+            supplyName: supply?.name ?? 'غير معروف',
+            supplyBuyingPrice: supply?.buyingPrice ?? 0,
+            supplySellingPrice: supply?.sellingPrice ?? 0,
+            quantity: supply?.SessionSupply?.quantity ?? 0,
+         }))
+      ) || {}
 
       return resBuilder(res, 200, 'تم استخدام الجلسة', supplies, {
          meta,
          isUpdated: isOkayToUpdate,
+         bill,
       })
    }
 

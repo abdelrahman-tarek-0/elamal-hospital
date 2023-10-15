@@ -17,6 +17,7 @@ class Bill extends Model {
          await BillDetail.bulkCreate(
             supplies?.map((supply) => ({
                BillId: bill.id,
+               supplyId: supply.id,
                supplyName: supply.supplyName,
                supplyBuyingPrice: supply.supplyBuyingPrice,
                supplySellingPrice: supply.supplySellingPrice,
@@ -58,6 +59,10 @@ BillDetail.init(
          type: DataTypes.STRING,
          allowNull: false,
       },
+      supplyId: {
+         type: DataTypes.INTEGER,
+         allowNull: false,
+      },
       supplyBuyingPrice: {
          type: DataTypes.FLOAT,
          allowNull: false,
@@ -77,7 +82,6 @@ BillDetail.init(
       modelName: 'BillDetail',
    }
 )
-
 
 Bill.hasMany(BillDetail, {
    foreignKey: 'BillId',
