@@ -20,5 +20,8 @@
    "bugs": {
       "url": "https://github.com/abdelrahman-tarek-0/hospital-resources-tracking-system/issues"
    },
-   "homepage": "https://github.com/abdelrahman-tarek-0/hospital-resources-tracking-system#readme"
+   "homepage": "https://github.com/abdelrahman-tarek-0/hospital-resources-tracking-system#readme",
+   "dependencies": {
+      "moment": "^2.29.4"
+   }
 }

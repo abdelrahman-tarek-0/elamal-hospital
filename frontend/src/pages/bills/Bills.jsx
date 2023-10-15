@@ -16,9 +16,18 @@ import Typography from '@mui/material/Typography'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 
+import moment from 'moment'
+import 'moment/locale/ar'
+
+
+
 function Row(props) {
    const { row } = props
    const [open, setOpen] = React.useState(false)
+
+   const createdAt = `${moment().locale('ar').format("Do MMM YYYY")} ( ${moment(
+      row.createdAt
+   ).locale('ar').fromNow()} )`
 
    return (
       <React.Fragment>
@@ -54,17 +63,16 @@ function Row(props) {
             <TableCell
                align="right"
                sx={{
-                  fontSize: '1.2rem',
+                  fontSize: '1.1rem',
                }}
             >
-               {row.createdAt}
+               {createdAt}
             </TableCell>
          </TableRow>
          <TableRow>
             <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
                <Collapse in={open} timeout="auto" unmountOnExit>
                   <Box sx={{ margin: 1 }}>
-
                      <Table size="medium" aria-label="purchases">
                         <TableHead>
                            <TableRow>
@@ -88,48 +96,57 @@ function Row(props) {
                               <TableCell align="right">
                                  {row.type === 'مبيعات' ? 'صافي ربح' : 'مدفوع'}
                               </TableCell>
-                              {
-                                    row.type === 'مبيعات' ? 
-                                    <TableCell align="right">سعر كلي بيع</TableCell> :
-                                    null
-                              }
+                              {row.type === 'مبيعات' ? (
+                                 <TableCell align="right">
+                                    سعر كلي بيع
+                                 </TableCell>
+                              ) : null}
                               <TableCell align="right">الكمية</TableCell>
                            </TableRow>
                         </TableHead>
                         <TableBody>
                            {row.supplies.map((supply) => (
-                              <TableRow key={supply.id}>
+                              <TableRow key={supply.supplyId}>
                                  <TableCell component="th" scope="row">
-                                    {supply?.id}
+                                    {supply?.supplyId}
                                  </TableCell>
-                                 <TableCell>{supply?.name}</TableCell>
+                                 <TableCell>{supply?.supplyName}</TableCell>
                                  <TableCell align="right">
-                                   $ {supply?.buyingPrice}
+                                    $ {supply?.supplysupplyBuyingPrice}
                                  </TableCell>
                                  <TableCell align="right">
-                                   $ {supply?.sellingPrice}
+                                    $ {supply?.supplysupplySellingPrice}
                                  </TableCell>
-                                 <TableCell align="right" sx={{
-                                        fontWeight: 'bold',
-                                    }}>
-                                    $ {
-                                        row.type === 'مبيعات'?
-                                        (supply?.sellingPrice - supply?.buyingPrice) * supply?.quantity :
-                                        supply?.buyingPrice * supply?.quantity
-                                    }
+                                 <TableCell
+                                    align="right"
+                                    sx={{
+                                       fontWeight: 'bold',
+                                    }}
+                                 >
+                                    ${' '}
+                                    {row.type === 'مبيعات'
+                                       ? (supply?.supplySellingPrice -
+                                            supply?.supplyBuyingPrice) *
+                                         supply?.quantity
+                                       : supply?.supplyBuyingPrice * supply?.quantity}
                                  </TableCell>
-                                 {
-                                    row.type === 'مبيعات' ? 
-                                    <TableCell align="right" sx={{
-                                        fontWeight: 'bold',
-                                    }}>
-                                        $ {supply?.sellingPrice * supply?.quantity}
-                                    </TableCell> :
-                                    null
-                                 }
-                                 <TableCell align="right" sx={{
-                                        fontWeight: 'bold',
-                                    }}>
+                                 {row.type === 'مبيعات' ? (
+                                    <TableCell
+                                       align="right"
+                                       sx={{
+                                          fontWeight: 'bold',
+                                       }}
+                                    >
+                                       ${' '}
+                                       {supply?.supplySellingPrice * supply?.quantity}
+                                    </TableCell>
+                                 ) : null}
+                                 <TableCell
+                                    align="right"
+                                    sx={{
+                                       fontWeight: 'bold',
+                                    }}
+                                 >
                                     {supply?.quantity}
                                  </TableCell>
                               </TableRow>
@@ -148,48 +165,50 @@ const rows = [
    {
       id: 1,
       type: 'مبيعات',
-      createdAt: '2021-09-19',
+      createdAt: '2023-10-15T19:01:32.733Z',
       supplies: [
          {
-            id: 1,
+            supplyId: 1,
             name: 'انبول ثابل للطي علشان كبير',
-            buyingPrice: 10,
-            sellingPrice: 15,
+            supplyBuyingPrice: 10,
+            supplySellingPrice: 15,
             quantity: 5,
          },
          {
-            id: 2,
+            supplyId: 2,
             name: 'منظف',
-            buyingPrice: 10,
-            sellingPrice: 15,
+            supplyBuyingPrice: 10,
+            supplySellingPrice: 15,
             quantity: 5,
          },
       ],
    },
    {
-    id: 2,
-    type: 'اعادة تعبئة',
-    createdAt: '2021-09-19',
-    supplies: [
-       {
-          id: 1,
-          name: 'منظف',
-          buyingPrice: 10,
-          sellingPrice: 15,
-          quantity: 5,
-       },
-       {
-          id: 2,
-          name: 'منظف',
-          buyingPrice: 10,
-          sellingPrice: 15,
-          quantity: 5,
-       },
-    ],
- },
+      id: 2,
+      type: 'اعادة تعبئة',
+      createdAt: '2023-10-15T19:01:41.681Z',
+      supplies: [
+         {
+            supplyId: 1,
+            name: 'منظف',
+            supplyBuyingPrice: 10,
+            supplySellingPrice: 15,
+            quantity: 5,
+         },
+         {
+            supplyId: 2,
+            name: 'منظف',
+            supplyBuyingPrice: 10,
+            supplySellingPrice: 15,
+            quantity: 5,
+         },
+      ],
+   },
 ]
 
-function CollapsibleTable() {
+function CollapsibleTable({
+    rows
+}) {
    return (
       <TableContainer
          component={Paper}
@@ -233,7 +252,7 @@ function CollapsibleTable() {
             </TableHead>
             <TableBody>
                {rows.map((row) => (
-                  <Row key={row.name} row={row} />
+                  <Row key={row.id} row={row} />
                ))}
             </TableBody>
          </Table>
@@ -265,7 +284,7 @@ export default function Bills() {
             <Typography variant="h4" component="h1" gutterBottom>
                الفواتير
             </Typography>
-            <CollapsibleTable />
+            <CollapsibleTable  rows={rows}/>
          </Paper>
       </Container>
    )
