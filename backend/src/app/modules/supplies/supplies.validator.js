@@ -1,5 +1,5 @@
 const { body, param } = require('express-validator')
-const { handleValidationErrors, strict } = require('../common/base.validators')
+const { handleValidationErrors, strict } = require('../_common/base.validators')
 
 exports.getAllSupplies = [strict]
 

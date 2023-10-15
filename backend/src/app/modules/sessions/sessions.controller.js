@@ -1,6 +1,6 @@
 const Session = require('./sessions.model')
 const Supply = require('../supplies/supplies.model')
-const { SessionSupply } = require('../common/models.associations')
+const { SessionSupply } = require('../_common/models.associations')
 
 const resBuilder = require('../../utils/response.builder')
 const ErrorBuilder = require('../../utils/error.builder')
