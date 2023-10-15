@@ -38,3 +38,10 @@ export const checkSession = async (id) => {
 
     return res
 }
+
+export const triggerSession = async (id) => {
+    const response = await apiSessions.post(`/${id}/use`)
+    const res = response?.data
+
+    return res
+}

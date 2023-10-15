@@ -45,7 +45,7 @@ export default function SessionAccordionSuppliesList({
    return (
       <>
          <Accordion
-            elevation={5}
+            elevation={2}
             sx={{
                color: '#365c00',
             }}

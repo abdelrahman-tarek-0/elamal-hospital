@@ -215,7 +215,7 @@ exports.useSession = catchAsync(async (req, res) => {
          totalSuppliesProfit += totalProfit
 
          meta.push({
-            message: `المستلزم '${supply.name}' سيتم او تم استخدام ${sessionSupplyData?.quantity} بصافي ربح ${totalProfit} جنيه`,
+            message: `المستلزم '${supply.name}' تم استخدام ${sessionSupplyData?.quantity} بصافي ربح ${totalProfit} جنيه`,
             level: 'info',
          })
       }

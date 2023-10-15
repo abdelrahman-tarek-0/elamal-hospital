@@ -363,7 +363,7 @@ export default function EnhancedTable({
                               <TableCell sx={{ fontSize: '1em', direction:'rtl' }}>
                                  {row.description }
                               </TableCell>
-                              <TableCell align="right" sx={{ fontSize: '1em' }}>
+                              <TableCell align="right" sx={{ fontSize: '1.3em' }}>
                                  {row.stock}
                               </TableCell>
 

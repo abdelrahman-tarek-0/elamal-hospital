@@ -10,6 +10,8 @@ import Swal from 'sweetalert2'
 import SessionAccordionSuppliesList from './SessionAccordionSuppliesList'
 import useLocalStorage from '../../hooks/useLocalStorage'
 
+import Paper from '@mui/material/Paper'
+
 import {
    getAllSessions,
    createSession,
@@ -368,6 +370,9 @@ export default function Sessions() {
             handelEditSupplyQuantity={handelEditSupplyQuantity}
          />
 
+ 
+
+         <Paper sx={{ width: '100%', mb: 2, p: 2 }} elevation={8}>
          <HtmlTooltip
             arrow
             title={
@@ -397,6 +402,7 @@ export default function Sessions() {
                   },
                   marginBottom: '20px',
                   direction: 'ltr',
+                  width: '100%',
                }}
                onClick={() => setOpenAdd(true)}
             >
@@ -404,18 +410,18 @@ export default function Sessions() {
                إضافة
             </Button>
          </HtmlTooltip>
-
-         {sessions?.map((session, index) => (
-            <SessionAccordionSuppliesList
-               key={index}
-               session={session}
-               handelDeleteSession={handelDeleteSession}
-               handelRemoveSupply={handelRemoveSupply}
-               toggleEdit={toggleEdit}
-               toggleAddSupply={toggleAddSupply}
-               toggleEditSupply={toggleEditSupply}
-            />
-         ))}
+            {sessions?.map((session, index) => (
+               <SessionAccordionSuppliesList
+                  key={index}
+                  session={session}
+                  handelDeleteSession={handelDeleteSession}
+                  handelRemoveSupply={handelRemoveSupply}
+                  toggleEdit={toggleEdit}
+                  toggleAddSupply={toggleAddSupply}
+                  toggleEditSupply={toggleEditSupply}
+               />
+            ))}
+         </Paper>
       </Container>
    )
 }
