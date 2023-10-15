@@ -18,6 +18,10 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 
 import moment from 'moment'
 import 'moment/locale/ar'
+import Swal from 'sweetalert2'
+import useLocalStorage from '../../hooks/useLocalStorage'
+
+import { getAllBills } from './apiBills'
 
 function Row(props) {
    const { row } = props
@@ -43,7 +47,7 @@ function Row(props) {
                   fontSize: '1.2rem',
                }}
             >
-               {row.id}
+               {row?.id}
             </TableCell>
             <TableCell
                //    align="right"
@@ -52,7 +56,7 @@ function Row(props) {
                   fontSize: '1.2rem',
                }}
             >
-               {row.type}
+               {row?.type}
             </TableCell>
             <TableCell
                align="right"
@@ -60,9 +64,9 @@ function Row(props) {
                   fontSize: '1.1rem',
                }}
             >
-               {`${moment(row.createdAt)
+               {`${moment(row?.createdAt)
                   .locale('ar')
-                  .format('Do MMM YYYY')} ( ${moment(row.createdAt)
+                  .format('Do MMM YYYY')} ( ${moment(row?.createdAt)
                   .locale('ar')
                   .fromNow()} )`}
             </TableCell>
@@ -103,17 +107,17 @@ function Row(props) {
                            </TableRow>
                         </TableHead>
                         <TableBody>
-                           {row.supplies.map((supply) => (
+                           {row?.billDetails?.map((supply) => (
                               <TableRow key={supply.supplyId}>
                                  <TableCell component="th" scope="row">
                                     {supply?.supplyId}
                                  </TableCell>
                                  <TableCell>{supply?.supplyName}</TableCell>
                                  <TableCell align="right">
-                                    $ {supply?.supplysupplyBuyingPrice}
+                                    $ {supply?.supplyBuyingPrice}
                                  </TableCell>
                                  <TableCell align="right">
-                                    $ {supply?.supplysupplySellingPrice}
+                                    $ {supply?.supplySellingPrice}
                                  </TableCell>
                                  <TableCell
                                     align="right"
@@ -161,51 +165,6 @@ function Row(props) {
    )
 }
 
-const rows = [
-   {
-      id: 1,
-      type: 'مبيعات',
-      createdAt: '2023-10-15T19:01:32.733Z',
-      supplies: [
-         {
-            supplyId: 1,
-            name: 'انبول ثابل للطي علشان كبير',
-            supplyBuyingPrice: 10,
-            supplySellingPrice: 15,
-            quantity: 5,
-         },
-         {
-            supplyId: 2,
-            name: 'منظف',
-            supplyBuyingPrice: 10,
-            supplySellingPrice: 15,
-            quantity: 5,
-         },
-      ],
-   },
-   {
-      id: 2,
-      type: 'اعادة تعبئة',
-      createdAt: '2023-10-15T19:01:41.681Z',
-      supplies: [
-         {
-            supplyId: 1,
-            name: 'منظف',
-            supplyBuyingPrice: 10,
-            supplySellingPrice: 15,
-            quantity: 5,
-         },
-         {
-            supplyId: 2,
-            name: 'منظف',
-            supplyBuyingPrice: 10,
-            supplySellingPrice: 15,
-            quantity: 5,
-         },
-      ],
-   },
-]
-
 function CollapsibleTable({ rows }) {
    return (
       <TableContainer
@@ -249,9 +208,7 @@ function CollapsibleTable({ rows }) {
                </TableRow>
             </TableHead>
             <TableBody>
-               {rows.map((row) => (
-                  <Row key={row.id} row={row} />
-               ))}
+               {rows?.map((row) => <Row key={row.id} row={row} />) || null}
             </TableBody>
          </Table>
       </TableContainer>
@@ -259,6 +216,25 @@ function CollapsibleTable({ rows }) {
 }
 
 export default function Bills() {
+   const [bills, setBills] = useLocalStorage('bills', [])
+
+   React.useEffect(() => {
+      getAllBills().then((res) => {
+         let resBills = []
+
+         if (res?.data && res?.data?.length > 0) {
+            resBills = res?.data.map((bill) => {
+               return {
+                  ...bill,
+                  type: bill?.type === 'bill' ? 'مبيعات' : 'اعادة تعبئة',
+               }
+            })
+         }
+
+         setBills(resBills || [])
+         console.log(resBills)
+      })
+   }, [])
    return (
       <Container
          variant="main"
@@ -282,7 +258,7 @@ export default function Bills() {
             <Typography variant="h4" component="h1" gutterBottom>
                الفواتير
             </Typography>
-            <CollapsibleTable rows={rows} />
+            <CollapsibleTable rows={bills} />
          </Paper>
       </Container>
    )

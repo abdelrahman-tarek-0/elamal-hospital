@@ -7,6 +7,7 @@ class Bill extends Model {
    static async getAllBills() {
       return await Bill.findAll({
          include: ['billDetails'],
+         order: [['id', 'DESC']],
       })
    }
 
