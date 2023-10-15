@@ -13,7 +13,7 @@ const app = require('./app/app')
 syncAssociations()
 
 dbConnection.sync({
-   // force: true,
+   //force: true,
 }).then(() => {
    console.log('Database connected')
    app.listen(port, () => {

@@ -9,7 +9,7 @@ const arMapper = {
 };
 
 const errorHandler = (err, req, res, next) => {
-   
+   console.log(err);
     if(err?.name === 'SequelizeUniqueConstraintError'){
         const path = err?.errors?.[0]?.path;
         

@@ -225,14 +225,14 @@ exports.useSession = catchAsync(async (req, res) => {
       level: 'summary',
    })
 
-   
+
    if (isOkayToUpdate) {
       const supplies = await Supply.updateManySupplies(updatedSupplies)
 
       const bill = await Bill.createBill(
          'bill',
          supplies.map((supply) => ({
-            supplyId: supply?.id ?? -1,
+            id: supply?.id ?? -1,
             supplyName: supply?.name ?? 'غير معروف',
             supplyBuyingPrice: supply?.buyingPrice ?? 0,
             supplySellingPrice: supply?.sellingPrice ?? 0,
