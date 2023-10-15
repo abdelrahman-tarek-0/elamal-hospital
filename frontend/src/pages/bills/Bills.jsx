@@ -19,15 +19,9 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 import moment from 'moment'
 import 'moment/locale/ar'
 
-
-
 function Row(props) {
    const { row } = props
    const [open, setOpen] = React.useState(false)
-
-   const createdAt = `${moment().locale('ar').format("Do MMM YYYY")} ( ${moment(
-      row.createdAt
-   ).locale('ar').fromNow()} )`
 
    return (
       <React.Fragment>
@@ -66,7 +60,11 @@ function Row(props) {
                   fontSize: '1.1rem',
                }}
             >
-               {createdAt}
+               {`${moment(row.createdAt)
+                  .locale('ar')
+                  .format('Do MMM YYYY')} ( ${moment(row.createdAt)
+                  .locale('ar')
+                  .fromNow()} )`}
             </TableCell>
          </TableRow>
          <TableRow>
@@ -128,7 +126,8 @@ function Row(props) {
                                        ? (supply?.supplySellingPrice -
                                             supply?.supplyBuyingPrice) *
                                          supply?.quantity
-                                       : supply?.supplyBuyingPrice * supply?.quantity}
+                                       : supply?.supplyBuyingPrice *
+                                         supply?.quantity}
                                  </TableCell>
                                  {row.type === 'مبيعات' ? (
                                     <TableCell
@@ -138,7 +137,8 @@ function Row(props) {
                                        }}
                                     >
                                        ${' '}
-                                       {supply?.supplySellingPrice * supply?.quantity}
+                                       {supply?.supplySellingPrice *
+                                          supply?.quantity}
                                     </TableCell>
                                  ) : null}
                                  <TableCell
@@ -206,9 +206,7 @@ const rows = [
    },
 ]
 
-function CollapsibleTable({
-    rows
-}) {
+function CollapsibleTable({ rows }) {
    return (
       <TableContainer
          component={Paper}
@@ -284,7 +282,7 @@ export default function Bills() {
             <Typography variant="h4" component="h1" gutterBottom>
                الفواتير
             </Typography>
-            <CollapsibleTable  rows={rows}/>
+            <CollapsibleTable rows={rows} />
          </Paper>
       </Container>
    )
