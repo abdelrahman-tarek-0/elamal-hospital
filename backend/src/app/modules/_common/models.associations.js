@@ -3,7 +3,7 @@ const connection = require('../../../config/database.config')
 
 const Supply = require('../supplies/supplies.model')
 const Session = require('../sessions/sessions.model')
-const Bill = require('../bills/bills.model')
+
 
 class SessionSupply extends Model {
    static async addSuppliesToSession(session, supplies) {
@@ -44,27 +44,7 @@ class SessionSupply extends Model {
    }
 }
 
-class BillDetail extends Model {
-   static async addSuppliesToBill(bill, supplies) {
 
-      await BillDetail.bulkCreate(
-         supplies?.map((supply) => ({
-            BillId: bill.id,
-            supplyName: supply.name,
-            supplyBuyingPrice: supply.buyingPrice,
-            supplySellingPrice: supply.sellingPrice,
-            supplyId: supply.id,
-            quantity: supply.quantity,
-         })) || []
-      )
-
-      let newBill = await Bill.findByPk(bill.id, {
-         include: [BillDetail],
-      })
-
-      return newBill
-   }
-}
 
 SessionSupply.init(
    {
@@ -80,44 +60,15 @@ SessionSupply.init(
    }
 )
 
-BillDetail.init(
-   {
-      supplyName: {
-         type: DataTypes.STRING,
-         allowNull: false,
-      },
-      supplyBuyingPrice: {
-         type: DataTypes.INTEGER,
-         allowNull: false,
-      },
-      supplySellingPrice: {
-         type: DataTypes.INTEGER,
-         allowNull: false,
-      },
-      supplyId: {
-         type: DataTypes.INTEGER,
-         allowNull: false,
-      },
-      quantity: {
-         type: DataTypes.INTEGER,
-         allowNull: false,
-      },
-   },
-   {
-      sequelize: connection,
-      modelName: 'BillDetail',
-   }
-)
 
 const syncAssociations = () => {
    Supply.belongsToMany(Session, { through: SessionSupply })
    Session.belongsToMany(Supply, { through: SessionSupply })
-   BillDetail.belongsTo(Bill)
-   Bill.hasMany(BillDetail)
 }
+
+
 
 module.exports = {
    syncAssociations,
    SessionSupply,
-   BillDetail,
 }
