@@ -64,18 +64,8 @@ function Row(props) {
             <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
                <Collapse in={open} timeout="auto" unmountOnExit>
                   <Box sx={{ margin: 1 }}>
-                     {/* <Typography
-                        variant="h6"
-                        gutterBottom
-                        component="div"
-                        sx={{
-                           direction: 'rtl',
-                        }}
-                            
-                     >
-                        المستلزمات
-                     </Typography> */}
-                     <Table size="small" aria-label="purchases">
+
+                     <Table size="medium" aria-label="purchases">
                         <TableHead>
                            <TableRow>
                               <TableCell
@@ -98,6 +88,11 @@ function Row(props) {
                               <TableCell align="right">
                                  {row.type === 'مبيعات' ? 'صافي ربح' : 'مدفوع'}
                               </TableCell>
+                              {
+                                    row.type === 'مبيعات' ? 
+                                    <TableCell align="right">سعر كلي بيع</TableCell> :
+                                    null
+                              }
                               <TableCell align="right">الكمية</TableCell>
                            </TableRow>
                         </TableHead>
@@ -114,14 +109,27 @@ function Row(props) {
                                  <TableCell align="right">
                                    $ {supply?.sellingPrice}
                                  </TableCell>
-                                 <TableCell align="right">
+                                 <TableCell align="right" sx={{
+                                        fontWeight: 'bold',
+                                    }}>
                                     $ {
                                         row.type === 'مبيعات'?
                                         (supply?.sellingPrice - supply?.buyingPrice) * supply?.quantity :
                                         supply?.buyingPrice * supply?.quantity
                                     }
                                  </TableCell>
-                                 <TableCell align="right">
+                                 {
+                                    row.type === 'مبيعات' ? 
+                                    <TableCell align="right" sx={{
+                                        fontWeight: 'bold',
+                                    }}>
+                                        $ {supply?.sellingPrice * supply?.quantity}
+                                    </TableCell> :
+                                    null
+                                 }
+                                 <TableCell align="right" sx={{
+                                        fontWeight: 'bold',
+                                    }}>
                                     {supply?.quantity}
                                  </TableCell>
                               </TableRow>
@@ -144,7 +152,7 @@ const rows = [
       supplies: [
          {
             id: 1,
-            name: 'منظف',
+            name: 'انبول ثابل للطي علشان كبير',
             buyingPrice: 10,
             sellingPrice: 15,
             quantity: 5,
