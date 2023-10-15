@@ -190,9 +190,10 @@ exports.useSession = catchAsync(async (req, res) => {
    let isOkayToUpdate = true
    const updatedSupplies = []
    let totalSuppliesProfit = 0
+   const updateSupplies = session?.Supplies || []
 
    let i = 0
-   for (const supply of session.Supplies) {
+   for (const supply of updateSupplies) {
       const sessionSupplyData = supply?.SessionSupply
 
       if (supply.stock < sessionSupplyData?.quantity) {
@@ -231,7 +232,7 @@ exports.useSession = catchAsync(async (req, res) => {
 
       const bill = await Bill.createBill(
          'bill',
-         supplies?.map((supply) => ({
+         updateSupplies?.map((supply) => ({
             id: supply?.id ?? -1,
             supplyName: supply?.name ?? 'غير معروف',
             supplyBuyingPrice: supply?.buyingPrice ?? 0,
