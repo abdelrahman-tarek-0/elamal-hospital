@@ -1,7 +1,11 @@
 import MedicalServicesIcon from '@mui/icons-material/MedicalServices'
 import AssignmentIcon from '@mui/icons-material/Assignment'
+import PaymentsIcon from '@mui/icons-material/Payments';
+
 import Supplies from './supplies/Supplies'
 import Sessions from './sessions/Sessions'
+import Bills from './bills/Bills';
+
 
 function NotFound() {
    return (
@@ -23,6 +27,12 @@ const pages = [
       path: '/sessions',
       icon: AssignmentIcon,
       component: Sessions,
+   },
+   {
+      name: 'الفواتير',
+      path: '/bills',
+      icon: PaymentsIcon,
+      component: Bills,
    },
    {
       name: 'لا يوجد',
