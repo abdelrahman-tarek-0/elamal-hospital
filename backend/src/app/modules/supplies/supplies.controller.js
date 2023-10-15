@@ -1,4 +1,5 @@
 const Supply = require('./supplies.model')
+const Bill = require('../bills/bills.model')
 
 const resBuilder = require('../../utils/response.builder')
 const ErrorBuilder = require('../../utils/error.builder')
@@ -102,7 +103,20 @@ exports.changeSupplyStock = catchAsync(async (req, res) => {
       change
    )} من المستلزم ${name} ب${arWordPriceChange} ${price} جنيها ,${extra}`
 
-   console.log(message)
+   const bill = await Bill.createBill(
+      isIncrease ? 'restock' : 'bill',
+      [
+         {
+            id: supply?.id ?? -1,
+            supplyName: supply?.name ?? 'اسم غير معروف',
+            supplyBuyingPrice: supply?.buyingPrice ?? 0,
+            supplySellingPrice: supply?.sellingPrice ?? 0,
+            quantity: Math.abs(change) ?? 0,
+         },
+      ]
+   )
 
-   resBuilder(res, 200, message, supply)
+   resBuilder(res, 200, message, supply,{
+      bill,
+   })
 })

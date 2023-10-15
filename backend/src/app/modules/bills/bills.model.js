@@ -43,7 +43,7 @@ Bill.init(
       },
 
       type: {
-         type: DataTypes.ENUM('bill', 'resupply'),
+         type: DataTypes.ENUM('bill', 'restock'),
          allowNull: false,
       },
    },

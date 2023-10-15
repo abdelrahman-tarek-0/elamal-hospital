@@ -231,13 +231,13 @@ exports.useSession = catchAsync(async (req, res) => {
 
       const bill = await Bill.createBill(
          'bill',
-         supplies.map((supply) => ({
+         supplies?.map((supply) => ({
             id: supply?.id ?? -1,
             supplyName: supply?.name ?? 'غير معروف',
             supplyBuyingPrice: supply?.buyingPrice ?? 0,
             supplySellingPrice: supply?.sellingPrice ?? 0,
             quantity: supply?.SessionSupply?.quantity ?? 0,
-         }))
+         })) ?? []
       ) || {}
 
       return resBuilder(res, 200, 'تم استخدام الجلسة', supplies, {
