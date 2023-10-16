@@ -9,7 +9,7 @@
       "start:front": "cd frontend && npm start",
       "dev:back": "cd backend && npm run dev",
       "dev:front": "cd frontend && npm run start",
-      "build": "rm -rf ./frontend/build ./backend/src/public ./backend/dist ./release &&  cd ./frontend && npm run build && cd ..  && mv ./frontend/build ./backend/src/public && cd ./backend && npm run build && cp -r ./database ./dist/database && cd ..  && mv ./backend/dist/ ./release && 7z a -t7z ./release/release.7z ./release/*"
+      "build": "rm -rf ./frontend/build ./backend/src/public ./backend/dist ./release &&  cd ./frontend && npm run build && cd ..  && mv ./frontend/build ./backend/src/public && cd ./backend && npm run build && cp -r ./database ./dist/database && cd ..  && mv ./backend/dist/ ./release && cp ./backend/node_modules/open/xdg-open ./release && 7z a -t7z ./release/release.7z ./release/*"
    },
    "repository": {
       "type": "git",
@@ -20,8 +20,5 @@
    "bugs": {
       "url": "https://github.com/abdelrahman-tarek-0/hospital-resources-tracking-system/issues"
    },
-   "homepage": "https://github.com/abdelrahman-tarek-0/hospital-resources-tracking-system#readme",
-   "dependencies": {
-      "moment": "^2.29.4"
-   }
+   "homepage": "https://github.com/abdelrahman-tarek-0/hospital-resources-tracking-system#readme"
 }
