@@ -8,6 +8,7 @@ class Bill extends Model {
       return await Bill.findAll({
          include: ['billDetails'],
          order: [['id', 'DESC']],
+        
       })
    }
 

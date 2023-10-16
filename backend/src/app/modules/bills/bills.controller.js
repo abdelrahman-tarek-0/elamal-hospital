@@ -1,4 +1,5 @@
 const Bill = require('./bills.model')
+const Supply = require('../supplies/supplies.model')
 
 const resBuilder = require('../../utils/response.builder')
 const ErrorBuilder = require('../../utils/error.builder')

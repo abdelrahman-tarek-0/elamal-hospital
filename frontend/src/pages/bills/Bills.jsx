@@ -18,7 +18,7 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
 
 import moment from 'moment'
 import 'moment/locale/ar'
-import Swal from 'sweetalert2'
+
 import useLocalStorage from '../../hooks/useLocalStorage'
 
 import { getAllBills } from './apiBills'
@@ -75,88 +75,175 @@ function Row(props) {
             <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
                <Collapse in={open} timeout="auto" unmountOnExit>
                   <Box sx={{ margin: 1 }}>
-                     <Table size="medium" aria-label="purchases">
-                        <TableHead>
-                           <TableRow>
-                              <TableCell
-                                 sx={{
-                                    direction: 'rtl',
-                                 }}
-                              >
-                                 الرقم
-                              </TableCell>
-                              <TableCell
-                                 sx={{
-                                    direction: 'rtl',
-                                 }}
-                              >
-                                 الأسم
-                              </TableCell>
-
-                              <TableCell align="right">سعر الشراء</TableCell>
-                              <TableCell align="right">سعر البيع</TableCell>
-                              <TableCell align="right">
-                                 {row.type === 'مبيعات' ? 'صافي ربح' : 'مدفوع'}
-                              </TableCell>
-                              {row.type === 'مبيعات' ? (
-                                 <TableCell align="right">
-                                    سعر كلي بيع
-                                 </TableCell>
-                              ) : null}
-                              <TableCell align="right">الكمية</TableCell>
-                           </TableRow>
-                        </TableHead>
-                        <TableBody>
-                           {row?.billDetails?.map((supply) => (
-                              <TableRow key={supply.supplyId}>
-                                 <TableCell component="th" scope="row">
-                                    {supply?.supplyId}
-                                 </TableCell>
-                                 <TableCell>{supply?.supplyName}</TableCell>
-                                 <TableCell align="right">
-                                    $ {supply?.supplyBuyingPrice}
-                                 </TableCell>
-                                 <TableCell align="right">
-                                    $ {supply?.supplySellingPrice}
-                                 </TableCell>
+                     <Paper
+                        elevation={4}
+                        sx={{
+                           width: '100%',
+                           mb: 2,
+                           p: 2,
+                        }}
+                     >
+                        <Table size="medium" aria-label="purchases">
+                           <TableHead>
+                              <TableRow>
                                  <TableCell
-                                    align="right"
                                     sx={{
-                                       fontWeight: 'bold',
+                                       direction: 'rtl',
                                     }}
                                  >
-                                    ${' '}
+                                    الرقم
+                                 </TableCell>
+                                 <TableCell
+                                    sx={{
+                                       direction: 'rtl',
+                                    }}
+                                 >
+                                    الأسم
+                                 </TableCell>
+
+                                 <TableCell align="right">سعر الشراء</TableCell>
+                                 <TableCell align="right">سعر البيع</TableCell>
+                                 <TableCell align="right">
                                     {row.type === 'مبيعات'
-                                       ? (supply?.supplySellingPrice -
-                                            supply?.supplyBuyingPrice) *
-                                         supply?.quantity
-                                       : supply?.supplyBuyingPrice *
-                                         supply?.quantity}
+                                       ? 'صافي ربح'
+                                       : 'مدفوع'}
                                  </TableCell>
                                  {row.type === 'مبيعات' ? (
+                                    <TableCell align="right">
+                                       سعر كلي بيع
+                                    </TableCell>
+                                 ) : null}
+                                 <TableCell align="right">الكمية</TableCell>
+                              </TableRow>
+                           </TableHead>
+                           <TableBody>
+                              {row?.billDetails?.map((supply) => (
+                                 <TableRow key={supply.supplyId} sx={{
+                                   
+                                    backgroundColor: row?.billDetails?.length === 1 ? '#EEEEEE' : null,
+                             
+                                 }}>
+                                    <TableCell component="th" scope="row">
+                                       {supply?.supplyId}
+                                    </TableCell>
+                                    <TableCell
+                                       sx={{
+                                          direction: 'rtl',
+                                          fontSize: row?.billDetails?.length === 1 ? '1.2rem' : null,
+                                       }}
+                                    >
+                                       {supply?.supplyName}
+                                    </TableCell>
+                                    <TableCell align="right">
+                                       $ {supply?.supplyBuyingPrice}
+                                    </TableCell>
+                                    <TableCell align="right">
+                                       $ {supply?.supplySellingPrice}
+                                    </TableCell>
+                                    <TableCell
+                                       align="right"
+                                       sx={{
+                                          fontWeight: row?.billDetails?.length === 1 ? 'bold' : null,
+                                          fontSize: row?.billDetails?.length === 1 ? '1.2rem' : null,
+                                       }}
+                                    >
+                                       ${' '}
+                                       {row.type === 'مبيعات'
+                                          ? (supply?.supplySellingPrice -
+                                               supply?.supplyBuyingPrice) *
+                                            supply?.quantity
+                                          : supply?.supplyBuyingPrice *
+                                            supply?.quantity}
+                                    </TableCell>
+                                    {row.type === 'مبيعات' ? (
+                                       <TableCell
+                                          align="right"
+                                          sx={{
+                                             fontWeight: row?.billDetails?.length === 1 ? 'bold' : null,
+                                             fontSize: row?.billDetails?.length ===1 ? '1.2rem' : null,
+                                          }}
+                                       >
+                                          ${' '}
+                                          {supply?.supplySellingPrice *
+                                             supply?.quantity}
+                                       </TableCell>
+                                    ) : null}
+                                    <TableCell
+                                       align="right"
+                                       sx={{
+                                          fontWeight: row?.billDetails?.length === 1 ? 'bold' : null,
+                                          fontSize: row?.billDetails?.length ===1 ? '1.2rem' : null,
+                                       }}
+                                    >
+                                       {supply?.quantity}
+                                    </TableCell>
+                                 </TableRow>
+                              ))}
+
+                              {row.type === 'مبيعات' &&
+                              row?.billDetails?.length > 1 ? (
+                                 <TableRow
+                                    sx={{
+                                    
+                                       mt: 2,
+                                      backgroundColor: '#EEEEEE',
+                                    }}
+                                 >
+                                    <TableCell
+                                       component="th"
+                                       scope="row"
+                                       sx={{
+                                          // fontSize: '1.2rem',
+                                          color: '#B1B3B9', 
+                                       }}
+                                    >
+                                       {/* الكل */}
+                                    </TableCell>
+                                    <TableCell
+                                       sx={{
+                                          direction: 'rtl',
+                                          fontSize: '1.2rem',
+                                       }}
+                                       
+                                    >
+                                       المجموع
+                                    </TableCell>
+                                    <TableCell align="right"></TableCell>
+                                    <TableCell align="right"></TableCell>
                                     <TableCell
                                        align="right"
                                        sx={{
                                           fontWeight: 'bold',
+                                         fontSize: '1.2rem',
                                        }}
                                     >
-                                       ${' '}
-                                       {supply?.supplySellingPrice *
-                                          supply?.quantity}
+                                       $ {row?.totalProfit}
                                     </TableCell>
-                                 ) : null}
-                                 <TableCell
-                                    align="right"
-                                    sx={{
-                                       fontWeight: 'bold',
-                                    }}
-                                 >
-                                    {supply?.quantity}
-                                 </TableCell>
-                              </TableRow>
-                           ))}
-                        </TableBody>
-                     </Table>
+
+                                    <TableCell
+                                       align="right"
+                                       sx={{
+                                          fontWeight: 'bold',
+                                          fontSize: '1.2rem',
+                                       }}
+                                    >
+                                       $ {row?.totalSell}
+                                    </TableCell>
+
+                                    <TableCell
+                                       align="right"
+                                       sx={{
+                                          fontWeight: 'bold',
+                                          fontSize: '1.2rem',
+                                       }}
+                                    >
+                                       {row?.totalSupply}
+                                    </TableCell>
+                                 </TableRow>
+                              ) : null}
+                           </TableBody>
+                        </Table>
+                     </Paper>
                   </Box>
                </Collapse>
             </TableCell>
@@ -224,17 +311,37 @@ export default function Bills() {
 
          if (res?.data && res?.data?.length > 0) {
             resBills = res?.data.map((bill) => {
+               let totalProfit = 0
+               let totalSell = 0
+               let totalSupply = 0
+
+               bill?.billDetails?.forEach((supply) => {
+                  if (bill?.type === 'bill') {
+                     totalProfit =
+                        totalProfit +
+                        (supply?.supplySellingPrice -
+                           supply?.supplyBuyingPrice) *
+                           supply?.quantity
+
+                     totalSell =
+                        totalSell +
+                        supply?.supplySellingPrice * supply?.quantity
+                     totalSupply = totalSupply + supply?.quantity
+                  }
+               })
                return {
                   ...bill,
                   type: bill?.type === 'bill' ? 'مبيعات' : 'اعادة تعبئة',
+                  totalProfit: bill?.type === 'bill' ? totalProfit : undefined,
+                  totalSell: bill?.type === 'bill' ? totalSell : undefined,
+                  totalSupply: bill?.type === 'bill' ? totalSupply : undefined,
                }
             })
          }
 
          setBills(resBills || [])
-         console.log(resBills)
       })
-   }, [])
+   },[])
    return (
       <Container
          variant="main"
@@ -249,13 +356,19 @@ export default function Bills() {
                width: '100%',
                mb: 2,
                p: 2,
-               fontWeight: 'bold',
-               fontSize: '1.5rem',
-               color: '#365c00',
             }}
             elevation={8}
          >
-            <Typography variant="h4" component="h1" gutterBottom>
+            <Typography
+               variant="h4"
+               component="h1"
+               gutterBottom
+               sx={{
+                  fontWeight: 'bold',
+                  //   fontSize: '1.5rem',
+                  color: '#365c00',
+               }}
+            >
                الفواتير
             </Typography>
             <CollapsibleTable rows={bills} />

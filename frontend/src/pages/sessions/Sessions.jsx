@@ -2,7 +2,7 @@ import * as React from 'react'
 
 import Container from '@mui/material/Container'
 
-import { Typography, Button, Box } from '@mui/material'
+import { Typography, Button } from '@mui/material'
 import { AddCircle } from '@mui/icons-material'
 
 import Swal from 'sweetalert2'
@@ -64,7 +64,7 @@ export default function Sessions() {
       getAllSessions().then((res) => {
          setSessions(res?.data || [])
       })
-   }, [])
+   },[])
 
    const handelAddSession = (name) => {
       createSession(name)

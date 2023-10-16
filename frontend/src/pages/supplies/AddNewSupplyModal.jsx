@@ -1,9 +1,8 @@
 import Modal from '@mui/material/Modal'
 import * as React from 'react'
 import Box from '@mui/material/Box'
-import { Typography, Grid, Button, TextField } from '@mui/material'
-import { styled } from '@mui/material/styles'
-import { FormControl, FormLabel, InputAdornment } from '@mui/material'
+import {  Button, TextField } from '@mui/material'
+import {  InputAdornment } from '@mui/material'
 import Fade from '@mui/material/Fade'
 import useLocalStorage from '../../hooks/useLocalStorage'
 import Swal from 'sweetalert2'
@@ -44,7 +43,6 @@ export default function AddNewSupplyModal({
       'AddNewSupply_Field_SellingPrice',
       0
    )
-   const [stock, setStock] = useLocalStorage('AddNewSupply_Field_Stock', 0)
 
    const handleSubmit = (e) => {
       e.preventDefault()
@@ -82,7 +80,6 @@ export default function AddNewSupplyModal({
          description,
          buyingPrice,
          sellingPrice,
-         stock,
       })
    }
 

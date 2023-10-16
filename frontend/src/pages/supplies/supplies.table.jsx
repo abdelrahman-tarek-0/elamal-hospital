@@ -52,7 +52,7 @@ function getComparator(order, orderBy) {
 function stableSort(array, comparator) {
    const stabilizedThis = array.map((el, index) => [el, index])
 
-   console.log(stabilizedThis)
+
 
    stabilizedThis.sort((a, b) => {
       const order = comparator(a[0], b[0])
@@ -143,7 +143,7 @@ export default function EnhancedTable({
    )
 
    const [page, setPage] = useLocalStorage('EnhancedTable_page', 0)
-   const [dense, setDense] = useLocalStorage('EnhancedTable_dense', false)
+   // const [dense, setDense] = useLocalStorage('EnhancedTable_dense', false)
    const [rowsPerPage, setRowsPerPage] = useLocalStorage(
       'EnhancedTable_rowsPerPage',
       5
@@ -167,7 +167,7 @@ export default function EnhancedTable({
       if (isFull) {
          setRowsPerPage(data.length)
       }
-   })
+   },[data.length, isFull, setRowsPerPage])
 
    const handleRequestSort = (event, property) => {
       const isAsc = orderBy === property && order === 'asc'
@@ -190,10 +190,10 @@ export default function EnhancedTable({
       setPage(0)
    }
 
-   const handleChangeDense = (event) => {
-      toggleMaxWidth(event.target.checked)
-      setDense(event.target.checked)
-   }
+   // const handleChangeDense = (event) => {
+   //    toggleMaxWidth(event.target.checked)
+   //    setDense(event.target.checked)
+   // }
 
    const handelDelete = (name, id) => {
       Swal.fire({
@@ -329,7 +329,7 @@ export default function EnhancedTable({
                <Table
                   sx={{ minWidth: 750 }}
                   aria-labelledby="tableTitle"
-                  size={dense ? 'small' : 'medium'}
+                  size={ 'medium'}
                >
                   <EnhancedTableHead
                      order={order}
@@ -431,7 +431,7 @@ export default function EnhancedTable({
                      {emptyRows > 0 && (
                         <TableRow
                            style={{
-                              height: (dense ? 33 : 53) * emptyRows,
+                              height: ( 53) * emptyRows,
                            }}
                         >
                            <TableCell colSpan={6} />

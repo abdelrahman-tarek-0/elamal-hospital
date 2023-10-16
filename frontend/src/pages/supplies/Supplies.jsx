@@ -95,9 +95,16 @@ const alertSessionUse = (checker) => {
       icon: checker?.isUpdated ? 'success' : 'error',
       title: msg,
       html: `
-            <ul>
-               ${msgs.join('')}
-            </ul>
+         ${
+            checker?.bill?.id
+               ? `<h3 style="color:#2196F3;">تم تحرير فاتورة رقم <b>${checker?.bill?.id}</b></h3>`
+               : `
+         <ul>
+            ${msgs.join('')}
+         </ul>
+         `
+         }
+         
       `,
       confirmButtonText: 'موافق',
    })
@@ -228,7 +235,9 @@ export default function Supplies() {
 
             Swal.fire({
                icon: 'success',
-               title: resData?.message,
+               title: resData?.bill?.id
+                  ? `تم تحرير فاتورة رقم ${resData?.bill?.id}`
+                  : resData?.message || 'تم التعديل بنجاح',
                showConfirmButton: true,
             })
          })
@@ -433,7 +442,7 @@ export default function Supplies() {
       }).then((result) => {
          if (result.isConfirmed) {
             handelUseSession(checker?.data?.id)
-         }  
+         }
       })
    }
 
@@ -488,46 +497,6 @@ export default function Supplies() {
                   handelCheckSession={() => handelCheckSession(session?.id)}
                />
             ))}
-
-            <HtmlTooltip
-               arrow
-               title={
-                  <React.Fragment>
-                     <Typography
-                        color="inherit"
-                        sx={{
-                           fontSize: '1.2rem',
-                           fontWeight: 'bold',
-                        }}
-                     >
-                        اضافة جلسة جديد
-                     </Typography>
-                     {'سيتم اضافة جلسة جديدة للأستخدام'}
-                  </React.Fragment>
-               }
-            >
-               <Button
-                  variant="outlined"
-                  color="success"
-                  sx={{
-                     // backgroundColor: '#6AAD01',
-                     // color: '#200100',
-                     borderRadius: '5px',
-                     '&:hover': {
-                        // backgroundColor: '#200100',
-                        // backgroundColor: '#3D6300',
-                     },
-                     marginBottom: '20px',
-                     direction: 'ltr',
-                     width: '100%',
-                  }}
-                  //onClick={() => setOpenAdd(true)}
-                  // onClick={testSweatDisableConfirm}
-               >
-                  <AddCircle sx={{ mr: 1 }} />
-                  انشاء فاتورة سريعة
-               </Button>
-            </HtmlTooltip>
          </Box>
          <Container
             variant="main"

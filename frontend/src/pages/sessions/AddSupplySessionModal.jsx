@@ -7,7 +7,6 @@ import Fade from '@mui/material/Fade'
 import Swal from 'sweetalert2'
 import Select from '@mui/material/Select'
 
-import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
 
 import useLocalStorage from '../../hooks/useLocalStorage'
@@ -60,7 +59,6 @@ export default function AddSupplySessionModal({
 
    const handleSubmit = (e) => {
       e.preventDefault()
-      console.log('suup',supplyId)
 
       const errors = []
 

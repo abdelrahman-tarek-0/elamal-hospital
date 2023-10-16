@@ -4,8 +4,6 @@ import Box from '@mui/material/Box'
 import { Button } from '@mui/material'
 import { Typography, Divider, TextField } from '@mui/material'
 import {
-   FormControl,
-   FormLabel,
    InputAdornment,
    Chip,
    IconButton,
@@ -105,12 +103,6 @@ export default function EditSupplyModal({
    const handelEditSupplySubmit = (e) => {
       e.preventDefault()
 
-      console.log({
-         name,
-         description,
-         buyingPrice,
-         sellingPrice,
-      })
       const errors = []
 
       if (name === '') errors.push('الأسم يجب ان يكون موجود')
