@@ -1,1 +1,1 @@
-# سيستيم مراقبة الموارد في مستشفي الأمل
+# hospital tracking system
